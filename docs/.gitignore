@@ -1,0 +1,23 @@
+# Configuración local del editor
+.vscode/
+
+# Variables privadas
+.env
+.env.*
+
+# Logs
+*.log
+
+# Dependencias si se agregan en el futuro
+node_modules/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Copias de seguridad
+*.bak
