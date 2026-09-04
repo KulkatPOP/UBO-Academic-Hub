@@ -1305,3 +1305,689 @@ button:not(:disabled):active{transform:scale(.98)}
 
 /* Vista previa de correo en Inicio */
 .home-mail-section{margin-top:24px}.home-mail-preview{display:grid;gap:9px}.home-mail-card{display:grid;grid-template-columns:31px 1fr auto;align-items:center;gap:9px;width:100%;padding:12px;border:0;border-left:4px solid var(--sky);border-radius:15px;background:#fff;color:var(--text);box-shadow:var(--shadow);text-align:left}.home-mail-card.unread{border-left-color:var(--navy);background:#fbfdff}.home-mail-card.read{opacity:.8}.home-mail-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--pale);color:var(--navy);font-size:15px}.home-mail-card small{display:block;margin-bottom:2px;color:var(--muted);font-size:9px;font-weight:800}.home-mail-card b{display:block;overflow:hidden;font-size:12px;text-overflow:ellipsis;white-space:nowrap}.home-mail-card p{overflow:hidden;margin:3px 0 0;color:var(--muted);font-size:10px;line-height:1.3;text-overflow:ellipsis;white-space:nowrap}.home-mail-card em{padding:4px 6px;border-radius:8px;background:#eef3f7;color:var(--muted);font-size:8px;font-style:normal;font-weight:800}.home-mail-card.unread em{background:#e7f2f8;color:var(--navy)}.home-mail-empty{display:grid;place-items:center;min-height:132px;padding:18px;border:1px dashed #c7d8e5;border-radius:var(--radius-card);background:linear-gradient(135deg,#f9fcfe,#eef6fb);text-align:center}.home-mail-empty span{font-size:26px}.home-mail-empty b{margin-top:7px;color:var(--navy);font-size:13px}.home-mail-empty p{margin:4px 0 0;color:var(--muted);font-size:11px}
+
+/* Sistema responsive unificado: las acciones conservan superficie de tarjeta en todos los tamaños. */
+:root{--card-surface:#fff;--card-border:#dce7ef;--card-radius:18px;--card-padding:16px;--card-shadow:0 5px 14px #173a5414}
+.card,.profile-nav-grid button,.quick-action-card,.quick-card,.home-delivery-card,.home-mail-card,.dashboard-attention-card,.today-class-card,.community-card,.international-card,.announcement-card{border-radius:var(--card-radius);background:var(--card-surface);box-shadow:var(--card-shadow)}
+.card{padding:var(--card-padding);border:1px solid var(--card-border)}.card-title{margin:0;color:var(--navy);font:800 .95rem "Montserrat",Arial,sans-serif}.card-description{margin:5px 0 0;color:var(--muted);font-size:.78rem;line-height:1.45}.card-action{min-height:40px;border-radius:var(--radius-control);font-weight:700}
+.profile-nav-grid button{min-width:0;border:1px solid var(--card-border);padding:14px 15px}.quick-card,.quick-action-card{border:1px solid var(--card-border)}.quick-card-primary{border-top:3px solid var(--navy)!important}.home-delivery-card,.home-mail-card,.dashboard-attention-card{border:1px solid var(--card-border)}
+#home .today-section,.home-brief-grid .home-mail-section,.home-brief-grid .dashboard-attention-section,#home .commitments-section{border:1px solid var(--card-border);border-radius:var(--card-radius);box-shadow:var(--card-shadow)}
+@media(max-width:600px){.screen{padding:18px 16px 96px}.profile-nav-grid{grid-template-columns:1fr!important;gap:10px}.profile-nav-grid button{min-height:58px;padding:15px}.quick-action-grid{grid-template-columns:1fr}.quick-action-card{min-height:72px;padding:14px}.quick-card{min-height:76px;padding:13px}.home-brief-grid{grid-template-columns:1fr}.home-brief-grid .home-mail-section,.home-brief-grid .dashboard-attention-section,#home .today-section,#home .commitments-section{padding:15px}.card-actions{gap:9px}.card-actions .outline-btn,.card-actions .primary-btn{min-height:42px}}
+@media(min-width:601px) and (max-width:1024px){.screen{padding-inline:22px}.profile-nav-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-brief-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-card{min-height:82px}}
+@media(min-width:1025px){.profile-nav-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.quick-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.profile-nav-grid button,.quick-action-card{min-height:78px}.card,.profile-nav-grid button,.quick-action-card{padding:18px}}
+
+/* Componentes institucionales reutilizables: Perfil, módulos y correo. */
+.profile-card,.module-card,.mail-card,.home-mail-card{background:#fff;border:1px solid var(--card-border);border-radius:18px;box-shadow:var(--card-shadow)}
+.profile-card.module-card{display:grid;grid-template-columns:38px minmax(0,1fr) 14px;align-items:center;gap:11px;width:100%;min-height:82px;padding:14px 15px;color:var(--text);text-align:left}.profile-card .module-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--pale);color:var(--navy);font-size:19px}.profile-card .module-content{min-width:0}.profile-card .module-content b{display:block;overflow:hidden;color:var(--navy);font:800 .84rem "Montserrat",Arial,sans-serif;text-overflow:ellipsis;white-space:nowrap}.profile-card .module-content small{display:block;overflow:hidden;margin-top:4px;color:var(--muted);font-size:.7rem;font-weight:600;line-height:1.25;text-overflow:ellipsis;white-space:nowrap}.profile-card>i{color:var(--sky);font-size:1.35rem;font-style:normal}.profile-card.module-card:hover{border-color:var(--sky);box-shadow:var(--shadow-raised)}
+.mail-card,.home-mail-card{min-height:74px;padding:13px;border-left:4px solid var(--sky)}.mail-card.unread,.home-mail-card.unread{border-color:var(--card-border);border-left-color:var(--navy);background:#fbfdff}.mail-card.read,.home-mail-card.read{opacity:1;background:#fff}.home-mail-card b{font:800 .8rem "Montserrat",Arial,sans-serif}.home-mail-card small{font-size:.66rem}.home-mail-card p{font-size:.7rem;line-height:1.35}.home-mail-card em{font-size:.6rem}
+@media(max-width:600px){.profile-card.module-card{min-height:80px;padding:14px}.profile-card .module-content small{white-space:normal}.home-mail-card{min-height:78px;padding:13px}.home-mail-card p{white-space:nowrap}}
+@media(min-width:601px) and (max-width:1024px){.profile-card.module-card{min-height:88px}.home-mail-card{min-height:82px}}
+@media(min-width:1025px){.profile-card.module-card{min-height:96px;padding:17px}.profile-card .module-content small{white-space:normal}.home-mail-card{min-height:86px;padding:15px}}
+
+/* Prevención de overflow: columnas flexibles y contenido interno pueden encogerse dentro del viewport. */
+html,body{max-width:100%;overflow-x:hidden}.phone-shell,.content,.screen{max-width:100%}img,svg,canvas{max-width:100%;height:auto}
+.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-grid>*,.quick-action-grid>*,.profile-nav-grid>*,.home-brief-grid>*,.dashboard-summary>*{min-width:0}
+.home-mail-card>div,.home-delivery-card>div,.dashboard-attention-card>div,.today-class-card>div,.weekly-class-card>div,.upcoming-event-card>div,.library-loan-row>div,.my-campus-event>div{min-width:0}
+@media(min-width:601px) and (max-width:1024px){.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1025px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* Centro de alertas académicas. */
+.alerts-active-section{margin-top:18px}.alerts-history-section{margin-top:28px}.alert-card{padding:16px;border:1px solid var(--card-border);border-left:4px solid var(--sky);border-radius:18px;background:#fff;box-shadow:var(--card-shadow)}.alert-card.high{border-left-color:var(--red);background:linear-gradient(135deg,#fff,#fff7f7)}.alert-card.medium{border-left-color:var(--yellow);background:linear-gradient(135deg,#fff,#fffbf2)}.alert-card.low{border-left-color:var(--sky)}.alert-card.is-read{border-left-color:var(--green);background:#fbfdfc;opacity:.82}.alert-card-top{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:start;gap:10px}.alert-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:var(--pale);font-size:18px}.alert-card h3{margin:3px 0 0;color:var(--navy);font:800 .9rem "Montserrat",Arial,sans-serif}.alert-card .eyebrow{font-size:.62rem}.alert-card .badge{align-self:start;white-space:nowrap}.alert-description{margin:13px 0 7px;color:var(--text);font-size:.78rem;line-height:1.45}.alert-subject{margin:0;color:var(--navy);font-size:.72rem;font-weight:700}.alert-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid #e8eef2;color:var(--muted);font-size:.66rem;font-weight:700}.alert-actions{display:flex;align-items:center;gap:12px;margin-top:12px}.alert-actions .outline-btn{min-height:38px}.alerts-preview .alert-card{padding:13px}.alerts-preview .alert-card .alert-actions{display:none}
+@media(max-width:420px){.alert-card{padding:14px}.alert-card-top{grid-template-columns:32px minmax(0,1fr)}.alert-card-top .badge{grid-column:2;justify-self:start;margin-top:2px}.alert-actions{align-items:stretch;flex-direction:column;gap:4px}.alert-actions .outline-btn{width:100%}}
+
+/* Prioridad institucional: color como acento, nunca como fondo dominante. */
+.alert-card,.alert-card.high,.alert-card.medium,.alert-card.low,.alert-card.is-read{height:auto;background:#fff;opacity:1}.alert-card.high{border-left-color:var(--red)}.alert-card.medium{border-left-color:var(--yellow)}.alert-card.low,.alert-card.is-read{border-left-color:var(--sky)}.alert-card.is-read{border-left-color:var(--green)}
+.alert-card .badge{display:none}.alert-card.high .eyebrow{color:var(--red)}.alert-card.medium .eyebrow{color:var(--yellow)}.alert-card.low .eyebrow{color:#347ba7}.alert-card.is-read .eyebrow{color:var(--green)}.alert-card.high .alert-icon{background:#fff0f1}.alert-card.medium .alert-icon{background:#fff8e8}.alert-card.low .alert-icon{background:#e7f2f8}.alert-card.is-read .alert-icon{background:#eef9f2}
+
+/* Inicio: jerarquía institucional de información. */
+#home .dashboard-section{margin-top:20px;padding:16px;border:1px solid var(--card-border);border-radius:var(--card-radius);background:var(--card-surface);box-shadow:var(--card-shadow)}
+#home .dashboard-summary{margin:0 0 16px;padding:13px;background:linear-gradient(145deg,#edf5fa,#f9fcfe);box-shadow:inset 0 0 0 1px #dce8f0}
+#home .summary-card{display:block;min-height:72px;padding:12px 8px;border-top:3px solid var(--sky);border-radius:14px;background:#fff;box-shadow:0 4px 12px #173a5410;text-align:center}
+#home .summary-card:nth-child(3){border-top-color:var(--green)}
+#home .summary-card:nth-child(4){border-top-color:var(--gold,#b77916)}
+#home .summary-card:nth-child(5){border-top-color:var(--navy)}
+#home .summary-card span::before{display:inline-block;margin-right:4px;color:var(--sky);font-size:.78rem}
+#home .summary-card:nth-child(2) span::before{content:"◈"}
+#home .summary-card:nth-child(3) span::before{content:"◷";color:var(--green)}
+#home .summary-card:nth-child(4) span::before{content:"▤";color:var(--gold,#b77916)}
+#home .summary-card:nth-child(5) span::before{content:"●";color:var(--navy)}
+#home .dashboard-attention-section{margin-top:20px;background:linear-gradient(145deg,#fff,#fbfdff)}
+#home .dashboard-attention-section .today-heading,#home .commitments-section .today-heading,#home .home-mail-section .today-heading{margin-bottom:12px}
+#home .dashboard-attention-section .today-heading p{max-width:240px}
+#home .commitments-section{background:linear-gradient(145deg,#fff,#f9fcfe)}
+#home .commitment-card{min-height:76px;border-left:4px solid var(--sky);border-radius:15px;background:#fff;box-shadow:0 4px 12px #173a5410}
+#home .home-mail-section{background:linear-gradient(145deg,#fff,#fbfdff)}
+#home .home-mail-preview{gap:10px}
+#home .mail-card,.home-mail-card{border-radius:15px}
+#home .important-alerts-section{display:none}
+.quick-access-card,.quick-card{min-width:0;border:1px solid var(--card-border);border-radius:15px;background:#fff;box-shadow:0 4px 12px #173a5410}
+.quick-access-card{display:grid;place-items:center;min-height:74px;padding:12px;color:var(--navy);text-align:center}
+@media(min-width:700px){
+  #home .dashboard-section{padding:18px}
+  #home .dashboard-attention{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #home .home-deliveries{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #home .home-mail-preview{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #home .home-mail-card:first-child{grid-column:span 2}
+}
+@media(max-width:600px){
+  #home .dashboard-section{margin-top:16px;padding:15px}
+  #home .summary-card{min-height:70px;padding:11px 7px}
+  #home .home-mail-card{min-width:0}
+}
+
+/* Dashboard Inicio: orden de lectura y encabezado compacto. */
+#home.active{display:flex;flex-direction:column;gap:0}
+#home.active>*{order:20}
+#home.active>.dashboard-hero{order:1}
+#home.active>.today-section{order:2}
+#home.active>.home-group-title:first-of-type{order:3}
+#home.active>.quick-grid{order:4}
+#home.active>.dashboard-summary{order:5}
+#home.active>.dashboard-attention-section{order:6}
+#home.active>.commitments-section{order:7}
+#home.active>.home-mail-section{order:8}
+#home.active>.important-alerts-section{order:9}
+#home.active>.home-more-access{order:9}
+#home.active>.home-group-title:not(:first-of-type),#home.active>.home-more-access~.card-section,#home.active>h3:not(.home-group-title),#home.active>.alerts-preview{display:none}
+#home.active>.dashboard-hero{min-height:0;padding:14px 16px 15px}
+.dashboard-hero-actions{position:absolute;top:13px;right:14px;display:flex;gap:7px}
+.dashboard-icon-btn,.dashboard-avatar-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid #d7e4ec;border-radius:11px;background:#fff;color:var(--navy);box-shadow:0 3px 8px #173a5410;font-size:15px}
+.dashboard-avatar-btn{border-radius:50%;background:var(--navy);color:#fff;font-size:.64rem;font-weight:800}
+#home .dashboard-hero .ubo-logo{max-width:205px;margin-bottom:8px}
+#home .dashboard-hero h2{padding-right:80px;font-size:1.2rem}
+#home .dashboard-hero .dashboard-period{right:15px;bottom:14px}
+#home .today-section.dashboard-card{margin-top:4px}
+#home .today-section.dashboard-card .today-class-card{background:#fff}
+#home .quick-grid{margin-top:0}
+#home .quick-access-card{min-height:78px;text-align:left}
+#home .quick-access-card b{display:block;color:var(--navy);font:800 .76rem "Montserrat",Arial,sans-serif}
+#home .quick-access-card small{display:block;margin-top:3px;color:var(--muted);font-size:.62rem;line-height:1.25}
+#home .dashboard-attention-section .today-heading::after{content:"Resumen inteligente";margin-left:auto;color:var(--muted);font-size:.62rem;font-weight:700}
+#home .commitments-section .home-delivery-card{min-height:72px}
+.home-more-access{margin-top:18px!important;padding:0!important;overflow:visible}
+.home-more-access>summary{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 16px;color:var(--navy);font:800 .8rem "Montserrat",Arial,sans-serif;cursor:pointer;list-style:none}
+.home-more-access>summary::-webkit-details-marker{display:none}
+.home-more-access>summary span{color:var(--sky);font:700 .68rem "Open Sans",Arial,sans-serif}
+.home-more-access[open]>summary{border-bottom:1px solid var(--card-border)}
+.home-more-access>.quick-grid{padding:12px 14px 14px}
+@media(min-width:700px){
+  #home.active{max-width:1040px;margin:0 auto}
+  #home .dashboard-hero{padding:16px 18px}
+  #home .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #home .quick-access-card{min-height:88px}
+}
+@media(min-width:601px) and (max-width:1024px){
+  #home .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:420px){
+  #home .dashboard-hero{padding:13px 14px 14px}
+  .dashboard-hero-actions{top:11px;right:12px}
+  .dashboard-icon-btn,.dashboard-avatar-btn{width:32px;height:32px}
+  #home .dashboard-hero h2{font-size:1.12rem}
+  #home .quick-access-card{min-height:76px;padding:11px}
+}
+
+/* Accesos institucionales: Perfil, servicios y acciones secundarias. */
+.module-card,.service-card,.profile-section-card,.quick-access-card{border:1px solid var(--card-border);border-radius:var(--card-radius);background:#fff;box-shadow:var(--card-shadow)}
+#profile .profile-nav-group{margin-top:24px}
+#profile .profile-nav-group>h3,#profile .quick-actions>h3{margin:0 0 11px;color:var(--navy);font:800 .92rem "Montserrat",Arial,sans-serif}
+#profile .profile-nav-grid{gap:11px}
+#profile .profile-section-card{display:grid;grid-template-columns:40px minmax(0,1fr) 16px;align-items:center;gap:12px;width:100%;min-height:88px;padding:15px 16px;border:1px solid var(--card-border);border-radius:18px;background:#fff;color:var(--text);box-shadow:var(--card-shadow);text-align:left}
+#profile .profile-section-card .module-icon,#profile .quick-action-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:var(--pale);color:var(--navy);font-size:19px}
+#profile .profile-section-card .module-content{min-width:0}
+#profile .profile-section-card .module-content b,#profile .quick-action-card b{display:block;color:var(--navy);font:800 .83rem "Montserrat",Arial,sans-serif}
+#profile .profile-section-card .module-content small,#profile .quick-action-card small{display:block;margin-top:4px;color:var(--muted);font-size:.7rem;font-weight:600;line-height:1.35}
+#profile .profile-section-card>i,#profile .quick-action-card>i{color:var(--sky);font-size:1.4rem;font-style:normal}
+#profile .profile-secondary-group .profile-section-card{min-height:80px;padding:13px 14px}
+#profile .profile-secondary-group .module-icon{width:36px;height:36px;border-radius:12px;font-size:17px}
+#profile .quick-actions{margin-top:28px;padding-top:20px;border-top:1px solid var(--card-border)}
+#profile .quick-action-grid{display:grid;grid-template-columns:1fr;gap:11px}
+#profile .quick-action-card.service-card{display:grid;grid-template-columns:40px minmax(0,1fr) 16px;align-items:center;gap:12px;width:100%;min-height:82px;padding:14px 16px;border:1px solid var(--card-border);border-radius:18px;background:#fff;color:var(--text);box-shadow:var(--card-shadow);text-align:left}
+#profile .settings-list{display:grid;gap:10px}
+#profile .settings-list button{display:flex;align-items:center;justify-content:space-between;min-height:58px;padding:14px 16px;border:1px solid var(--card-border);border-radius:16px;background:#fff;color:var(--navy);box-shadow:var(--card-shadow);font-weight:700;text-align:left}
+#profile .settings-list button i{color:var(--sky);font-size:1.25rem;font-style:normal}
+.topbar .avatar-small,.topbar .icon-btn,.dashboard-icon-btn,.dashboard-avatar-btn{border:1px solid #d7e4ec;box-shadow:0 3px 8px #173a5410}
+.topbar .avatar-small{display:grid;place-items:center;background:var(--navy);color:#fff}
+.topbar .icon-btn{display:grid;place-items:center;background:#fff;font-size:1.5rem}
+#home .home-more-access{border:1px solid var(--navy);border-radius:18px;background:var(--navy);box-shadow:0 8px 18px #173a5424}
+#home .home-more-access>summary{min-height:56px;padding:0 17px;color:#fff}
+#home .home-more-access>summary span{display:flex;align-items:center;gap:7px;color:#d5edf9;font-size:.7rem}
+#home .home-more-access>summary span::after{content:"→";font-size:1rem}
+#home .home-more-access[open]>summary{border-bottom-color:#ffffff2b}
+#home .home-more-access>.quick-grid{background:#f6fafc}
+@media(hover:hover){
+  #profile .profile-section-card:hover,#profile .quick-action-card.service-card:hover,#profile .settings-list button:hover{border-color:var(--sky);box-shadow:var(--shadow-raised);transform:translateY(-1px)}
+  #home .home-more-access>summary:hover{background:#ffffff10}
+}
+@media(min-width:601px) and (max-width:1024px){
+  #profile .profile-nav-grid,#profile .quick-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1025px){
+  #profile .profile-nav-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #profile .quick-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #profile .profile-section-card{min-height:96px}
+  #profile .profile-secondary-group .profile-section-card{min-height:84px}
+}
+@media(max-width:420px){
+  #profile .profile-section-card,#profile .quick-action-card.service-card{min-height:80px;padding:13px}
+  #profile .profile-section-card .module-content small,#profile .quick-action-card small{font-size:.68rem}
+}
+
+/* Corrección estructural de Inicio: un encabezado normal, sin superposiciones. */
+body:has(#home.active) .topbar{display:none}
+#home.active>.dashboard-hero{position:static;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:10px;row-gap:4px;margin:0 0 16px;padding:16px;border-radius:20px}
+#home.active>.dashboard-hero .ubo-logo{grid-column:1;grid-row:1;margin:0}
+#home.active>.dashboard-hero .dashboard-hero-actions{position:static;grid-column:2;grid-row:1;justify-self:end}
+#home.active>.dashboard-hero .dashboard-date,#home.active>.dashboard-hero h2{grid-column:1 / -1}
+#home.active>.dashboard-hero .dashboard-date{margin:5px 0 1px!important}
+#home.active>.dashboard-hero h2{padding:0;font-size:1.22rem}
+#home.active>.dashboard-hero #dashboard-career{grid-column:1;min-width:0;margin:2px 0 0}
+#home.active>.dashboard-hero .dashboard-period{position:static;grid-column:2;align-self:center;justify-self:end;margin:0;padding:6px 8px;white-space:nowrap}
+#home.active>.today-section{margin-top:0;padding:17px;border:1px solid #cbdfea;border-radius:20px;box-shadow:var(--card-shadow)}
+#home.active>.today-section .today-evaluations,#home.active>.today-section .today-classes{display:grid;gap:10px}
+#home.active>.today-section .today-class-card,#home.active>.today-section .today-evaluation{min-width:0;border:1px solid var(--card-border);border-radius:16px;background:#fff;box-shadow:0 3px 10px #173a5410}
+#home.active>.home-more-access{overflow:visible;background:#f6fafc;border-color:var(--card-border);box-shadow:var(--card-shadow)}
+#home.active>.home-more-access::before{content:none}
+#home.active>.home-more-access>summary{display:none}
+#home.active>.home-more-access>.quick-grid{padding:12px 14px 14px;background:transparent}
+#home.active>.home-more-access .quick-card{min-height:76px}
+.ai-float-btn{bottom:calc(76px + env(safe-area-inset-bottom))}
+@media(max-width:600px){
+  #home.active>.dashboard-hero{padding:14px;margin-bottom:14px}
+  #home.active>.dashboard-hero h2{font-size:1.14rem}
+  #home.active>.dashboard-hero #dashboard-career{font-size:.78rem}
+  #home.active>.dashboard-hero .dashboard-period{font-size:.64rem}
+  #home.active>.today-section{padding:15px}
+  .ai-chat-widget{bottom:max(10px,env(safe-area-inset-bottom));height:calc(100% - max(20px,env(safe-area-inset-bottom)))}
+}
+@media(min-width:601px) and (max-width:1024px){
+  #home.active>.home-more-access>.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1025px){
+  #home.active>.home-more-access>.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+/* Un único bloque de accesos rápidos, siempre visible. */
+#home.active>.home-more-access{order:4;margin-top:0!important;padding:0!important}
+#home.active>.home-more-access::before{content:none}
+#home.active>.home-more-access>.quick-grid{padding:0;background:transparent}
+@media(max-width:600px){
+  #home.active>.home-more-access>.quick-grid{grid-template-columns:1fr}
+}
+
+/* Jerarquía final de Inicio: resumen, día y accesos prioritarios. */
+#home.active>.dashboard-summary{order:2;margin-bottom:16px}
+#home.active>.today-section{order:3}
+#home.active>.home-group-title:first-of-type{order:4;margin-top:22px}
+#home.active>.home-more-access{order:5;background:transparent;border:0;box-shadow:none}
+#home.active>.dashboard-attention-section{order:6}
+#home.active>.commitments-section{order:7}
+#home.active>.home-mail-section{order:8}
+#home.active>.home-more-access>.quick-grid{padding:0}
+.home-secondary-access{margin-top:12px;border:1px solid var(--navy);border-radius:16px;background:var(--navy);box-shadow:0 7px 16px #173a5424;overflow:hidden}
+.home-secondary-access summary{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 16px;color:#fff;cursor:pointer;font:800 .78rem "Montserrat",Arial,sans-serif;list-style:none}
+.home-secondary-access summary::-webkit-details-marker{display:none}
+.home-secondary-access summary span{color:#d5edf9;font-size:1.1rem}
+.home-secondary-access[open] summary{border-bottom:1px solid #ffffff2e}
+.home-secondary-access .quick-grid{padding:13px;background:#f6fafc}
+.home-secondary-access .quick-grid>[data-go="academic-calendar"]:last-child{display:none}
+@media(hover:hover){.home-secondary-access summary:hover{background:#ffffff12}}
+@media(max-width:600px){
+  #home.active>.home-more-access>.quick-grid,.home-secondary-access .quick-grid{grid-template-columns:1fr}
+}
+@media(min-width:601px) and (max-width:1024px){
+  #home.active>.home-more-access>.quick-grid,.home-secondary-access .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1025px){
+  #home.active>.home-more-access>.quick-grid,.home-secondary-access .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+/* Corrección puntual: conservar saludo y acción del desplegable. */
+#home.active>.dashboard-hero #dashboard-name,#home.active>.dashboard-hero #dashboard-career,#home.active>.dashboard-hero #dashboard-period{display:block;visibility:visible}
+#home.active>.home-more-access>.home-secondary-access>summary{display:flex}
+
+/* Ajustes visuales puntuales de Inicio. */
+#home.active>.dashboard-hero{position:static!important;height:auto!important;min-height:0!important;overflow:visible!important}
+#home.active>.dashboard-hero #dashboard-name,#home.active>.dashboard-hero #dashboard-career,#home.active>.dashboard-hero #dashboard-period{position:static!important;display:block!important;visibility:visible!important;opacity:1!important}
+#home.active>.dashboard-hero #dashboard-name{margin:4px 0 0!important}
+#home.active>.dashboard-hero #dashboard-career{margin:3px 0 0!important}
+#home.active>.dashboard-hero #dashboard-period{margin:0!important}
+.home-secondary-access{border:0;background:transparent;box-shadow:none;overflow:visible}
+.home-secondary-access>summary{min-height:54px;padding:0 16px;border:1px solid var(--navy);border-radius:14px;background:var(--navy);box-shadow:0 5px 12px #173a5422;color:#fff}
+.home-secondary-access>summary span{margin-left:auto;color:#d5edf9}
+.home-secondary-access[open]>summary{border-bottom:1px solid var(--navy)}
+.home-secondary-access .quick-grid{margin-top:10px;border:1px solid var(--card-border);border-radius:16px;background:#f6fafc}
+@media(hover:hover){.home-secondary-access>summary:hover{background:#20377d;box-shadow:0 7px 15px #173a5430}}
+@media(max-width:600px){
+  #home.active>.dashboard-hero{padding:14px!important}
+  .home-secondary-access>summary{min-height:52px;padding-inline:14px}
+}
+
+/* Bienvenida del estudiante: usa los elementos existentes del dashboard. */
+#home.active>.dashboard-hero{grid-template-columns:minmax(0,1fr) auto;row-gap:5px;padding:18px 16px!important;background:linear-gradient(145deg,#fff,#f5f9fc)}
+#home.active>.dashboard-hero .dashboard-date{display:none!important}
+#home.active>.dashboard-hero #dashboard-name{grid-column:1 / -1;margin:8px 0 0!important;color:var(--navy);font:800 clamp(1.28rem,4vw,1.55rem) "Montserrat",Arial,sans-serif;line-height:1.18}
+#home.active>.dashboard-hero #dashboard-career{grid-column:1 / -1;margin:2px 0 0!important;color:var(--text);font-size:.84rem;font-weight:700;line-height:1.4}
+#home.active>.dashboard-hero #dashboard-period{grid-column:1 / -1;justify-self:start;margin:2px 0 0!important;padding:0;background:transparent;color:var(--muted);font-size:.75rem;font-weight:700;letter-spacing:0;white-space:normal}
+@media(max-width:600px){
+  #home.active>.dashboard-hero{padding:16px 14px!important}
+  #home.active>.dashboard-hero #dashboard-name{font-size:1.3rem}
+}
+
+/* Cabecera de Inicio: flujo normal para que la bienvenida nunca quede recortada. */
+#home.active > .dashboard-hero{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:auto!important;
+  min-height:120px;
+  padding:24px!important;
+  overflow:visible!important;
+  position:static!important;
+  box-sizing:border-box;
+}
+#home.active > .dashboard-hero .ubo-logo{
+  display:block;
+  margin:0 0 10px;
+}
+#home.active > .dashboard-hero .dashboard-hero-actions{
+  position:static!important;
+  display:flex;
+  justify-content:flex-end;
+  gap:7px;
+  margin:0 0 10px;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  width:auto;
+  min-width:0;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Cabecera institucional independiente del saludo. */
+#home.active > .dashboard-header{
+  order:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+  margin:0;
+  padding:0;
+  position:relative;
+  overflow:visible;
+}
+#home.active > .dashboard-header .ubo-logo{margin:0;}
+#home.active > .dashboard-header .dashboard-hero-actions{
+  position:static!important;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin:0;
+}
+
+/* Saludo separado del estado académico y dentro del flujo normal de Inicio. */
+#home.active > .dashboard-hero{
+  display:block;
+  width:100%;
+  min-height:0;
+  margin:0 0 20px;
+  padding:12px 0 0!important;
+  position:relative!important;
+  overflow:visible!important;
+  z-index:auto;
+  transform:none;
+}
+
+/* Distribución vertical del saludo existente. */
+#home.active > .dashboard-hero{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  position:relative!important;
+  width:100%;
+  min-height:auto;
+  padding:16px 0 20px!important;
+  overflow:visible!important;
+}
+#home.active > .dashboard-hero #dashboard-name{
+  display:block!important;
+  position:static!important;
+  margin:0!important;
+  font-size:32px;
+  line-height:1.2;
+  transform:none;
+  float:none;
+  z-index:auto;
+}
+
+/* Separación entre la identidad institucional y la bienvenida del estudiante. */
+#home.active > .dashboard-header{
+  position:relative;
+  z-index:2;
+}
+#home.active > .dashboard-hero{
+  margin:20px 0 24px!important;
+  position:relative!important;
+  z-index:1;
+  transform:none;
+}
+
+/* Espaciado final entre la bienvenida y el estado académico existente. */
+#home.active > .dashboard-hero{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:20px 0 32px!important;
+  position:relative!important;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-name{
+  margin:0!important;
+  line-height:1.2;
+}
+#home.active > .dashboard-hero #dashboard-career{
+  margin:0!important;
+  line-height:1.4;
+}
+#home.active > .dashboard-hero #dashboard-period{
+  position:static!important;
+  margin:0!important;
+  line-height:1.4;
+  transform:none;
+  z-index:auto;
+}
+#home.active > .dashboard-summary{
+  margin-top:0!important;
+  position:relative;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  margin:0!important;
+  line-height:1.4;
+  transform:none;
+  float:none;
+  z-index:auto;
+}
+#home.active > .dashboard-hero .dashboard-date{display:none!important;}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Regla final: cabecera, bienvenida y estado académico no comparten altura. */
+#home.active > .dashboard-header,
+#home.active > .dashboard-hero,
+#home.active > .dashboard-summary{flex:0 0 auto;}
+#home.active > .dashboard-header{order:0;position:relative;z-index:2;}
+#home.active > .dashboard-hero{
+  order:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+  height:auto!important;
+  min-height:0;
+  margin:20px 0 32px!important;
+  padding:16px 0 20px!important;
+  position:relative!important;
+  overflow:visible!important;
+  transform:none;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  margin:0!important;
+  transform:none;
+  float:none;
+  z-index:auto;
+}
+#home.active > .dashboard-summary{
+  order:2;
+  margin-top:0!important;
+  position:relative;
+  z-index:1;
+}
+
+/* Flujo vertical estable: cada bloque conserva su propia altura dentro de Inicio. */
+#home.active > .dashboard-header,
+#home.active > .dashboard-hero,
+#home.active > .dashboard-summary{
+  flex:0 0 auto;
+}
+#home.active > .dashboard-header{order:0;}
+#home.active > .dashboard-hero{
+  order:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+  height:auto!important;
+  min-height:0;
+  margin:20px 0 32px!important;
+  padding:16px 0 20px!important;
+  position:relative!important;
+  overflow:visible!important;
+  transform:none;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  position:static!important;
+  margin:0!important;
+  transform:none;
+  float:none;
+  z-index:auto;
+}
+#home.active > .dashboard-summary{
+  order:2;
+  margin-top:0!important;
+  position:relative;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-name{margin:0!important;}
+#home.active > .dashboard-hero #dashboard-career{margin:3px 0 0!important;}
+#home.active > .dashboard-hero #dashboard-period{margin:2px 0 0!important;}
+
+/* Separación propia de la bienvenida respecto del estado académico. */
+#home.active > .dashboard-hero{
+  display:block;
+  position:relative!important;
+  width:100%;
+  height:auto!important;
+  min-height:0;
+  margin:0 0 24px!important;
+  padding:16px 0!important;
+  overflow:visible!important;
+  transform:none;
+}
+@media(max-width:600px){
+  #home.active > .dashboard-hero{
+    min-height:120px;
+    padding:18px 16px!important;
+  }
+}
+
+/* Estructura institucional de la cabecera de Inicio: identidad y acciones arriba, saludo debajo. */
+#home.active > .dashboard-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:auto auto auto auto;
+  align-items:center;
+  column-gap:12px;
+  row-gap:4px;
+  min-height:0;
+  padding:18px 16px!important;
+}
+#home.active > .dashboard-hero .ubo-logo{
+  display:inline-flex;
+  grid-column:1;
+  grid-row:1;
+  max-width:none;
+  margin:0;
+}
+#home.active > .dashboard-hero .dashboard-hero-actions{
+  display:flex;
+  grid-column:2;
+  grid-row:1;
+  align-items:center;
+  justify-content:flex-end;
+  margin:0;
+  position:static!important;
+}
+#home.active > .dashboard-hero #dashboard-name{
+  grid-column:1 / -1;
+  grid-row:2;
+  margin:12px 0 0!important;
+}
+#home.active > .dashboard-hero #dashboard-career{
+  grid-column:1 / -1;
+  grid-row:3;
+  margin:2px 0 0!important;
+}
+#home.active > .dashboard-hero #dashboard-period{
+  grid-column:1 / -1;
+  grid-row:4;
+  justify-self:start;
+  margin:2px 0 0!important;
+}
+@media(max-width:600px){
+  #home.active > .dashboard-hero{padding:16px 14px!important;}
+  #home.active > .dashboard-hero .dashboard-icon-btn,
+  #home.active > .dashboard-hero .dashboard-avatar-btn{width:32px;height:32px;}
+}
+
+/* Bienvenida compacta: identidad académica en una línea secundaria. */
+#home.active > .dashboard-hero #dashboard-career{
+  grid-column:1;
+  grid-row:3;
+  margin:3px 0 0!important;
+  font-size:.8rem;
+}
+#home.active > .dashboard-hero #dashboard-period{
+  grid-column:2;
+  grid-row:3;
+  justify-self:end;
+  margin:3px 0 0!important;
+  font-size:.72rem;
+  white-space:nowrap;
+}
+@media(max-width:360px){
+  #home.active > .dashboard-hero #dashboard-career,
+  #home.active > .dashboard-hero #dashboard-period{grid-column:1 / -1;justify-self:start;}
+  #home.active > .dashboard-hero #dashboard-period{grid-row:4;}
+}
+
+/* Bienvenida permanente del dashboard: contenido normal, sin capa ni recorte. */
+#home.active > .dashboard-hero{
+  position:static!important;
+  z-index:auto;
+  width:100%;
+  height:auto!important;
+  min-height:0;
+  margin:0 0 16px;
+  padding:14px 0 16px!important;
+  overflow:visible!important;
+  background:transparent!important;
+  border:0;
+  box-shadow:none;
+  transform:none;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  position:static!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+#home.active > .dashboard-hero #dashboard-name{
+  color:var(--navy);
+  font-size:clamp(1.12rem,3vw,1.35rem);
+  line-height:1.25;
+}
+#home.active > .dashboard-hero #dashboard-career{
+  color:var(--text);
+  font-size:.8rem;
+  line-height:1.4;
+}
+#home.active > .dashboard-hero #dashboard-period{
+  color:var(--muted);
+  font-size:.72rem;
+  line-height:1.4;
+}
+@media(max-width:600px){
+  #home.active > .dashboard-hero{padding:12px 0 14px!important;}
+}
+
+/* Visibilidad del saludo existente dentro de Inicio. */
+#home.active > .dashboard-hero{
+  display:block;
+  position:relative!important;
+  width:100%;
+  height:auto!important;
+  min-height:90px;
+  overflow:visible!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Jerarquía final de Inicio: bloques independientes, sin superposición. */
+#home.active > .dashboard-header,
+#home.active > .dashboard-hero,
+#home.active > .dashboard-summary{flex:0 0 auto;}
+#home.active > .dashboard-header{order:0;position:relative;z-index:2;}
+#home.active > .dashboard-hero{
+  order:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+  height:auto!important;
+  min-height:0;
+  margin:20px 0 32px!important;
+  padding:16px 0 20px!important;
+  position:relative!important;
+  overflow:visible!important;
+  transform:none;
+  z-index:1;
+}
+#home.active > .dashboard-hero #dashboard-name,
+#home.active > .dashboard-hero #dashboard-career,
+#home.active > .dashboard-hero #dashboard-period{
+  display:block!important;
+  position:static!important;
+  margin:0!important;
+  transform:none;
+  float:none;
+  z-index:auto;
+}
+#home.active > .dashboard-summary{
+  order:2;
+  margin-top:0!important;
+  position:relative;
+  z-index:1;
+}
