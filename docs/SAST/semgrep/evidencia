@@ -1,0 +1,10 @@
+Captura del análisis realizado:
+
+![Resultado Semgrep](../evidencias/semgrep.png)
+
+La evidencia corresponde a la ejecución del comando:
+
+```bash
+semgrep --config auto .
+
+2026-09-04-23-59-57.png

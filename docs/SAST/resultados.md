@@ -1,157 +1,80 @@
-# 1. Análisis con SonarCloud (SAST)
+# Resultados de análisis SAST
 
-## Descripción
+## Proyecto analizado
 
-SonarCloud fue utilizado como herramienta de análisis estático de seguridad (SAST) para evaluar el código fuente del proyecto UBO-Academic-Hub.
-
-La herramienta permitió detectar problemas relacionados con seguridad, confiabilidad, accesibilidad y calidad del código sin necesidad de ejecutar la aplicación.
-
-## Configuración utilizada
-
-Herramienta:
-
-SonarCloud
-
-Proyecto analizado:
+Nombre:
 
 UBO-Academic-Hub
 
 Repositorio:
 
-KulkatPOP/UBO-Academic-Hub
+https://github.com/KulkatPOP/UBO-Academic-Hub
 
-Rama analizada:
-
-main
-
-Lenguaje principal:
-
-JavaScript / HTML / CSS
-
-Líneas analizadas:
-
-1.4k líneas de código
-
-Método de integración:
-
-Repositorio GitHub conectado con SonarCloud.
 
 ---
 
-# Ejecución del análisis
+# Comparación de herramientas
 
-Proceso realizado:
+| Herramienta | Tipo | Método utilizado | Resultado |
+|---|---|---|---|
+| SonarCloud | SAST Cloud | Integración con GitHub | Detectó 1 problema de seguridad y 6 problemas de fiabilidad |
+| Semgrep | SAST Local CLI | Terminal VS Code | 0 hallazgos encontrados |
+| Snyk Code | SAST CLI | Análisis local del código | 0 vulnerabilidades detectadas |
 
-1. Se vinculó el repositorio GitHub con SonarCloud.
-2. Se configuró el proyecto dentro de la plataforma.
-3. Se ejecutó el análisis automático del código fuente.
-4. Se revisaron los problemas encontrados en el dashboard.
-
----
-
-# Resultados obtenidos
-
-## Seguridad
-
-Cantidad de problemas encontrados:
-
-1 vulnerabilidad de seguridad.
-
-Clasificación:
-
-- Security Rating: C
-- Severidad: Alta (High)
-
-Descripción:
-
-SonarCloud detectó un problema relacionado con una dependencia utilizada en el proyecto.
-
-Recomendación:
-
-Actualizar la dependencia afectada utilizando una versión segura y mantener las librerías actualizadas.
 
 ---
 
-## Fiabilidad del código (Reliability)
+# Resumen SonarCloud
 
-Cantidad de problemas encontrados:
+Resultados:
 
-6 problemas.
+- Problemas de seguridad: 1
+- Problemas de fiabilidad: 6
+- Mantenibilidad: A
+- Duplicación: 0%
 
-Clasificación:
+Conclusión:
 
-- Reliability Rating: C
-- Severidad predominante: Media (Medium)
+SonarCloud permitió identificar problemas relacionados con seguridad y calidad del código que deben ser revisados durante el mantenimiento del proyecto.
 
-Problemas detectados:
-
-Los principales hallazgos corresponden a problemas de consistencia y accesibilidad en elementos HTML.
-
-Ejemplos:
-
-- Campos de entrada sin etiquetas válidas.
-- Elementos HTML que no cumplen completamente recomendaciones WCAG 2.
-
-Ubicaciones detectadas:
-
-- index.html línea 90.
-- index.html línea 91.
-- index.html línea 93.
-- index.html línea 95.
-- index.html línea 109.
-- index.html línea 114.
-
-Recomendación:
-
-Agregar etiquetas asociadas correctamente a los elementos de formulario utilizando atributos como:
-
-- label
-- for
-- aria-label
-
-para mejorar accesibilidad y compatibilidad con lectores de pantalla.
 
 ---
 
-## Mantenibilidad
+# Resumen Semgrep
 
-Cantidad de problemas:
+Resultados:
 
-0 problemas detectados.
+- Reglas ejecutadas: 217
+- Archivos analizados: 13
+- Hallazgos: 0
 
-Clasificación:
+Conclusión:
 
-- Maintainability Rating: A
+Semgrep no encontró patrones inseguros mediante las reglas utilizadas.
 
-Resultado:
-
-El código mantiene una estructura adecuada respecto a mantenibilidad según las reglas analizadas por SonarCloud.
-
----
-
-## Duplicación de código
-
-Resultado:
-
-0% de duplicación detectada.
-
-Esto indica que no existen bloques importantes de código repetidos dentro del proyecto.
 
 ---
 
-## Cobertura de pruebas
+# Resumen Snyk Code
 
-Resultado:
+Resultados:
 
-No disponible.
+- Tipo de análisis: Static Code Analysis
+- Vulnerabilidades encontradas: 0
 
-SonarCloud requiere configuración adicional para analizar cobertura mediante pruebas automatizadas.
+Conclusión:
+
+Snyk Code permitió validar el código fuente mediante análisis SAST sin detectar vulnerabilidades conocidas.
+
 
 ---
 
-# Evidencias
+# Comparación final
 
-Capturas almacenadas:
+Las tres herramientas entregaron resultados complementarios.
 
-- evidencias/sonarqube-resumen.png
-- evidencias/sonarqube-issues.png
+SonarCloud permitió identificar problemas de calidad y seguridad mediante una plataforma integrada con GitHub.
+
+Semgrep y Snyk Code permitieron realizar análisis adicionales desde herramientas especializadas de seguridad.
+
+La combinación de herramientas mejora la cobertura del análisis dentro del ciclo DevSecOps.

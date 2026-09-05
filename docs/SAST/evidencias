@@ -1,0 +1,53 @@
+# Evidencias del análisis SAST
+
+## SonarCloud
+
+Capturas:
+
+![- Dashboard general.](SonarCloud/evidencias/2026-09-04-23-23-50.png)
+![- Problemas encontrados.](SonarCloud/evidencias/2026-09-04-23-28-45.png)
+![- Métricas de seguridadocs/SAST/SonarCloud/evidencias/2026-09-04-23-30-00.pngd y fiabilidad.](SonarCloud/evidencias/2026-09-04-23-29-24.png)
+
+
+Archivo:
+
+sonarcloud.png
+
+
+---
+
+## Semgrep
+
+Captura:
+
+- Ejecución del comando:
+  
+  semgrep --config auto .
+
+
+Resultado:
+
+- 0 findings
+- 217 reglas ejecutadas
+
+
+Archivo:
+docs/SAST/semgrep/2026-09-04-23-59-57.png
+
+
+---
+
+## Snyk Code
+
+Captura:
+
+- Ejecución del análisis SAST.
+
+Resultado:
+
+- 0 vulnerabilidades.
+
+
+Archivo:
+
+![snyk.png](Snyk/2026-09-05-00-27-24.png)
