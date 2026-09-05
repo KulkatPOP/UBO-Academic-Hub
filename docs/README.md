@@ -102,7 +102,7 @@ La arquitectura está preparada para una futura integración con servicios insti
 
 ## Estado del proyecto
 
-**Versión:** 1.0.0 Demo funcional.
+**Versión:** 1.0.0 Demo funcional.c
 
 Incluye:
 
