@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0d2f5d">
+    <title>Previsualización estudiante institucional · UBO</title>
+    <link rel="stylesheet" href="./student-modern-preview.css">
+  </head>
+  <body>
+    <main class="student-preview" aria-labelledby="preview-title">
+      <header id="preview-header" class="preview-header" aria-live="polite"></header>
+
+      <section class="preview-intro">
+        <p class="eyebrow">VISTA DEMO · ARQUITECTURA INSTITUCIONAL</p>
+        <h1 id="preview-title">Previsualización estudiante</h1>
+        <p>Representación de solo lectura preparada para una integración gradual.</p>
+      </section>
+
+      <section id="profile-models" class="profile-models" aria-label="Modelos institucionales"></section>
+
+      <section class="preview-section" aria-labelledby="courses-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PLAN ACADÉMICO</p>
+            <h2 id="courses-title">Cursos</h2>
+          </div>
+          <span id="courses-state" class="state-pill"></span>
+        </div>
+        <div id="courses-preview" class="course-grid"></div>
+      </section>
+
+      <section class="preview-section migration-section" aria-labelledby="migration-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TRANSICIÓN</p>
+            <h2 id="migration-title">Estado de migración</h2>
+          </div>
+          <span id="migration-state" class="state-pill"></span>
+        </div>
+        <div id="warnings-preview" class="warning-list"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./student-modern-preview.js"></script>
+  </body>
+</html>

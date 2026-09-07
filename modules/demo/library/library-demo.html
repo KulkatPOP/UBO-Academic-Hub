@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Vista demo de solo lectura para Biblioteca UBO." />
+    <title>Biblioteca UBO · Demo</title>
+    <link rel="stylesheet" href="./library-demo.css" />
+  </head>
+  <body>
+    <main class="library-demo-shell">
+      <header class="library-header">
+        <div>
+          <p class="eyebrow">UNIVERSIDAD BERNARDO O'HIGGINS · DEMO</p>
+          <h1>Biblioteca UBO</h1>
+          <p>Catálogo y recursos bibliográficos</p>
+        </div>
+        <span class="library-mark" aria-hidden="true">⌁</span>
+      </header>
+
+      <section class="library-role-panel" aria-label="Rol demo de Biblioteca">
+        <div>
+          <p class="eyebrow">PRUEBA DE ACCIONES · SOLO DEMO</p>
+          <h2>Rol local</h2>
+          <p>Las solicitudes se validan en memoria y no modifican Biblioteca.</p>
+        </div>
+        <label for="library-role">Rol demo
+          <select id="library-role">
+            <option value="STUDENT">STUDENT</option>
+            <option value="TEACHER">TEACHER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </label>
+        <div id="role-actions-status" class="role-actions-status"></div>
+      </section>
+      <p id="library-action-message" class="action-message" aria-live="polite"></p>
+
+      <section class="statistics-grid" aria-label="Resumen de Biblioteca">
+        <article><span>Libros</span><strong id="stat-books">—</strong></article>
+        <article><span>Copias totales</span><strong id="stat-total-copies">—</strong></article>
+        <article><span>Copias disponibles</span><strong id="stat-available-copies">—</strong></article>
+        <article><span>Préstamos activos</span><strong id="stat-active-loans">—</strong></article>
+        <article><span>Reservas activas</span><strong id="stat-active-reservations">—</strong></article>
+      </section>
+
+      <section class="catalog-section" aria-labelledby="catalog-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">COLECCIÓN DEMO</p>
+            <h2 id="catalog-title">Catálogo</h2>
+          </div>
+          <label class="search-field" for="library-search">
+            <span class="sr-only">Buscar en biblioteca</span>
+            <input id="library-search" type="search" placeholder="Buscar en biblioteca..." autocomplete="off" />
+          </label>
+        </div>
+        <div class="filter-bar" aria-label="Filtro de catálogo">
+          <button class="filter-button active" type="button" data-library-filter="all">Todos</button>
+          <button class="filter-button" type="button" data-library-filter="available">Disponibles</button>
+        </div>
+        <div id="catalog-results" class="book-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="operations-grid" aria-label="Operaciones demo de biblioteca">
+        <article class="operations-panel">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SOLO LECTURA</p>
+              <h2>Reservas</h2>
+            </div>
+          </div>
+          <div id="reservation-list" class="operation-list"></div>
+        </article>
+        <article class="operations-panel">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SOLO LECTURA</p>
+              <h2>Préstamos</h2>
+            </div>
+          </div>
+          <div id="loan-list" class="operation-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <dialog id="book-detail-dialog" class="book-dialog" aria-labelledby="book-detail-title">
+      <button id="close-book-detail" class="dialog-close" type="button" aria-label="Cerrar detalle">×</button>
+      <div id="book-detail-content"></div>
+    </dialog>
+
+    <script type="module" src="./library-demo.js"></script>
+  </body>
+</html>

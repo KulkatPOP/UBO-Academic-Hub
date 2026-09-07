@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Vista DEMO aislada para Eventos UBO." />
+    <title>Eventos UBO · Demo</title>
+    <link rel="stylesheet" href="./events-demo.css" />
+  </head>
+  <body>
+    <main class="events-demo-shell">
+      <header class="events-header">
+        <div>
+          <p class="eyebrow">UNIVERSIDAD BERNARDO O'HIGGINS · DEMO</p>
+          <h1>Eventos UBO</h1>
+          <p>Actividades académicas, culturales e institucionales</p>
+        </div>
+        <span class="events-mark" aria-hidden="true">✦</span>
+      </header>
+
+      <section class="role-panel" aria-label="Rol demo de Eventos">
+        <div>
+          <p class="eyebrow">PRUEBA DE ACCIONES · SOLO DEMO</p>
+          <h2>Rol local</h2>
+          <p>Las validaciones se realizan en memoria y no modifican los eventos.</p>
+        </div>
+        <label for="event-role">Rol demo
+          <select id="event-role">
+            <option value="STUDENT">STUDENT</option>
+            <option value="TEACHER">TEACHER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </label>
+        <div id="role-actions-status" class="role-actions-status"></div>
+      </section>
+      <p id="event-action-message" class="action-message" aria-live="polite"></p>
+
+      <section class="statistics-grid" aria-label="Resumen de Eventos">
+        <article><span>Total de eventos</span><strong id="stat-events">—</strong></article>
+        <article><span>Próximos</span><strong id="stat-upcoming">—</strong></article>
+        <article><span>Activos</span><strong id="stat-active">—</strong></article>
+        <article><span>Inscripciones</span><strong id="stat-registrations">—</strong></article>
+        <article><span>Cupos disponibles</span><strong id="stat-spots">—</strong></article>
+      </section>
+
+      <section class="catalog-section" aria-labelledby="catalog-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">AGENDA DEMO</p>
+            <h2 id="catalog-title">Catálogo de eventos</h2>
+          </div>
+          <label class="search-field" for="event-search">
+            <span class="sr-only">Buscar eventos</span>
+            <input id="event-search" type="search" placeholder="Buscar eventos..." autocomplete="off" />
+          </label>
+        </div>
+        <div class="filter-bar" aria-label="Filtros de eventos">
+          <button class="filter-button active" type="button" data-event-filter="all">Todos</button>
+          <button class="filter-button" type="button" data-event-filter="upcoming">Próximos</button>
+          <button class="filter-button" type="button" data-event-filter="available">Disponibles</button>
+        </div>
+        <div id="event-results" class="event-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="registrations-panel" aria-labelledby="registrations-title">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">SOLO LECTURA</p>
+            <h2 id="registrations-title">Inscripciones</h2>
+          </div>
+          <p id="registrations-context" class="section-context"></p>
+        </div>
+        <div id="registration-list" class="registration-list"></div>
+      </section>
+    </main>
+
+    <dialog id="event-detail-dialog" class="event-dialog" aria-labelledby="event-detail-title">
+      <button id="close-event-detail" class="dialog-close" type="button" aria-label="Cerrar detalle">×</button>
+      <div id="event-detail-content"></div>
+    </dialog>
+
+    <script type="module" src="./events-demo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#20377D" />
+  <title>Panel Profesor · UBO Academic Hub</title>
+  <link rel="stylesheet" href="./teacher-dashboard.css" />
+</head>
+<body>
+  <main id="teacher-dashboard" class="teacher-demo" aria-labelledby="teacher-title">
+    <header class="teacher-header">
+      <div class="teacher-brand" aria-label="Universidad Bernardo O'Higgins">
+        <span>UNIVERSIDAD</span>
+        <strong>BERNARDO O'HIGGINS</strong>
+      </div>
+      <div class="teacher-profile">
+        <span class="teacher-avatar" aria-hidden="true">CP</span>
+        <div>
+          <p class="teacher-kicker">PANEL DOCENTE · DEMO</p>
+          <h1 id="teacher-title"></h1>
+          <p id="teacher-department"></p>
+        </div>
+      </div>
+    </header>
+
+    <section class="teacher-section" aria-labelledby="teacher-summary-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">RESUMEN DOCENTE</p>
+          <h2 id="teacher-summary-title">Tu jornada académica</h2>
+        </div>
+        <span id="teacher-day" class="teacher-day"></span>
+      </div>
+      <div id="teacher-summary" class="teacher-summary-grid"></div>
+    </section>
+
+    <section class="teacher-section" aria-labelledby="teacher-courses-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">CURSOS ASIGNADOS</p>
+          <h2 id="teacher-courses-title">Mis cursos</h2>
+        </div>
+      </div>
+      <div id="teacher-courses" class="teacher-course-grid"></div>
+    </section>
+
+    <section class="teacher-section" aria-labelledby="teacher-actions-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">ACCESOS DE GESTIÓN</p>
+          <h2 id="teacher-actions-title">Acciones rápidas</h2>
+        </div>
+      </div>
+      <div id="teacher-actions" class="teacher-action-grid"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./teacher-dashboard.js"></script>
+</body>
+</html>

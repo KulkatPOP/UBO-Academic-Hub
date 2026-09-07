@@ -1,0 +1,1 @@
+// Futuro adaptador de almacenamiento.

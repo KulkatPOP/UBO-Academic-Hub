@@ -1,0 +1,73 @@
+:root {
+  color-scheme: light;
+  --migration-navy: #0d2f5d;
+  --migration-blue: #1768ac;
+  --migration-gold: #d7a62a;
+  --migration-ink: #203047;
+  --migration-muted: #64758a;
+  --migration-surface: #ffffff;
+  --migration-background: #f2f5f9;
+  --migration-border: #dce4ee;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--migration-background);
+  color: var(--migration-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.migration-check { width: min(100%, 1040px); margin: 0 auto; padding: 20px 16px 48px; }
+.migration-header, .student-overview, .diagnostic-card, .warnings-card { border: 1px solid var(--migration-border); border-radius: 18px; background: var(--migration-surface); box-shadow: 0 8px 22px rgba(15, 48, 90, 0.07); }
+
+.migration-header { display: flex; align-items: center; justify-content: space-between; padding: 17px 18px; border: 0; background: var(--migration-navy); color: white; }
+.migration-header p, .migration-header span, .migration-intro p, .migration-intro h1, .student-overview p, .student-overview h2, .card-heading h2, .diagnostic-card p, .warnings-card h2 { margin: 0; }
+.migration-header p { font-size: 0.82rem; font-weight: 800; }
+.migration-header span { display: block; margin-top: 4px; color: #c9dbf0; font-size: 0.69rem; letter-spacing: 0.07em; }
+.migration-mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: var(--migration-gold); color: var(--migration-navy) !important; font-weight: 900; letter-spacing: 0 !important; }
+
+.migration-intro { padding: 28px 2px 22px; }
+.eyebrow { color: var(--migration-blue); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; }
+.migration-intro h1 { margin: 7px 0 9px; color: var(--migration-navy); font-size: clamp(1.5rem, 6vw, 2.15rem); }
+.migration-intro > p:last-child { color: var(--migration-muted); line-height: 1.5; }
+
+.student-overview { display: flex; align-items: center; gap: 13px; padding: 17px; margin-bottom: 16px; }
+.student-avatar { display: grid; width: 50px; height: 50px; flex: 0 0 50px; place-items: center; border-radius: 50%; background: #eaf2fa; color: var(--migration-navy); font-weight: 850; }
+.student-overview h2 { color: var(--migration-navy); font-size: 1.05rem; }
+.student-overview p:last-child { margin-top: 4px; color: var(--migration-muted); font-size: 0.8rem; line-height: 1.35; }
+.student-overview > .status-badge { margin-left: auto; }
+
+.diagnostic-grid { display: grid; gap: 14px; }
+.diagnostic-card { min-height: 154px; padding: 17px; }
+.card-icon { display: block; margin-bottom: 12px; font-size: 1.2rem; }
+.card-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.card-heading h2, .warnings-card h2 { color: var(--migration-navy); font-size: 1rem; }
+.diagnostic-card > p { margin-top: 12px; color: var(--migration-muted); font-size: 0.84rem; line-height: 1.5; }
+.status-badge { display: inline-flex; align-items: center; min-height: 25px; padding: 4px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 800; white-space: nowrap; }
+.status-badge.success { background: #e5f4e9; color: #1c7240; }
+.status-badge.warning { background: #fff3d5; color: #946606; }
+
+.course-columns { display: grid; gap: 14px; margin-top: 14px; }
+.course-columns > div { padding: 12px; border-radius: 12px; background: #f7f9fc; }
+.course-columns h3, .course-columns p { margin: 0; }
+.course-columns h3 { color: var(--migration-navy); font-size: 0.79rem; }
+.course-columns p { padding: 8px 0 0; color: var(--migration-muted); font-size: 0.79rem; }
+.course-columns small { display: block; margin-top: 3px; color: var(--migration-blue); }
+
+.warnings-card { margin-top: 16px; padding: 18px; }
+.warnings-card ul { display: grid; gap: 9px; padding-left: 20px; margin: 14px 0 0; color: var(--migration-muted); font-size: 0.84rem; line-height: 1.45; }
+.warnings-card li::marker { color: var(--migration-gold); }
+
+@media (min-width: 620px) {
+  .migration-check { padding: 30px 24px 60px; }
+  .diagnostic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .diagnostic-card-wide { grid-column: 1 / -1; }
+  .course-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 960px) {
+  .migration-check { padding-top: 42px; }
+}

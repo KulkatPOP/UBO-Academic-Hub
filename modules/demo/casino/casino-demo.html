@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Vista DEMO aislada para Casino UBO." />
+    <title>Casino UBO · Demo</title>
+    <link rel="stylesheet" href="./casino-demo.css" />
+  </head>
+  <body>
+    <main class="casino-demo-shell">
+      <header class="casino-header">
+        <div>
+          <p class="eyebrow">UNIVERSIDAD BERNARDO O'HIGGINS · DEMO</p>
+          <h1>Casino UBO</h1>
+          <p>Menú, pedidos y servicios del casino universitario</p>
+        </div>
+        <span class="casino-mark" aria-hidden="true">⌁</span>
+      </header>
+
+      <section class="role-panel" aria-label="Rol demo de Casino">
+        <div>
+          <p class="eyebrow">PRUEBA DE ACCIONES · SOLO DEMO</p>
+          <h2>Usuario local</h2>
+          <p id="selected-user">Sofía Martínez Rojas · STUDENT</p>
+        </div>
+        <label for="casino-role">Rol demo
+          <select id="casino-role">
+            <option value="STUDENT">STUDENT</option>
+            <option value="TEACHER">TEACHER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </label>
+        <div id="role-actions-status" class="role-actions-status"></div>
+      </section>
+      <p id="casino-action-message" class="action-message" aria-live="polite"></p>
+
+      <section class="statistics-grid" aria-label="Resumen de Casino">
+        <article><span>Productos</span><strong id="stat-menu">—</strong></article>
+        <article><span>Disponibles</span><strong id="stat-available">—</strong></article>
+        <article><span>Pedidos</span><strong id="stat-orders">—</strong></article>
+        <article><span>Pedidos activos</span><strong id="stat-active-orders">—</strong></article>
+        <article><span>Consumos</span><strong id="stat-consumption">—</strong></article>
+        <article><span>Ingresos demo</span><strong id="stat-revenue">—</strong></article>
+      </section>
+
+      <section class="menu-layout" aria-label="Menú y pedido demo">
+        <section class="menu-section" aria-labelledby="menu-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">MENÚ DEMO</p>
+              <h2 id="menu-title">Menú del Casino</h2>
+            </div>
+            <label class="search-field" for="menu-search">
+              <span class="sr-only">Buscar en el menú</span>
+              <input id="menu-search" type="search" placeholder="Buscar en el menú..." autocomplete="off" />
+            </label>
+          </div>
+          <div id="menu-filters" class="filter-bar" aria-label="Filtros del menú"></div>
+          <div id="menu-results" class="menu-grid" aria-live="polite"></div>
+        </section>
+
+        <aside class="cart-panel" aria-labelledby="cart-title">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SOLO EN MEMORIA</p>
+              <h2 id="cart-title">Pedido actual</h2>
+            </div>
+            <span id="cart-count" class="cart-count">0</span>
+          </div>
+          <div id="cart-items" class="cart-items"></div>
+          <div class="cart-total"><span>Total del pedido demo</span><strong id="cart-total">$0</strong></div>
+          <button id="prepare-order" class="prepare-button" type="button">Preparar pedido</button>
+          <p class="cart-note">Preparar no crea, guarda ni modifica pedidos.</p>
+          <p id="admin-cart-note" class="requires-source" hidden>La gestión administrativa requiere fuente institucional.</p>
+        </aside>
+      </section>
+
+      <section class="operations-grid" aria-label="Información de Casino">
+        <article class="operations-panel" aria-labelledby="orders-title">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SOLO LECTURA</p>
+              <h2 id="orders-title">Pedidos existentes</h2>
+            </div>
+            <p id="orders-context" class="section-context"></p>
+          </div>
+          <div id="order-list" class="order-list"></div>
+        </article>
+        <article class="operations-panel" aria-labelledby="hours-title">
+          <div class="section-heading compact"><div><p class="eyebrow">HORARIOS DEMO</p><h2 id="hours-title">Horarios del Casino</h2></div></div>
+          <div id="hours-list" class="hours-list"></div>
+        </article>
+      </section>
+
+      <section class="operations-grid lower-grid" aria-label="Consumo y administración">
+        <article class="operations-panel" aria-labelledby="consumption-title">
+          <div class="section-heading compact"><div><p class="eyebrow">SOLO LECTURA</p><h2 id="consumption-title">Consumo</h2></div></div>
+          <div id="consumption-list" class="consumption-list"></div>
+        </article>
+        <article class="operations-panel admin-panel" aria-labelledby="admin-title">
+          <div class="section-heading compact"><div><p class="eyebrow">ADMINISTRACIÓN FUTURA</p><h2 id="admin-title">Acciones administrativas</h2></div></div>
+          <p id="admin-actions-text" class="admin-actions-text">Selecciona ADMIN para visualizar el estado de esta capa.</p>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./casino-demo.js"></script>
+  </body>
+</html>

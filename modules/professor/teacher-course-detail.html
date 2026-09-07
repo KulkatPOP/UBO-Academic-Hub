@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#20377D" />
+  <title>Detalle de curso · Panel Profesor UBO</title>
+  <link rel="stylesheet" href="./teacher-course-detail.css" />
+</head>
+<body>
+  <main id="teacher-course-detail" class="teacher-course-demo" aria-labelledby="teacher-course-title">
+    <header class="course-detail-header">
+      <div class="course-detail-brand">
+        <span>UNIVERSIDAD</span>
+        <strong>BERNARDO O'HIGGINS</strong>
+      </div>
+      <p>PANEL DOCENTE · DETALLE DE CURSO</p>
+      <h1 id="teacher-course-title"></h1>
+      <span id="teacher-course-section" class="course-section-badge"></span>
+      <span id="teacher-course-teacher" class="course-teacher"></span>
+    </header>
+
+    <section class="course-summary" aria-label="Información del curso">
+      <article><span>Horario</span><strong id="teacher-course-schedule"></strong></article>
+      <article><span>Sala</span><strong id="teacher-course-room"></strong></article>
+      <article><span>Alumnos</span><strong id="teacher-course-student-count"></strong></article>
+    </section>
+
+    <section class="course-detail-section" aria-labelledby="course-students-title">
+      <div class="section-heading">
+        <div><p>LISTADO DEL CURSO</p><h2 id="course-students-title">Alumnos</h2></div>
+        <span id="course-students-caption"></span>
+      </div>
+      <div id="teacher-course-students" class="student-list"></div>
+    </section>
+
+    <section class="course-detail-section" aria-labelledby="course-attendance-title">
+      <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-attendance-title">Registrar asistencia</h2></div><span id="attendance-summary"></span></div>
+      <form id="teacher-attendance-form" class="attendance-registration-form">
+        <div class="attendance-date-row">
+          <label for="teacher-attendance-date">Fecha de la clase<input id="teacher-attendance-date" type="date" required /></label>
+          <button id="prepare-attendance-btn" class="attendance-secondary-btn" type="button">Preparar lista</button>
+        </div>
+        <p class="attendance-helper">Selecciona una fecha válida para cargar únicamente a los alumnos inscritos en este curso.</p>
+        <div id="attendance-student-list" class="attendance-student-list" aria-live="polite"></div>
+        <div class="attendance-actions"><button id="save-attendance-btn" class="attendance-save-btn" type="submit" disabled>Guardar asistencia</button></div>
+        <div id="attendance-feedback" class="attendance-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="course-detail-section" aria-labelledby="course-grades-title">
+      <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-grades-title">Notas</h2></div><span id="grades-summary"></span></div>
+      <form id="teacher-grades-form" class="grades-registration-form">
+        <label class="grades-evaluation-select" for="teacher-grade-evaluation">Evaluación oficial
+          <select id="teacher-grade-evaluation" aria-describedby="grades-helper"></select>
+        </label>
+        <p id="grades-helper" class="grades-helper">Solo se muestran evaluaciones institucionales existentes. Esta vista no permite crear evaluaciones ni ponderaciones.</p>
+        <div id="grades-student-list" class="grades-student-list" aria-live="polite"></div>
+        <div class="grades-actions"><button id="save-grades-btn" class="grades-save-btn" type="submit" disabled>Guardar notas</button></div>
+        <div id="grades-feedback" class="grades-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="course-detail-section" aria-labelledby="course-materials-title">
+      <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-materials-title">Material académico</h2></div><span id="materials-summary"></span></div>
+      <div id="teacher-course-materials" class="materials-list" aria-live="polite"></div>
+      <form id="teacher-material-form" class="material-registration-form" novalidate>
+        <h3>Agregar referencia de material</h3>
+        <label for="teacher-material-title">Título<input id="teacher-material-title" type="text" required /></label>
+        <label for="teacher-material-type">Tipo
+          <select id="teacher-material-type">
+            <option value="PDF">PDF</option>
+            <option value="Presentación">Presentación</option>
+            <option value="Documento">Documento</option>
+            <option value="Enlace">Enlace</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </label>
+        <label for="teacher-material-url">URL <span>(obligatoria para Enlace)</span><input id="teacher-material-url" type="url" inputmode="url" placeholder="https://" /></label>
+        <p class="material-helper">No se cargan archivos físicos en esta etapa; solo se guardan referencias URL válidas en memoria.</p>
+        <div class="material-actions"><button id="save-material-btn" class="material-save-btn" type="submit">Agregar material</button></div>
+        <div id="material-feedback" class="material-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="./teacher-course-detail.js"></script>
+</body>
+</html>

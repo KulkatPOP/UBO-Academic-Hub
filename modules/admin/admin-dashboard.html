@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0d2f5d">
+    <title>Panel Administrativo · UBO Academic Hub</title>
+    <link rel="stylesheet" href="./admin-dashboard.css">
+  </head>
+  <body>
+    <main id="admin-dashboard" class="admin-demo" aria-labelledby="admin-title">
+      <header class="admin-header">
+        <div class="admin-brand">
+          <p>Universidad Bernardo O'Higgins</p>
+          <span>Panel administrativo</span>
+        </div>
+        <div class="admin-profile" aria-label="Administrador activo">
+          <span class="admin-avatar" aria-hidden="true">AU</span>
+          <div>
+            <strong id="admin-name">Cargando…</strong>
+            <small id="admin-role">Gestión institucional</small>
+          </div>
+        </div>
+      </header>
+
+      <section class="admin-intro" aria-labelledby="admin-title">
+        <p class="eyebrow">GESTIÓN INSTITUCIONAL</p>
+        <h1 id="admin-title">Resumen institucional</h1>
+        <p>Consulta el estado académico y operativo de la institución.</p>
+      </section>
+
+      <section aria-labelledby="institution-summary-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PANORAMA GENERAL</p>
+            <h2 id="institution-summary-title">Institución hoy</h2>
+          </div>
+        </div>
+        <div id="institution-summary" class="metrics-grid" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="academic-management-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ADMINISTRACIÓN</p>
+            <h2 id="academic-management-title">Gestión académica</h2>
+          </div>
+          <span class="section-note">Acciones preparadas para una próxima etapa</span>
+        </div>
+        <div id="academic-management" class="management-grid"></div>
+      </section>
+
+      <section class="statistics-layout" aria-labelledby="statistics-title">
+        <div class="statistics-card">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">USO DE PLATAFORMA</p>
+              <h2 id="statistics-title">Estadísticas</h2>
+            </div>
+          </div>
+          <div id="usage-statistics" class="stat-list"></div>
+        </div>
+
+        <div class="statistics-card">
+          <p class="eyebrow">OPERACIÓN</p>
+          <h2>Actividad institucional</h2>
+          <div id="operational-statistics" class="operations-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./admin-dashboard.js"></script>
+  </body>
+</html>

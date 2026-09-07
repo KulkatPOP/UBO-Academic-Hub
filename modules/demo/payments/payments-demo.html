@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Interfaz DEMO aislada para Pagos UBO." />
+    <title>Pagos UBO · Demo</title>
+    <link rel="stylesheet" href="./payments-demo.css" />
+  </head>
+  <body>
+    <main class="payments-shell">
+      <header class="payments-header">
+        <div>
+          <p class="eyebrow">UNIVERSIDAD BERNARDO O'HIGGINS · DEMO</p>
+          <h1>Pagos UBO</h1>
+          <p>Consulta y preparación controlada de operaciones de pago.</p>
+        </div>
+        <span class="payments-mark" aria-hidden="true">$</span>
+      </header>
+
+      <section class="security-notice" aria-label="Advertencia de operación demo">
+        <strong>DEMO — NO PROCESA PAGOS REALES</strong>
+        <span>Esta interfaz solo prepara operaciones de prueba en memoria. No se realizan cobros, transferencias ni transacciones financieras.</span>
+      </section>
+
+      <section class="role-panel" aria-label="Rol demo de Pagos">
+        <div>
+          <p class="eyebrow">PRUEBA LOCAL · SIN AUTENTICACIÓN</p>
+          <h2>Usuario demo</h2>
+          <p id="selected-user">Sofía Martínez · STUDENT</p>
+        </div>
+        <label for="payment-role">Rol demo
+          <select id="payment-role">
+            <option value="STUDENT">STUDENT</option>
+            <option value="TEACHER">TEACHER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </label>
+        <div id="role-actions-status" class="role-actions-status"></div>
+      </section>
+      <p id="payment-message" class="payment-message" aria-live="polite"></p>
+
+      <section class="statistics-grid" aria-label="Estadísticas demo institucionales">
+        <article><span>Total pagos</span><strong id="stat-total">—</strong></article>
+        <article><span>Pagados</span><strong id="stat-paid">—</strong></article>
+        <article><span>Pendientes</span><strong id="stat-pending">—</strong></article>
+        <article><span>Fallidos</span><strong id="stat-failed">—</strong></article>
+        <article><span>Cancelados</span><strong id="stat-cancelled">—</strong></article>
+        <article><span>Monto pagado demo</span><strong id="stat-amount">—</strong></article>
+      </section>
+
+      <section class="workspace-grid" aria-label="Pagos y preparación demo">
+        <section class="payments-panel" aria-labelledby="payments-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CATÁLOGO DE PAGOS</p>
+              <h2 id="payments-title">Pagos disponibles</h2>
+              <p id="payments-context" class="section-context"></p>
+            </div>
+            <label class="search-field" for="payment-search">
+              <span class="sr-only">Buscar pago</span>
+              <input id="payment-search" type="search" placeholder="Buscar ID de pago, pedido o usuario..." autocomplete="off" />
+            </label>
+          </div>
+          <div id="payment-filters" class="filter-bar" aria-label="Filtros de pagos"></div>
+          <div id="payment-list" class="payment-list" aria-live="polite"></div>
+        </section>
+
+        <aside class="prepare-panel" aria-labelledby="prepare-title">
+          <p class="eyebrow">OPERACIÓN EN MEMORIA</p>
+          <h2 id="prepare-title">Preparar pago</h2>
+          <p class="panel-description">Solo se preparan pagos propios y existentes. Nada se procesa ni se guarda.</p>
+          <form id="prepare-payment-form" novalidate>
+            <label for="payment-order-id">orderId
+              <input id="payment-order-id" name="orderId" type="text" placeholder="Selecciona un pago pendiente" autocomplete="off" />
+            </label>
+            <label for="payment-amount">Monto demo (CLP)
+              <input id="payment-amount" name="amount" type="number" min="1" step="1" placeholder="0" />
+            </label>
+            <label for="payment-method">Método demo
+              <select id="payment-method" name="method">
+                <option value="">Selecciona un método</option>
+                <option value="card">card</option>
+                <option value="transfer">transfer</option>
+                <option value="other">other</option>
+              </select>
+            </label>
+            <button id="prepare-payment-button" class="primary-button" type="submit">Preparar pago</button>
+          </form>
+          <p id="prepare-restriction" class="requires-source" hidden>ADMIN solo consulta pagos y estadísticas. La gestión requiere fuente institucional.</p>
+          <div class="future-methods">Medios de pago institucionales: integración futura, requiere API/autorización institucional.</div>
+        </aside>
+      </section>
+
+      <section class="admin-panel" aria-labelledby="admin-title">
+        <div>
+          <p class="eyebrow">ADMINISTRACIÓN FUTURA</p>
+          <h2 id="admin-title">Gestión de pagos</h2>
+          <p id="admin-actions-text">Selecciona ADMIN para visualizar el estado de esta capa.</p>
+        </div>
+        <button id="admin-action-button" class="secondary-button" type="button" hidden>Consultar gestión futura</button>
+      </section>
+    </main>
+
+    <dialog id="payment-detail-dialog" class="payment-dialog" aria-labelledby="detail-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">DETALLE DE PAGO</p>
+          <h2 id="detail-title">Información disponible</h2>
+        </div>
+        <button id="close-detail" class="icon-button" type="button" aria-label="Cerrar detalle">×</button>
+      </div>
+      <dl id="payment-detail-content" class="detail-list"></dl>
+    </dialog>
+
+    <script type="module" src="./payments-demo.js"></script>
+  </body>
+</html>

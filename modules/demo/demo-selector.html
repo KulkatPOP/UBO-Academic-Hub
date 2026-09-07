@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#20377D" />
+  <title>Selector demo · UBO Academic Hub</title>
+  <link rel="stylesheet" href="./demo-selector.css" />
+</head>
+<body>
+  <main class="demo-selector" aria-labelledby="demo-selector-title">
+    <header class="demo-header">
+      <p>ENTORNO INTERNO · DEMO</p>
+      <h1 id="demo-selector-title">Ecosistema UBO Academic Hub</h1>
+      <span>Selecciona una experiencia de prueba sin alterar la aplicación actual.</span>
+    </header>
+
+    <section aria-labelledby="demo-users-title">
+      <div class="demo-section-heading">
+        <div>
+          <p>USUARIOS DISPONIBLES</p>
+          <h2 id="demo-users-title">Selecciona un perfil</h2>
+        </div>
+      </div>
+      <div id="demo-users" class="demo-user-grid"></div>
+    </section>
+
+    <p id="demo-selector-status" class="demo-status" aria-live="polite">
+      La selección se mantiene temporalmente solo dentro de este entorno demo.
+    </p>
+  </main>
+  <script type="module" src="./demo-selector-ui.js"></script>
+</body>
+</html>

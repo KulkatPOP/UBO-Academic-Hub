@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0d2f5d">
+    <title>Diagnóstico de compatibilidad estudiante · UBO</title>
+    <link rel="stylesheet" href="./student-migration-check.css">
+  </head>
+  <body>
+    <main class="migration-check" aria-labelledby="migration-title">
+      <header class="migration-header">
+        <div>
+          <p>UNIVERSIDAD BERNARDO O'HIGGINS</p>
+          <span>HERRAMIENTA INTERNA · DEMO</span>
+        </div>
+        <span class="migration-mark" aria-hidden="true">UBO</span>
+      </header>
+
+      <section class="migration-intro">
+        <p class="eyebrow">TRANSICIÓN INSTITUCIONAL</p>
+        <h1 id="migration-title">Diagnóstico de compatibilidad estudiante</h1>
+        <p>Consulta de solo lectura para verificar la preparación de datos antes de una futura migración.</p>
+      </section>
+
+      <section id="student-overview" class="student-overview" aria-live="polite"></section>
+
+      <section class="diagnostic-grid" aria-label="Resultados de compatibilidad">
+        <article id="identity-result" class="diagnostic-card"></article>
+        <article id="career-result" class="diagnostic-card"></article>
+        <article id="courses-result" class="diagnostic-card diagnostic-card-wide"></article>
+        <article id="grades-result" class="diagnostic-card"></article>
+        <article id="attendance-result" class="diagnostic-card"></article>
+      </section>
+
+      <section id="warnings-result" class="warnings-card" aria-label="Advertencias de transición"></section>
+    </main>
+
+    <script type="module" src="./student-migration-check.js"></script>
+  </body>
+</html>
