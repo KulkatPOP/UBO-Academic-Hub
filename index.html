@@ -51,7 +51,7 @@
         <section id="evaluations" class="screen"><div class="section-intro"><h2>Mis evaluaciones</h2><p>Próximas fechas académicas de todos tus ramos.</p></div><div id="evaluations-list" class="evaluations-list"></div></section>
         <section id="evaluation-detail" class="screen"><div id="evaluation-detail-content"></div></section>
         <section id="calendar-event-detail" class="screen"><div id="calendar-event-detail-content"></div></section>
-        <section id="courses" class="screen"><div class="section-intro"><h2>Mis ramos</h2><p>Semestre 2026-1 · Jornada vespertina</p></div><div id="course-list" class="stack"></div></section>
+        <section id="courses" class="screen"><div class="section-intro"><h2>Mis ramos</h2><p id="courses-period">Semestre 2026-1</p></div><div id="course-list" class="stack"></div></section>
         <section id="course-detail" class="screen"><div id="course-detail-content"></div></section>
         <section id="attendance" class="screen"><div class="section-intro"><h2>Asistencia</h2><p>Controla tu avance por asignatura.</p></div><div id="attendance-list" class="stack"></div><button class="primary-btn" data-go="attendance-calculator">Calcular mi asistencia</button></section>
         <section id="attendance-calculator" class="screen"><div class="section-intro"><h2>Calculadora de asistencia</h2><p>Proyecta tu situación considerando todas las clases del ramo.</p></div><div class="form-card attendance-form"><label>Asignatura<select id="attendance-course"></select></label><div class="attendance-input-grid"><label>Total de clases<input id="attendance-total" type="number" min="1" value="40" /></label><label>Asistencia mínima (%)<input id="attendance-minimum" type="number" min="1" max="100" value="75" /></label></div><div class="attendance-input-grid"><label>Clases realizadas<input id="classes-held" type="number" min="0" value="14" /></label><label>Clases asistidas<input id="classes-attended" type="number" min="0" value="12" /></label></div><label>Clases futuras que asistirás<input id="future-classes" type="number" min="0" value="2" /><small id="attendance-future-help">Indica cuántas de las clases restantes proyectas asistir.</small></label><button id="calculate-attendance-btn" class="primary-btn">Calcular proyección</button><div id="attendance-result" class="attendance-result result hidden" aria-live="polite"></div></div></section>
@@ -115,6 +115,6 @@
     </section>
     <div id="toast" class="toast" role="status"></div>
   </main>
-  <script src="app.js?v=112"></script>
+  <script type="module" src="app.js?v=112"></script>
 </body>
 </html>

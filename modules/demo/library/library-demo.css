@@ -23,7 +23,7 @@ button { cursor: pointer; }
 .action-message:empty { display: none; }
 .action-message.success { color: #247451; }
 .action-message.error { color: #a24a37; }
-.statistics-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 22px 0 38px; }
+.statistics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 22px 0 38px; }
 .statistics-grid article, .book-card, .operations-panel { background: #fff; border: 1px solid #dbe4f0; border-radius: 18px; box-shadow: 0 8px 18px rgba(28, 54, 96, .07); }
 .statistics-grid article { min-height: 112px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
 .statistics-grid span { color: #667a99; font-size: .83rem; font-weight: 700; }

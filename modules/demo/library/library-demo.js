@@ -96,10 +96,14 @@ function matchesSearch(book) {
 
 function renderStatistics() {
   const statistics = getLibraryStatistics();
+  const loans = getLoans();
+  const reservations = getReservations();
   $("#stat-books").textContent = statistics.totalBooks;
   $("#stat-total-copies").textContent = statistics.totalCopies;
   $("#stat-available-copies").textContent = statistics.availableCopies;
+  $("#stat-total-loans").textContent = loans.length;
   $("#stat-active-loans").textContent = statistics.activeLoans;
+  $("#stat-total-reservations").textContent = reservations.length;
   $("#stat-active-reservations").textContent = statistics.activeReservations;
 }
 
