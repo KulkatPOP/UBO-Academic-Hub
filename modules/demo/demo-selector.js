@@ -2,7 +2,7 @@
 // No se importa desde la aplicación actual ni reemplaza su autenticación.
 
 import { demoUsers } from "../../data/users.js";
-import { getCurrentUser, setCurrentUser } from "../../core/session.js";
+import { clearCurrentDemoIdentity, getCurrentDemoIdentity, setCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 import { getRolePermissions } from "../../core/permissions.js";
 
 const experienceByRole = {
@@ -28,9 +28,16 @@ export function selectDemoUser(userId) {
 
   if (!user) return null;
 
-  return setCurrentUser(toDemoUser(user));
+  const identity = setCurrentDemoIdentity(user);
+  return identity ? toDemoUser(user) : null;
 }
 
 export function getSelectedDemoUser() {
-  return getCurrentUser();
+  const identity = getCurrentDemoIdentity();
+  const user = demoUsers.find(item => item.id === identity?.id && item.role === identity?.role);
+  return user ? toDemoUser(user) : null;
+}
+
+export function clearSelectedDemoUser() {
+  clearCurrentDemoIdentity();
 }

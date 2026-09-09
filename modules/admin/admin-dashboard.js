@@ -14,6 +14,8 @@ import {
   getEventStatistics
 } from "../../services/admin-service.js";
 import { getAvailableAdministrativeActions } from "../../services/admin-actions/administrative-action-service.js";
+import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
+import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 
 const managementMetadata = [
   { key: "estudiantes", label: "Estudiantes", icon: "🎓", description: "Matrícula y datos académicos." },
@@ -148,4 +150,21 @@ function renderAdminDashboard() {
   renderStatistics();
 }
 
-renderAdminDashboard();
+function setupDemoLogout() {
+  getElement("admin-demo-logout")?.addEventListener("click", () => {
+    clearCurrentDemoIdentity();
+    window.location.replace("../demo/demo-selector.html");
+  });
+}
+
+const adminRouteGuard = enforceDemoRouteGuard("ADMIN", {
+  STUDENT: "../../index.html",
+  TEACHER: "../professor/teacher-dashboard.html",
+  UNAUTHENTICATED: "../demo/demo-selector.html",
+  default: "../demo/demo-selector.html"
+});
+
+if (adminRouteGuard.allowed) {
+  renderAdminDashboard();
+  setupDemoLogout();
+}

@@ -8,6 +8,8 @@ import {
   getTeacherProfile,
   getTeacherSummary
 } from "./dashboard.js";
+import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
+import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 
 const $ = selector => document.querySelector(selector);
 
@@ -93,4 +95,21 @@ function renderTeacherDashboard() {
   renderActions(getFutureTeacherActions());
 }
 
-renderTeacherDashboard();
+function setupDemoLogout() {
+  document.getElementById("teacher-demo-logout")?.addEventListener("click", () => {
+    clearCurrentDemoIdentity();
+    window.location.replace("../demo/demo-selector.html");
+  });
+}
+
+const teacherRouteGuard = enforceDemoRouteGuard("TEACHER", {
+  STUDENT: "../../index.html",
+  ADMIN: "../admin/admin-dashboard.html",
+  UNAUTHENTICATED: "../demo/demo-selector.html",
+  default: "../demo/demo-selector.html"
+});
+
+if (teacherRouteGuard.allowed) {
+  renderTeacherDashboard();
+  setupDemoLogout();
+}

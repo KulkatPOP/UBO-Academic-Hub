@@ -59,10 +59,11 @@ body {
 .admin-brand p { font-size: 0.86rem; font-weight: 750; }
 .admin-brand span { display: block; margin-top: 4px; color: #c9dbf0; font-size: 0.76rem; }
 
-.admin-profile { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.admin-profile { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; }
 .admin-profile strong, .admin-profile small { display: block; white-space: nowrap; }
 .admin-profile strong { font-size: 0.88rem; }
 .admin-profile small { margin-top: 3px; color: #c9dbf0; font-size: 0.72rem; }
+.admin-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; margin-left: auto; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 10px; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: .7rem; font-weight: 800; cursor: pointer; transition: background .18s ease, transform .18s ease; }.admin-demo-logout:hover { background: rgba(255, 255, 255, .2); }.admin-demo-logout:focus-visible { outline: 3px solid #d7a62a99; outline-offset: 2px; }.admin-demo-logout:active { transform: translateY(1px); }
 
 .admin-avatar {
   display: grid;
