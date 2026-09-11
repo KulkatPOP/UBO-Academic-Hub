@@ -20,7 +20,10 @@
             <strong id="admin-name">Cargando…</strong>
             <small id="admin-role">Gestión institucional</small>
           </div>
-          <button id="admin-demo-logout" class="admin-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+          <div class="admin-header-actions" aria-label="Navegación del panel administrativo">
+            <a class="admin-selector-link" href="../demo/demo-selector.html">Selector Demo <span aria-hidden="true">↗</span></a>
+            <button id="admin-demo-logout" class="admin-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+          </div>
         </div>
       </header>
 
@@ -38,6 +41,24 @@
           </div>
         </div>
         <div id="institution-summary" class="metrics-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="admin-demo-summary-section" aria-labelledby="admin-demo-summary-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">RESUMEN INSTITUCIONAL · DEMO</p><h2 id="admin-demo-summary-title">Actividad académica</h2></div>
+        </div>
+        <div id="admin-dashboard-summary" class="admin-summary-metrics" aria-live="polite"></div>
+      </section>
+
+      <section class="admin-demo-detail-grid" aria-label="Estado académico y actividad reciente demo">
+        <article class="statistics-card">
+          <p class="eyebrow">ESTADO GENERAL</p><h2>Estado académico demo</h2>
+          <div id="admin-demo-status" class="admin-demo-status" aria-live="polite"></div>
+        </article>
+        <article class="statistics-card">
+          <p class="eyebrow">ACTIVIDAD RECIENTE · DEMO</p><h2>Últimos registros</h2>
+          <div id="admin-recent-activity" class="admin-recent-activity" aria-live="polite"></div>
+        </article>
       </section>
 
       <section aria-labelledby="academic-management-title">

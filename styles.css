@@ -1706,6 +1706,23 @@ body:has(#home.active) .topbar{display:none}
   position:relative;
   z-index:1;
 }
+
+/* Fase 1.90: progreso demo del estudiante, sin sustituir datos institucionales. */
+#home .student-academic-progress { display: grid; gap: 10px; }
+#home .student-progress-card,
+#home .student-progress-empty { display: grid; gap: 9px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+#home .student-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+#home .student-progress-head > b { min-width: 0; color: var(--navy); font-size: .86rem; }
+#home .student-progress-trend { flex: 0 0 auto; padding: 5px 8px; border-radius: 999px; background: #eef4fb; color: var(--blue); font-size: .66rem; font-weight: 800; }
+#home .student-progress-trend.improving { background: #edf8f2; color: #207448; }
+#home .student-progress-trend.declining { background: #fff3f3; color: #a73d3d; }
+#home .student-progress-grades { display: flex; flex-wrap: wrap; gap: 7px; }
+#home .student-progress-grades span { min-width: 36px; padding: 7px 8px; border-radius: 9px; background: #f4f8fb; color: var(--navy); font-size: .76rem; font-weight: 800; text-align: center; }
+#home .student-progress-card small,
+#home .student-progress-empty p,
+#home .student-progress-note { margin: 0; color: var(--muted); font-size: .71rem; line-height: 1.45; }
+#home .student-progress-empty > b { color: var(--navy); font-size: .82rem; }
+#home .student-progress-note { padding: 0 2px; }
 #home.active > .dashboard-hero #dashboard-career,
 #home.active > .dashboard-hero #dashboard-period{
   display:block!important;
@@ -1762,6 +1779,214 @@ body:has(#home.active) .topbar{display:none}
   position:relative;
   z-index:1;
 }
+
+/* Fase 1.87: pulido visual de la experiencia estudiante.
+   Se mantiene la estructura y el contenido existentes; estas reglas sólo afinan
+   jerarquía, legibilidad y respuesta en pantallas pequeñas. */
+#home .dashboard-section,
+#home .today-section,
+#home .important-alerts-section,
+#home .home-more-access {
+  min-width: 0;
+}
+
+#home .dashboard-section {
+  background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%);
+}
+
+#home .today-heading {
+  align-items: flex-start;
+}
+
+#home .today-heading h3,
+#home .dashboard-summary-heading b,
+#home .home-group-title {
+  letter-spacing: -.01em;
+}
+
+#home .today-heading p {
+  max-width: 58ch;
+  line-height: 1.45;
+}
+
+#home .student-academic-summary {
+  gap: 12px;
+}
+
+#home .student-summary-card,
+#home .student-summary-course,
+#home .home-announcement-card,
+#home .student-material-card,
+#home .student-grade-card,
+#home .student-attendance-card {
+  border-color: #d9e5ee;
+  box-shadow: 0 4px 12px rgba(23, 58, 84, .055);
+}
+
+#home .student-summary-card {
+  padding: 16px;
+}
+
+#home .student-summary-card.institutional {
+  border-top: 3px solid var(--navy);
+}
+
+#home .student-summary-card.demo {
+  border-left-width: 4px;
+}
+
+#home .student-summary-metric {
+  min-height: 28px;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf2f6;
+}
+
+#home .student-summary-metric:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+#home .student-summary-metric b {
+  font-size: .82rem;
+}
+
+#home .home-announcement-card,
+#home .student-material-card,
+#home .student-grade-card,
+#home .student-attendance-card {
+  padding: 14px;
+}
+
+#home .student-grade-card strong {
+  min-width: 2.35rem;
+  text-align: center;
+  padding: 5px 7px;
+  border-radius: 10px;
+  background: #edf5fb;
+}
+
+#home .card-meta,
+#home .home-mail-empty,
+#course-detail .card-meta {
+  padding: 14px;
+  border: 1px dashed #bfd0de;
+  border-radius: 14px;
+  background: #f8fbfd;
+  color: var(--muted);
+  line-height: 1.5;
+  text-align: center;
+}
+
+#home .home-secondary-access > summary {
+  min-height: 52px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  line-height: 1.25;
+}
+
+#home .quick-card,
+#home .home-secondary-access > summary,
+#home .text-btn,
+#home .primary-btn,
+#home .outline-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#home .quick-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+@media (hover: hover) {
+  #home .quick-card:hover {
+    transform: translateY(-2px);
+    border-color: #aec8db;
+    box-shadow: 0 9px 20px rgba(23, 58, 84, .12);
+  }
+}
+
+:where(button, a, input, select, textarea, summary):focus-visible {
+  outline: 3px solid rgba(49, 88, 165, .58);
+  outline-offset: 3px;
+}
+
+@media (min-width: 720px) {
+  #home .student-academic-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #home .student-summary-courses {
+    grid-column: 1 / -1;
+  }
+
+  #home .home-announcements,
+  #home .student-materials,
+  #home .student-grades,
+  #home .student-attendance {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  #home .dashboard-section,
+  #home .today-section,
+  #home .important-alerts-section {
+    border-radius: 16px;
+  }
+
+  #home .today-heading {
+    gap: 8px;
+  }
+
+  #home .today-heading .text-btn {
+    min-height: 38px;
+  }
+
+  #home .student-summary-card,
+  #home .home-announcement-card,
+  #home .student-material-card,
+  #home .student-grade-card,
+  #home .student-attendance-card {
+    padding: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Fase 1.88: alertas Student derivadas, separadas de los datos institucionales. */
+#home .student-academic-alerts { display: grid; gap: 10px; }
+#home .student-academic-alert { display: grid; gap: 9px; padding: 14px; border: 1px solid var(--card-border); border-left: 4px solid var(--sky); border-radius: 14px; background: #fff; box-shadow: 0 4px 12px rgba(23, 58, 84, .045); }
+#home .student-academic-alert.high { border-left-color: var(--red); }
+#home .student-academic-alert.medium { border-left-color: var(--yellow); }
+#home .student-academic-alert.info { border-left-color: var(--green); }
+#home .student-academic-alert > div { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; }
+#home .student-academic-alert-icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 10px; background: #edf4fb; color: var(--blue); font-size: .7rem; }
+#home .student-academic-alert.high .student-academic-alert-icon { background: #fff0f0; color: var(--red); }
+#home .student-academic-alert.medium .student-academic-alert-icon { background: #fff9e9; color: #9b7200; }
+#home .student-academic-alert.info .student-academic-alert-icon { background: #edf8f2; color: var(--green); }
+#home .student-academic-alert small { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+#home .student-academic-alert b { display: block; margin-top: 2px; color: var(--navy); font-size: .82rem; }
+#home .student-academic-alert p { margin: 0; color: var(--muted); font-size: .72rem; line-height: 1.45; }
+#home .student-academic-alert .student-academic-alert-course { margin-top: 4px; color: var(--text); font-size: .7rem; font-weight: 700; }
+#home .student-academic-alert-description { padding-top: 8px; border-top: 1px solid #edf2f6; }
+#home .student-academic-alert-empty { display: grid; justify-items: center; gap: 5px; padding: 17px; border: 1px dashed #bfd0de; border-radius: 14px; background: #f8fbfd; color: var(--muted); text-align: center; }
+#home .student-academic-alert-empty span { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: #edf8f2; color: var(--green); font-weight: 800; }
+#home .student-academic-alert-empty b { color: var(--navy); font-size: .82rem; }
+#home .student-academic-alert-empty p, #home .student-academic-alert-note { margin: 0; color: var(--muted); font-size: .71rem; line-height: 1.45; }
+#home .student-academic-alert-note { padding: 9px 11px; border-radius: 10px; background: #f8fbfd; }
+
+/* Avisos demo publicados por Profesor: presentación Student de solo lectura. */
+.home-announcements{display:grid;gap:9px}.home-announcement-card{display:grid;gap:4px;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.home-announcement-card small{color:var(--muted);font-size:.66rem}.home-announcement-card b{color:var(--navy);font-size:.82rem}.home-announcement-card p{margin:1px 0;color:var(--muted);font-size:.72rem;line-height:1.45;white-space:pre-wrap}
+.student-materials{display:grid;gap:9px}.student-material-card{display:grid;gap:4px;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.student-material-card small{color:var(--muted);font-size:.66rem}.student-material-card b{color:var(--navy);font-size:.82rem}.student-material-card p{margin:1px 0;color:var(--muted);font-size:.72rem;line-height:1.45;white-space:pre-wrap}
+.student-grades{display:grid;gap:9px}.student-grade-card{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.student-grade-card small{color:var(--muted);font-size:.66rem}.student-grade-card b{color:var(--navy);font-size:.82rem}.student-grade-card strong{grid-row:1 / span 2;grid-column:2;color:var(--blue);font-size:1.2rem}.student-grade-card small:last-child{grid-column:1 / -1}
+.student-attendance{display:grid;gap:9px}.student-attendance-card{display:grid;gap:7px;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.student-attendance-card>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:12px}.student-attendance-card b{color:var(--navy);font-size:.82rem}.student-attendance-card strong{color:var(--blue);font-size:1.1rem}.student-attendance-card p,.student-attendance-card small{margin:0;color:var(--muted);font-size:.7rem;line-height:1.45}.student-attendance-records{display:grid;gap:5px;padding-top:7px;border-top:1px solid var(--line)}.student-attendance-records div{display:flex;justify-content:space-between;gap:12px}.student-attendance-records b{font-size:.74rem}
+.student-academic-summary{display:grid;gap:10px}.student-summary-card,.student-summary-course{display:grid;gap:7px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}.student-summary-card h4,.student-summary-courses h4{margin:0;color:var(--navy);font-size:.88rem}.student-summary-card p{margin:0;color:var(--muted);font-size:.7rem}.student-summary-card.demo{border-left:3px solid var(--blue)}.student-summary-metric{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--muted);font-size:.72rem}.student-summary-metric b{color:var(--navy);font-size:.78rem;text-align:right}.student-summary-courses{display:grid;gap:8px}.student-summary-course-list{display:grid;gap:8px}.student-summary-course> b{font-size:.82rem;color:var(--navy)}.student-summary-course>div{display:grid;gap:5px}
 
 /* Simulador de notas: módulo independiente con los componentes visuales UBO. */
 .grade-simulator-shell{display:grid;gap:14px}

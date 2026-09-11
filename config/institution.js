@@ -38,7 +38,11 @@ const institutionConfig = deepFreeze({
   },
   featureFlags: {
     USE_CANONICAL_CAREER: false,
-    USE_CANONICAL_ROOM: false
+    USE_CANONICAL_ROOM: false,
+    // Preparación reversible: no tiene consumidores runtime en esta fase.
+    USE_CORE_SESSION: false,
+    // DEVELOPMENT_ONLY: observación efímera y Teacher-only. Permanece apagada.
+    USE_CORE_IDENTITY_CANARY: false
   },
   pwa: {
     manifestPath: "./manifest.json",

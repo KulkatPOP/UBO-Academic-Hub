@@ -21,7 +21,10 @@
           <h1 id="teacher-title"></h1>
           <p id="teacher-department"></p>
         </div>
-        <button id="teacher-demo-logout" class="teacher-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+        <div class="teacher-header-actions" aria-label="Navegación del panel docente">
+          <a class="teacher-selector-link" href="../demo/demo-selector.html">Selector Demo <span aria-hidden="true">↗</span></a>
+          <button id="teacher-demo-logout" class="teacher-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+        </div>
       </div>
     </header>
 
@@ -44,6 +47,16 @@
         </div>
       </div>
       <div id="teacher-courses" class="teacher-course-grid"></div>
+    </section>
+
+    <section class="teacher-section teacher-activity-section" aria-labelledby="teacher-activity-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">ACTIVIDAD RECIENTE · DEMO</p>
+          <h2 id="teacher-activity-title">Actividad de mis cursos</h2>
+        </div>
+      </div>
+      <div id="teacher-recent-activity" class="teacher-recent-activity" aria-live="polite"></div>
     </section>
 
     <section class="teacher-section" aria-labelledby="teacher-actions-title">

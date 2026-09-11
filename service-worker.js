@@ -1,10 +1,19 @@
-const CACHE_NAME = 'ubo-academic-hub-v114';
-const APP_ASSETS = ['./', './index.html', './styles.css?v=110', './app.js?v=113', './config/institution.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'ubo-academic-hub-v142';
+const APP_ASSETS = ['./', './index.html', './styles.css?v=113', './app.js?v=117', './config/institution.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 const DEMO_SHELL_ASSETS = [
+  './modules/demo/demo-selector.html',
+  './modules/demo/demo-selector.css',
+  './modules/demo/demo-selector-ui.js',
+  './modules/demo/demo-selector.js',
+  './modules/demo/demo-router.js',
+  './services/adapters/core-identity-adapter.js',
   './modules/professor/teacher-dashboard.html',
   './modules/professor/teacher-dashboard.css',
   './modules/professor/teacher-dashboard.js',
   './modules/professor/dashboard.js',
+  './modules/professor/teacher-course-detail.html',
+  './modules/professor/teacher-course-detail.css',
+  './modules/professor/teacher-course-detail.js',
   './modules/admin/admin-dashboard.html',
   './modules/admin/admin-dashboard.css',
   './modules/admin/admin-dashboard.js',
@@ -13,6 +22,25 @@ const DEMO_SHELL_ASSETS = [
   './services/student-service.js',
   './services/admin-service.js',
   './services/admin-actions/administrative-action-service.js',
+  './services/admin-actions/admin-dashboard-summary-service.js',
+  './services/teacher-actions/teacher-material-management-service.js',
+  './services/teacher-actions/teacher-grade-management-service.js',
+  './services/teacher-actions/teacher-attendance-management-service.js',
+  './services/teacher-actions/teacher-announcement-management-service.js',
+  './services/teacher-actions/teacher-dashboard-summary-service.js',
+  './services/analytics/academic-analytics-service.js',
+  './services/student-actions/student-announcement-service.js',
+  './services/student-actions/student-material-service.js',
+  './services/student-actions/student-grade-service.js',
+  './services/student-actions/student-attendance-service.js',
+  './services/student-actions/student-academic-summary-service.js',
+  './services/student-actions/student-alert-service.js',
+  './services/teacher-actions/attendance-action-service.js',
+  './services/teacher-actions/grade-action-service.js',
+  './services/teacher-actions/material-action-service.js',
+  './services/attendance-service.js',
+  './services/grade-service.js',
+  './services/material-service.js',
   './core/permissions.js',
   './core/session.js',
   './core/demo-identity-session.js',
@@ -25,10 +53,18 @@ const DEMO_SHELL_ASSETS = [
   './data/university/careers.js',
   './data/university/courses.js',
   './data/university/rooms.js',
-  './data/university/schedules.js'
+  './data/university/schedules.js',
+  './data/university/attendance.js',
+  './data/university/grades.js',
+  './data/university/materials.js',
+  './data/models/attendance-model.js',
+  './data/models/grade-model.js',
+  './data/models/material-model.js'
 ];
 const OFFLINE_DOCUMENTS = {
+  '/modules/demo/demo-selector.html': './modules/demo/demo-selector.html',
   '/modules/professor/teacher-dashboard.html': './modules/professor/teacher-dashboard.html',
+  '/modules/professor/teacher-course-detail.html': './modules/professor/teacher-course-detail.html',
   '/modules/admin/admin-dashboard.html': './modules/admin/admin-dashboard.html'
 };
 const PRECACHE_ASSETS = [...APP_ASSETS, ...DEMO_SHELL_ASSETS];

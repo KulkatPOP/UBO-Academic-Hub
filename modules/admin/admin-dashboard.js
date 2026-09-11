@@ -16,6 +16,7 @@ import {
 import { getAvailableAdministrativeActions } from "../../services/admin-actions/administrative-action-service.js";
 import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
+import { getAdminDashboardSummary } from "../../services/admin-actions/admin-dashboard-summary-service.js";
 
 const managementMetadata = [
   { key: "estudiantes", label: "Estudiantes", icon: "🎓", description: "Matrícula y datos académicos." },
@@ -30,15 +31,6 @@ const managementMetadata = [
 
 function getElement(id) {
   return document.getElementById(id);
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }
 
 function renderHeader() {
@@ -57,13 +49,16 @@ function renderSummary() {
     { label: "Cursos activos", value: summary.cursosActivos, icon: "📚" }
   ];
 
-  getElement("institution-summary").innerHTML = metrics.map(metric => `
-    <article class="metric-card">
-      <span class="metric-icon" aria-hidden="true">${metric.icon}</span>
-      <strong>${escapeHtml(metric.value)}</strong>
-      <span>${escapeHtml(metric.label)}</span>
-    </article>
-  `).join("");
+  const container = getElement("institution-summary");
+  const fragment = document.createDocumentFragment();
+  metrics.forEach(metric => {
+    const card = createSummaryElement("article", "metric-card");
+    const icon = createSummaryElement("span", "metric-icon", metric.icon);
+    icon.setAttribute("aria-hidden", "true");
+    card.append(icon, createSummaryElement("strong", "", String(metric.value)), createSummaryElement("span", "", metric.label));
+    fragment.append(card);
+  });
+  container.replaceChildren(fragment);
 }
 
 function renderManagement() {
@@ -79,16 +74,18 @@ function renderManagement() {
     acciones: getAvailableAdministrativeActions().length
   };
 
-  getElement("academic-management").innerHTML = managementMetadata.map(item => `
-    <article class="management-card">
-      <span class="management-icon" aria-hidden="true">${item.icon}</span>
-      <div>
-        <h3>${item.label}</h3>
-        <p>${item.description}</p>
-      </div>
-      <span class="management-count">${dataCounts[item.key]}</span>
-    </article>
-  `).join("");
+  const container = getElement("academic-management");
+  const fragment = document.createDocumentFragment();
+  managementMetadata.forEach(item => {
+    const card = createSummaryElement("article", "management-card");
+    const icon = createSummaryElement("span", "management-icon", item.icon);
+    const content = document.createElement("div");
+    icon.setAttribute("aria-hidden", "true");
+    content.append(createSummaryElement("h3", "", item.label), createSummaryElement("p", "", item.description));
+    card.append(icon, content, createSummaryElement("span", "management-count", String(dataCounts[item.key])));
+    fragment.append(card);
+  });
+  container.replaceChildren(fragment);
 }
 
 function renderStatistics() {
@@ -100,32 +97,6 @@ function renderStatistics() {
   const requestStatistics = getRequestStatistics();
   const eventStatistics = getEventStatistics();
 
-  const usage = usageStatistics.modules.map(item => `
-    <div class="stat-row">
-      <span>${escapeHtml(item.module)}</span>
-      <strong>${escapeHtml(item.uses)} accesos</strong>
-    </div>
-  `).join("") + trafficStatistics.periods.map(item => `
-    <div class="stat-row">
-      <span>Mayor tráfico · ${escapeHtml(item.period)}</span>
-      <strong>${escapeHtml(item.accesses)} accesos</strong>
-    </div>
-  `).join("") + applicationErrors.records.map(item => `
-    <div class="stat-row">
-      <span>Errores · ${escapeHtml(item.category)}</span>
-      <strong>${escapeHtml(item.count)} · ${escapeHtml(item.status)}</strong>
-    </div>
-  `).join("") + `
-    <div class="stat-row">
-      <span>Uso de Biblioteca</span>
-      <strong>${escapeHtml(libraryStatistics.consultations)} consultas</strong>
-    </div>
-    <div class="stat-row">
-      <span>Uso de Casino</span>
-      <strong>${escapeHtml(casinoStatistics.consultations)} · ${escapeHtml(casinoStatistics.status)}</strong>
-    </div>
-  `;
-
   const operations = [
     { label: "Eventos activos", value: eventStatistics.active, icon: "🎓" },
     { label: "Inscripciones", value: eventStatistics.registered, icon: "✓" },
@@ -133,14 +104,83 @@ function renderStatistics() {
     { label: "Solicitudes resueltas", value: requestStatistics.resolved, icon: "✓" }
   ];
 
-  getElement("usage-statistics").innerHTML = usage;
-  getElement("operational-statistics").innerHTML = operations.map(item => `
-    <div class="operation-row">
-      <span class="operation-icon" aria-hidden="true">${item.icon}</span>
-      <span>${escapeHtml(item.label)}</span>
-      <strong>${escapeHtml(item.value)}</strong>
-    </div>
-  `).join("");
+  const usageContainer = getElement("usage-statistics");
+  const usageRows = document.createDocumentFragment();
+  const appendUsage = (label, value) => {
+    const row = createSummaryElement("div", "stat-row");
+    row.append(createSummaryElement("span", "", label), createSummaryElement("strong", "", value));
+    usageRows.append(row);
+  };
+  usageStatistics.modules.forEach(item => appendUsage(item.module, `${item.uses} accesos`));
+  trafficStatistics.periods.forEach(item => appendUsage(`Mayor tráfico · ${item.period}`, `${item.accesses} accesos`));
+  applicationErrors.records.forEach(item => appendUsage(`Errores · ${item.category}`, `${item.count} · ${item.status}`));
+  appendUsage("Uso de Biblioteca", `${libraryStatistics.consultations} consultas`);
+  appendUsage("Uso de Casino", `${casinoStatistics.consultations} · ${casinoStatistics.status}`);
+  usageContainer.replaceChildren(usageRows);
+
+  const operationalContainer = getElement("operational-statistics");
+  const operationRows = document.createDocumentFragment();
+  operations.forEach(item => {
+    const row = createSummaryElement("div", "operation-row");
+    const icon = createSummaryElement("span", "operation-icon", item.icon);
+    icon.setAttribute("aria-hidden", "true");
+    row.append(icon, createSummaryElement("span", "", item.label), createSummaryElement("strong", "", String(item.value)));
+    operationRows.append(row);
+  });
+  operationalContainer.replaceChildren(operationRows);
+}
+
+function createSummaryElement(tag, className, text) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = text;
+  return element;
+}
+
+function renderDemoDashboardSummary() {
+  const result = getAdminDashboardSummary();
+  const summary = getElement("admin-dashboard-summary");
+  const status = getElement("admin-demo-status");
+  const activity = getElement("admin-recent-activity");
+  summary.replaceChildren();
+  const metrics = [
+    ["Total usuarios demo", result.metrics.usersCount, "Perfiles disponibles"],
+    ["Estudiantes demo", result.metrics.studentsCount, "Perfiles STUDENT"],
+    ["Profesores demo", result.metrics.teachersCount, "Perfiles TEACHER"],
+    ["Cursos disponibles", result.metrics.coursesCount, "Cursos institucionales demo"],
+    ["Material publicado", result.metrics.materialsCount, "Registros locales demo"],
+    ["Notas demo", result.metrics.gradesCount, "Evaluaciones registradas"],
+    ["Registros asistencia", result.metrics.attendanceRecordsCount, "Actividad docente demo"],
+    ["Avisos enviados", result.metrics.announcementsCount, "Comunicaciones demo"]
+  ];
+  const cards = document.createDocumentFragment();
+  metrics.forEach(([label, value, description]) => {
+    const card = createSummaryElement("article", "admin-summary-metric");
+    card.append(createSummaryElement("span", "", label), createSummaryElement("strong", "", String(value)), createSummaryElement("small", "", description));
+    cards.append(card);
+  });
+  summary.append(cards);
+
+  status.replaceChildren();
+  const state = createSummaryElement("div", "admin-demo-status-card");
+  state.append(createSummaryElement("strong", "", `● ${result.status.label}`), createSummaryElement("span", "", `${result.status.coursesWithActivity} curso(s) con actividad · ${result.status.recordsCount} registro(s) demo · ${result.status.alertsCount} alerta(s) generada(s)`));
+  status.append(state);
+
+  activity.replaceChildren();
+  if (!result.activity.length) {
+    activity.append(createSummaryElement("p", "admin-empty-state", "Sin datos disponibles."));
+  } else {
+    const list = document.createDocumentFragment();
+    result.activity.forEach(item => {
+      const row = createSummaryElement("div", "admin-activity-row");
+      const content = document.createElement("div");
+      content.append(createSummaryElement("b", "", item.label), createSummaryElement("span", "", `${item.courseName} · ${item.title}`));
+      row.append(content, createSummaryElement("small", "", item.createdAt ? "Registro demo" : "Sin fecha"));
+      list.append(row);
+    });
+    activity.append(list);
+  }
+  if (result.warnings.length) status.append(createSummaryElement("p", "admin-summary-note", "Algunas fuentes demo no estuvieron disponibles; se muestran las métricas que pudieron calcularse."));
 }
 
 function renderAdminDashboard() {
@@ -148,6 +188,7 @@ function renderAdminDashboard() {
   renderSummary();
   renderManagement();
   renderStatistics();
+  renderDemoDashboardSummary();
 }
 
 function setupDemoLogout() {

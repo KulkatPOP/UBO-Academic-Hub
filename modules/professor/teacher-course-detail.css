@@ -15,8 +15,9 @@ body { min-width: 320px; margin: 0; background: var(--detail-bg); color: var(--d
 .teacher-course-demo { width: min(100%, 1040px); margin: 0 auto; padding: 20px 16px 36px; }
 .course-detail-header, .course-summary, .course-detail-section { border: 1px solid var(--detail-border); border-radius: 20px; background: var(--detail-card); box-shadow: var(--detail-shadow); }
 .course-detail-header { padding: 21px; background: linear-gradient(135deg, var(--detail-navy), var(--detail-blue)); color: #fff; }
-.course-detail-brand { margin-bottom: 20px; letter-spacing: .05em; font-size: .62rem; line-height: 1.25; }
+.course-detail-header-top { display: grid; gap: 14px; margin-bottom: 20px; }.course-detail-brand { letter-spacing: .05em; font-size: .62rem; line-height: 1.25; }
 .course-detail-brand span { display: block; opacity: .78; }.course-detail-brand strong { font-size: .79rem; }
+.course-back-link { display: inline-flex; align-items: center; width: fit-content; min-height: 38px; padding: 9px 11px; border: 1px solid rgba(255, 255, 255, .55); border-radius: 10px; background: rgba(255, 255, 255, .12); color: #fff; font-size: .72rem; font-weight: 800; text-decoration: none; transition: background .18s ease, transform .18s ease; }.course-back-link:hover { background: rgba(255, 255, 255, .22); }.course-back-link:focus-visible { outline: 3px solid #d7a92899; outline-offset: 2px; }.course-back-link:active { transform: translateY(1px); }
 .course-detail-header > p { margin: 0 0 5px; color: #dbe7ff; font-size: .66rem; font-weight: 800; letter-spacing: .08em; }
 .course-detail-header h1 { margin: 0; font-size: 1.48rem; line-height: 1.2; }
 .course-section-badge { display: inline-block; margin-top: 10px; padding: 5px 8px; border-radius: 999px; background: var(--detail-gold); color: var(--detail-navy); font-size: .67rem; font-weight: 800; letter-spacing: .04em; }
@@ -28,9 +29,180 @@ body { min-width: 320px; margin: 0; background: var(--detail-bg); color: var(--d
 .future-tool-card { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; padding: 13px; border: 1px solid var(--detail-border); border-radius: 14px; background: #fff; }.future-tool-card > span { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; background: #edf4fb; color: var(--detail-blue); font-size: 1rem; }.future-tool-card b { display: block; color: var(--detail-text); font-size: .8rem; }.future-tool-card p { margin: 4px 0 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.future-tool-card button { grid-column: 2; justify-self: start; min-height: 34px; margin-top: 2px; padding: 7px 9px; border: 1px solid var(--detail-border); border-radius: 9px; background: #f4f8fb; color: var(--detail-muted); font: 700 .68rem inherit; }
 .attendance-registration-form { display: grid; gap: 12px; }.attendance-date-row { display: grid; gap: 10px; }.attendance-date-row label, .attendance-student-row label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.attendance-date-row input, .attendance-student-row select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.attendance-secondary-btn, .attendance-save-btn { min-height: 40px; padding: 9px 13px; border-radius: 10px; font: 800 .72rem inherit; cursor: pointer; }.attendance-secondary-btn { border: 1px solid var(--detail-blue); background: #eef4fb; color: var(--detail-blue); }.attendance-save-btn { width: 100%; border: 1px solid var(--detail-navy); background: var(--detail-navy); color: #fff; }.attendance-save-btn:disabled { cursor: not-allowed; opacity: .55; }.attendance-helper { margin: 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.attendance-student-list { display: grid; gap: 9px; }.attendance-student-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.attendance-student-row b, .attendance-student-row small { display: block; }.attendance-student-row b { color: var(--detail-text); font-size: .8rem; }.attendance-student-row small { margin-top: 3px; color: var(--detail-muted); font-size: .65rem; }.attendance-actions { padding-top: 2px; }.attendance-feedback { min-height: 0; margin: 0; color: var(--detail-muted); font-size: .73rem; line-height: 1.4; }.attendance-feedback.success { color: #207448; }.attendance-feedback.error { color: #a73d3d; }
 .grades-registration-form { display: grid; gap: 12px; }.grades-evaluation-select { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.grades-evaluation-select select, .grades-student-row input { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.grades-evaluation-select select:disabled { color: var(--detail-muted); background: #f4f8fb; }.grades-helper { margin: 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.grades-student-list { display: grid; gap: 9px; }.grades-student-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.grades-student-row b, .grades-student-row small { display: block; }.grades-student-row b { color: var(--detail-text); font-size: .8rem; }.grades-student-row small { margin-top: 3px; color: var(--detail-muted); font-size: .65rem; }.grades-student-row label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.grades-student-row.is-recorded { background: #f7fafc; }.grades-student-row.is-recorded input { color: var(--detail-muted); background: #edf4fb; cursor: not-allowed; }.grade-entry-status { align-self: start; width: fit-content; padding: 5px 8px; border-radius: 999px; background: #edf4fb; color: var(--detail-blue); font-size: .64rem; font-weight: 800; }.grades-actions { padding-top: 2px; }.grades-save-btn { width: 100%; min-height: 40px; padding: 9px 13px; border: 1px solid var(--detail-navy); border-radius: 10px; background: var(--detail-navy); color: #fff; font: 800 .72rem inherit; cursor: pointer; }.grades-save-btn:disabled { cursor: not-allowed; opacity: .55; }.grades-feedback { min-height: 0; margin: 0; color: var(--detail-muted); font-size: .73rem; line-height: 1.4; }.grades-feedback.success { color: #207448; }.grades-feedback.error { color: #a73d3d; }
-.materials-list { display: grid; gap: 9px; }.material-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.material-row b, .material-row small { display: block; }.material-row b { color: var(--detail-text); font-size: .8rem; }.material-row small { margin-top: 3px; color: var(--detail-muted); font-size: .65rem; }.material-row a, .material-no-link { width: fit-content; font-size: .69rem; font-weight: 800; }.material-row a { color: var(--detail-blue); text-decoration: none; }.material-row a:hover { text-decoration: underline; }.material-no-link { color: var(--detail-muted); }.material-registration-form { display: grid; gap: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--detail-border); }.material-registration-form h3 { margin: 0; color: var(--detail-navy); font-size: .87rem; }.material-registration-form label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.material-registration-form label span { color: var(--detail-muted); font-weight: 600; }.material-registration-form input, .material-registration-form select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.material-helper { margin: 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.material-actions { padding-top: 2px; }.material-save-btn { width: 100%; min-height: 40px; padding: 9px 13px; border: 1px solid var(--detail-navy); border-radius: 10px; background: var(--detail-navy); color: #fff; font: 800 .72rem inherit; cursor: pointer; }.material-save-btn:disabled { cursor: not-allowed; opacity: .55; }.material-feedback { min-height: 0; margin: 0; color: var(--detail-muted); font-size: .73rem; line-height: 1.4; }.material-feedback.success { color: #207448; }.material-feedback.error { color: #a73d3d; }
+.demo-grades-management { display: grid; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--detail-border); }.demo-grades-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }.demo-grades-heading h3 { margin: 0; color: var(--detail-navy); font-size: .87rem; }.demo-grades-heading span { padding: 5px 8px; border-radius: 999px; background: #edf4fb; color: var(--detail-blue); font-size: .64rem; font-weight: 800; }.demo-grades-list { display: grid; gap: 9px; }.demo-grade-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.demo-grade-row b, .demo-grade-row small { display: block; }.demo-grade-row b { color: var(--detail-text); font-size: .8rem; }.demo-grade-row small { margin-top: 3px; color: var(--detail-muted); font-size: .65rem; line-height: 1.35; }.demo-grade-row > strong { color: var(--detail-navy); font-size: 1rem; }.demo-grade-row-actions, .demo-grade-actions { display: flex; flex-wrap: wrap; gap: 8px; }.demo-grade-row-actions button, .grades-cancel-btn { min-height: 34px; padding: 7px 10px; border: 1px solid var(--detail-border); border-radius: 9px; background: #fff; color: var(--detail-blue); font: 800 .68rem inherit; cursor: pointer; }.demo-grade-row-actions button[data-delete-demo-grade] { border-color: #d8b5b5; background: #fff7f7; color: #a73d3d; }.demo-grade-form { display: grid; gap: 11px; }.demo-grade-form label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.demo-grade-form input, .demo-grade-form select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.demo-grade-form select:disabled { background: #edf4fb; color: var(--detail-muted); }
+.materials-list { display: grid; gap: 9px; }.material-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.material-row b, .material-row small { display: block; }.material-row b { color: var(--detail-text); font-size: .8rem; }.material-row small { margin-top: 3px; color: var(--detail-muted); font-size: .65rem; }.material-row p { margin: 7px 0 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.material-row-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }.material-row a, .material-no-link, .material-delete-btn { width: fit-content; font: 800 .69rem inherit; }.material-row a { color: var(--detail-blue); text-decoration: none; }.material-row a:hover { text-decoration: underline; }.material-no-link { color: var(--detail-muted); }.material-delete-btn { min-height: 34px; padding: 7px 10px; border: 1px solid #d8b5b5; border-radius: 9px; background: #fff7f7; color: #a73d3d; cursor: pointer; }.material-delete-btn:hover { background: #fdeeee; }.material-registration-form { display: grid; gap: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--detail-border); }.material-registration-form h3 { margin: 0; color: var(--detail-navy); font-size: .87rem; }.material-registration-form label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.material-registration-form label span { color: var(--detail-muted); font-weight: 600; }.material-registration-form input, .material-registration-form select, .material-registration-form textarea { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.material-registration-form textarea { min-height: 82px; resize: vertical; }.material-helper { margin: 0; color: var(--detail-muted); font-size: .71rem; line-height: 1.45; }.material-actions { padding-top: 2px; }.material-save-btn { width: 100%; min-height: 40px; padding: 9px 13px; border: 1px solid var(--detail-navy); border-radius: 10px; background: var(--detail-navy); color: #fff; font: 800 .72rem inherit; cursor: pointer; }.material-save-btn:disabled { cursor: not-allowed; opacity: .55; }.material-feedback { min-height: 0; margin: 0; color: var(--detail-muted); font-size: .73rem; line-height: 1.4; }.material-feedback.success { color: #207448; }.material-feedback.error { color: #a73d3d; }
 .empty-material-card, .empty-state { margin: 0; padding: 17px; border: 1px dashed #c5d6e3; border-radius: 14px; background: #f8fbfd; color: var(--detail-muted); text-align: center; }.empty-material-card > span { display: block; color: var(--detail-blue); font-size: 1.25rem; }.empty-material-card b { display: block; margin-top: 7px; color: var(--detail-text); font-size: .8rem; }.empty-material-card p { margin: 4px 0 0; font-size: .71rem; }
-@media (min-width: 640px) { .teacher-course-demo { padding: 28px; }.course-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }.student-row { grid-template-columns: minmax(0, 1fr) 110px 90px; align-items: center; }.student-row > span:last-child { grid-column: auto; }.future-tool-card { grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; }.future-tool-card button { grid-column: auto; justify-self: end; }.course-detail-section { padding: 18px; }.attendance-date-row { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }.attendance-secondary-btn { min-width: 132px; }.attendance-student-row { grid-template-columns: minmax(0, 1fr) 180px; align-items: center; }.attendance-save-btn { width: auto; min-width: 190px; } }
+@media (min-width: 640px) { .teacher-course-demo { padding: 28px; }.course-detail-header-top { grid-template-columns: 1fr auto; align-items: start; }.course-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }.student-row { grid-template-columns: minmax(0, 1fr) 110px 90px; align-items: center; }.student-row > span:last-child { grid-column: auto; }.future-tool-card { grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; }.future-tool-card button { grid-column: auto; justify-self: end; }.course-detail-section { padding: 18px; }.attendance-date-row { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }.attendance-secondary-btn { min-width: 132px; }.attendance-student-row { grid-template-columns: minmax(0, 1fr) 180px; align-items: center; }.attendance-save-btn { width: auto; min-width: 190px; } }
 @media (min-width: 980px) { .teacher-course-demo { padding: 36px; }.course-detail-header { padding: 27px; }.course-detail-section { padding: 20px; } }
 @media (min-width: 640px) { .grades-student-row { grid-template-columns: minmax(0, 1fr) 160px auto; align-items: center; }.grades-save-btn { width: auto; min-width: 190px; } }
-@media (min-width: 640px) { .material-row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }.material-save-btn { width: auto; min-width: 190px; } }
+@media (min-width: 640px) { .demo-grade-row { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; }.demo-grade-row-actions { justify-content: end; }.demo-grade-actions { align-items: center; }.grades-cancel-btn { min-width: 130px; } }
+@media (min-width: 640px) { .material-row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }.material-row-actions { justify-content: flex-end; }.material-save-btn { width: auto; min-width: 190px; } }
+
+/* Estado textual complementario para la gestión demo de asistencia. */
+.attendance-current-status { margin: 0; color: var(--detail-muted); font-size: .63rem; font-weight: 600; }
+
+.announcements-list { display: grid; gap: 9px; }.announcement-row { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--detail-border); border-radius: 13px; background: #f9fbfd; }.announcement-row b, .announcement-row small { display: block; }.announcement-row b { color: var(--detail-text); font-size: .8rem; }.announcement-row p { margin: 6px 0; color: var(--detail-muted); font-size: .72rem; line-height: 1.45; white-space: pre-wrap; }.announcement-row small { color: var(--detail-muted); font-size: .64rem; }.announcement-row-actions, .announcement-actions { display: flex; flex-wrap: wrap; gap: 8px; }.announcement-row-actions button { min-height: 34px; padding: 7px 10px; border: 1px solid var(--detail-border); border-radius: 9px; background: #fff; color: var(--detail-blue); font: 800 .68rem inherit; cursor: pointer; }.announcement-row-actions button[data-delete-announcement] { border-color: #d8b5b5; background: #fff7f7; color: #a73d3d; }.announcement-form { display: grid; gap: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--detail-border); }.announcement-form label { display: grid; gap: 5px; color: var(--detail-muted); font-size: .69rem; font-weight: 800; }.announcement-form input, .announcement-form textarea { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--detail-border); border-radius: 10px; background: #fff; color: var(--detail-text); font: inherit; }.announcement-form textarea { min-height: 88px; resize: vertical; }.announcement-feedback { min-height: 0; margin: 0; color: var(--detail-muted); font-size: .73rem; line-height: 1.4; }.announcement-feedback.success { color: #207448; }.announcement-feedback.error { color: #a73d3d; }
+@media (min-width: 640px) { .announcement-row { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }.announcement-row-actions { justify-content: flex-end; }.announcement-actions { align-items: center; } }
+
+/* Fase 1.87: lectura guiada y acciones docentes accesibles, sin cambiar flujos. */
+.course-detail-section {
+  min-width: 0;
+}
+
+.course-detail-section .section-heading {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #edf2f6;
+}
+
+.student-row,
+.attendance-student-row,
+.grades-student-row,
+.material-row,
+.announcement-row,
+.demo-grade-row {
+  box-shadow: 0 3px 9px rgba(23, 58, 84, .035);
+}
+
+.attendance-registration-form,
+.grades-registration-form,
+.material-registration-form,
+.announcement-form {
+  padding: 14px;
+  border: 1px solid #dce7ef;
+  border-radius: 14px;
+  background: #fbfdff;
+}
+
+.attendance-date-row input:focus,
+.attendance-student-row select:focus,
+.grades-evaluation-select select:focus,
+.grades-student-row input:focus,
+.material-registration-form input:focus,
+.material-registration-form select:focus,
+.material-registration-form textarea:focus,
+.announcement-form input:focus,
+.announcement-form textarea:focus,
+.demo-grade-form input:focus,
+.demo-grade-form select:focus {
+  border-color: var(--detail-blue);
+  box-shadow: 0 0 0 3px rgba(49, 88, 165, .13);
+  outline: 0;
+}
+
+.attendance-save-btn,
+.grades-save-btn,
+.material-save-btn {
+  min-height: 44px;
+  transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.attendance-feedback,
+.grades-feedback,
+.material-feedback,
+.announcement-feedback {
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: #f6f9fc;
+}
+
+.attendance-feedback.success,
+.grades-feedback.success,
+.material-feedback.success,
+.announcement-feedback.success {
+  background: #edf8f2;
+}
+
+.attendance-feedback.error,
+.grades-feedback.error,
+.material-feedback.error,
+.announcement-feedback.error {
+  background: #fff4f4;
+}
+
+.empty-material-card,
+.empty-state {
+  line-height: 1.5;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(215, 169, 40, .68);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .student-row:hover,
+  .attendance-student-row:hover,
+  .grades-student-row:hover,
+  .material-row:hover,
+  .announcement-row:hover {
+    border-color: #b8d0e2;
+    box-shadow: 0 7px 17px rgba(23, 58, 84, .075);
+  }
+
+  .attendance-save-btn:hover:not(:disabled),
+  .grades-save-btn:hover:not(:disabled),
+  .material-save-btn:hover:not(:disabled) {
+    background: var(--detail-blue);
+    box-shadow: 0 6px 14px rgba(32, 55, 125, .18);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 639px) {
+  .course-detail-section { margin-top: 14px; padding: 15px; border-radius: 17px; }
+  .course-summary article { min-height: 62px; }
+  .attendance-registration-form,
+  .grades-registration-form,
+  .material-registration-form,
+  .announcement-form { padding: 12px; }
+  .attendance-save-btn,
+  .grades-save-btn,
+  .material-save-btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Fase 1.89: resumen superior de solo lectura para el curso docente. */
+.course-dashboard-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.course-dashboard-metric {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #dfeaf1;
+  border-radius: 13px;
+  background: #f9fcfe;
+  box-shadow: 0 3px 9px rgba(23, 58, 84, .035);
+}
+
+.course-dashboard-metric span,
+.course-dashboard-metric strong { display: block; }
+.course-dashboard-metric span { color: var(--detail-muted); font-size: .72rem; line-height: 1.35; }
+.course-dashboard-metric strong { margin-top: 5px; color: var(--detail-navy); font-size: .94rem; line-height: 1.35; }
+
+.course-analytics { display: grid; gap: 10px; }
+.course-analytics-card { display: grid; gap: 6px; padding: 13px; border: 1px solid #dfeaf1; border-radius: 13px; background: #f9fcfe; }
+.course-analytics-card b { color: var(--detail-navy); font-size: .8rem; }
+.course-analytics-card strong { color: var(--detail-muted); font-size: .74rem; }
+.course-analytics-bar { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: #e4edf3; }
+.course-analytics-bar i { display: block; height: 100%; border-radius: inherit; background: var(--detail-blue); }
+.course-analytics-followup { margin: 0; padding: 10px 12px; border-left: 3px solid var(--detail-gold); border-radius: 0 10px 10px 0; background: #fffaf0; color: var(--detail-text); font-size: .75rem; font-weight: 800; }
+
+@media (max-width: 639px) {
+  .course-dashboard-summary { grid-template-columns: 1fr; gap: 8px; }
+  .course-dashboard-metric { padding: 12px; }
+}

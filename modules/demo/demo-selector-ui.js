@@ -12,23 +12,32 @@ const roleMeta = {
 };
 
 function renderDemoUsers() {
-  $("#demo-users").innerHTML = getDemoUsers().map(user => {
+  const container = $("#demo-users");
+  const fragment = document.createDocumentFragment();
+  getDemoUsers().forEach(user => {
     const meta = roleMeta[user.role] || roleMeta.STUDENT;
     const route = "Abrir experiencia demo";
-
-    return `
-      <article class="demo-user-card">
-        <span class="demo-user-icon" aria-hidden="true">${meta.icon}</span>
-        <div>
-          <p class="demo-role">${meta.label} · ${user.role}</p>
-          <h3>${user.nombre}</h3>
-          <span>${user.email}</span>
-          <small>Experiencia: ${user.experience}</small>
-        </div>
-        <button type="button" data-demo-user="${user.id}">${route}<i>›</i></button>
-      </article>
-    `;
-  }).join("");
+    const card = document.createElement("article");
+    const content = document.createElement("div");
+    const button = document.createElement("button");
+    const icon = document.createElement("span");
+    card.className = "demo-user-card";
+    icon.className = "demo-user-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = meta.icon;
+    content.append(
+      Object.assign(document.createElement("p"), { className: "demo-role", textContent: `${meta.label} · ${user.role}` }),
+      Object.assign(document.createElement("h3"), { textContent: user.nombre }),
+      Object.assign(document.createElement("span"), { textContent: user.email }),
+      Object.assign(document.createElement("small"), { textContent: `Experiencia: ${user.experience}` })
+    );
+    button.type = "button";
+    button.dataset.demoUser = user.id;
+    button.append(route, Object.assign(document.createElement("i"), { textContent: "›" }));
+    card.append(icon, content, button);
+    fragment.append(card);
+  });
+  container.replaceChildren(fragment);
 }
 
 document.addEventListener("click", event => {

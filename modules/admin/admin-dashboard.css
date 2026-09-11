@@ -63,7 +63,7 @@ body {
 .admin-profile strong, .admin-profile small { display: block; white-space: nowrap; }
 .admin-profile strong { font-size: 0.88rem; }
 .admin-profile small { margin-top: 3px; color: #c9dbf0; font-size: 0.72rem; }
-.admin-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; margin-left: auto; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 10px; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: .7rem; font-weight: 800; cursor: pointer; transition: background .18s ease, transform .18s ease; }.admin-demo-logout:hover { background: rgba(255, 255, 255, .2); }.admin-demo-logout:focus-visible { outline: 3px solid #d7a62a99; outline-offset: 2px; }.admin-demo-logout:active { transform: translateY(1px); }
+.admin-header-actions { display: grid; width: 100%; gap: 8px; margin-top: 2px; }.admin-selector-link, .admin-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 10px; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: .7rem; font-weight: 800; text-decoration: none; cursor: pointer; transition: background .18s ease, transform .18s ease; }.admin-selector-link:hover, .admin-demo-logout:hover { background: rgba(255, 255, 255, .2); }.admin-selector-link:focus-visible, .admin-demo-logout:focus-visible { outline: 3px solid #d7a62a99; outline-offset: 2px; }.admin-selector-link:active, .admin-demo-logout:active { transform: translateY(1px); }
 
 .admin-avatar {
   display: grid;
@@ -119,6 +119,15 @@ body {
 .management-count { min-width: 28px; color: var(--admin-blue); font-size: 0.83rem; font-weight: 800; text-align: right; }
 
 .statistics-layout { grid-template-columns: 1fr; }
+.admin-summary-metrics,
+.admin-demo-detail-grid { display: grid; gap: 12px; margin-bottom: 30px; }
+.admin-summary-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.admin-summary-metric { display: grid; gap: 5px; min-width: 0; min-height: 112px; padding: 15px; border: 1px solid var(--admin-border); border-radius: 16px; background: var(--admin-surface); box-shadow: 0 5px 16px rgba(20, 48, 86, .06); }
+.admin-summary-metric > span { color: var(--admin-muted); font-size: .74rem; line-height: 1.35; }.admin-summary-metric strong { color: var(--admin-navy); font-size: 1.4rem; letter-spacing: -.03em; }.admin-summary-metric small { color: var(--admin-muted); font-size: .67rem; line-height: 1.35; }
+.admin-demo-status,
+.admin-recent-activity { display: grid; gap: 9px; }
+.admin-demo-status-card { display: grid; gap: 6px; padding: 13px; border-left: 3px solid #28734f; border-radius: 0 12px 12px 0; background: #eff9f3; }.admin-demo-status-card strong { color: #207448; font-size: .82rem; }.admin-demo-status-card span { color: var(--admin-muted); font-size: .72rem; line-height: 1.45; }
+.admin-activity-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #edf1f6; }.admin-activity-row:last-child { border-bottom: 0; }.admin-activity-row b,.admin-activity-row span,.admin-activity-row small { display: block; }.admin-activity-row b { color: var(--admin-navy); font-size: .76rem; }.admin-activity-row span,.admin-activity-row small,.admin-summary-note,.admin-empty-state { color: var(--admin-muted); font-size: .69rem; line-height: 1.4; }.admin-activity-row small { flex:0 0 auto; text-align:right; }.admin-summary-note,.admin-empty-state { margin:0; }
 .statistics-card { padding: 18px; }
 .stat-list, .operations-list { display: grid; gap: 9px; }
 .stat-row, .operation-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #edf1f6; color: var(--admin-muted); font-size: 0.8rem; }
@@ -131,12 +140,125 @@ body {
 @media (min-width: 620px) {
   .admin-demo { padding: 30px 24px 56px; }
   .admin-header { padding: 22px 24px; }
+  .admin-header-actions { width: auto; margin-top: 0; }
   .metrics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .admin-summary-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .admin-demo-detail-grid { grid-template-columns: .8fr 1.2fr; }
   .management-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (min-width: 920px) {
   .admin-demo { padding-top: 42px; }
   .metrics-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .admin-summary-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .statistics-layout { grid-template-columns: 1.1fr 0.9fr; }
+}
+
+/* Fase 1.87: panel administrativo más legible y consistente, sin alterar métricas. */
+.admin-header {
+  background: linear-gradient(135deg, var(--admin-navy), #164d88);
+}
+
+.admin-intro {
+  max-width: 68ch;
+}
+
+.metrics-grid,
+.management-grid,
+.statistics-layout {
+  margin-bottom: 30px;
+}
+
+.metric-card,
+.management-card,
+.statistics-card {
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.metric-card {
+  border-top: 3px solid #dfeaf3;
+}
+
+.metric-card:nth-child(1) { border-top-color: var(--admin-blue); }
+.metric-card:nth-child(2) { border-top-color: #28734f; }
+.metric-card:nth-child(3) { border-top-color: var(--admin-gold); }
+.metric-card:nth-child(4) { border-top-color: #735aa4; }
+.metric-card:nth-child(5) { border-top-color: #4f8199; }
+
+.metric-card strong {
+  letter-spacing: -.03em;
+}
+
+.management-card {
+  border-left: 3px solid #e1ebf3;
+}
+
+.management-card p,
+.section-note,
+.admin-intro > p:last-child {
+  line-height: 1.5;
+}
+
+.statistics-card {
+  min-width: 0;
+}
+
+.stat-row,
+.operation-row {
+  min-height: 39px;
+}
+
+.operation-row strong {
+  padding: 4px 7px;
+  border-radius: 8px;
+  background: #eef5fa;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(215, 166, 42, .68);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .metric-card:hover,
+  .management-card:hover,
+  .statistics-card:hover {
+    border-color: #b8cfe0;
+    box-shadow: 0 11px 24px rgba(20, 48, 86, .1);
+  }
+
+  .metric-card:hover,
+  .management-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 619px) {
+  .admin-header { align-items: flex-start; }
+  .admin-profile { align-items: flex-start; }
+  .admin-header-actions { margin-left: 48px; }
+  .admin-intro,
+  .metrics-grid,
+  .management-grid,
+  .statistics-layout { margin-bottom: 22px; }
+  .metric-card { min-height: 108px; padding: 14px; }
+  .admin-summary-metrics,
+  .admin-demo-detail-grid { margin-bottom: 22px; }
+  .admin-summary-metric { min-height: 104px; padding: 13px; }
+  .admin-activity-row { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .admin-activity-row small { text-align: left; }
+  .management-card { min-height: 86px; padding: 13px; }
+  .statistics-card { padding: 15px; }
+  .section-heading { align-items: flex-start; }
+  .section-note { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

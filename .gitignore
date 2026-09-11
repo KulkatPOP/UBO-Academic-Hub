@@ -1,5 +1,11 @@
 # Configuración local del editor
 .vscode/
+.idea/
+*.code-workspace
+*.suo
+*.user
+*.swp
+*.swo
 
 # Variables privadas
 .env

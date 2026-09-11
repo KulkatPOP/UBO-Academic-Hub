@@ -52,7 +52,8 @@ body {
 .teacher-kicker { color: #dbe7ff; }
 .teacher-header h1 { margin: 0; font-size: 1.45rem; line-height: 1.2; }
 .teacher-header p:last-child { margin: 4px 0 0; color: #e8efff; font-size: .84rem; }
-.teacher-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 38px; margin-left: auto; padding: 9px 11px; border: 1px solid rgba(255, 255, 255, .55); border-radius: 10px; background: rgba(255, 255, 255, .12); color: #fff; font: inherit; font-size: .72rem; font-weight: 800; cursor: pointer; transition: background .18s ease, transform .18s ease; }.teacher-demo-logout:hover { background: rgba(255, 255, 255, .22); }.teacher-demo-logout:focus-visible { outline: 3px solid #d7a92899; outline-offset: 2px; }.teacher-demo-logout:active { transform: translateY(1px); }
+.teacher-header-actions { display: grid; width: 100%; gap: 8px; margin-top: 2px; }
+.teacher-selector-link, .teacher-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 38px; padding: 9px 11px; border: 1px solid rgba(255, 255, 255, .55); border-radius: 10px; background: rgba(255, 255, 255, .12); color: #fff; font: inherit; font-size: .72rem; font-weight: 800; text-decoration: none; cursor: pointer; transition: background .18s ease, transform .18s ease; }.teacher-selector-link:hover, .teacher-demo-logout:hover { background: rgba(255, 255, 255, .22); }.teacher-selector-link:focus-visible, .teacher-demo-logout:focus-visible { outline: 3px solid #d7a92899; outline-offset: 2px; }.teacher-selector-link:active, .teacher-demo-logout:active { transform: translateY(1px); }
 
 .teacher-section { margin-top: 18px; padding: 17px; }
 .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
@@ -86,6 +87,7 @@ body {
 @media (min-width: 640px) {
   .teacher-demo { padding: 28px; }
   .teacher-header { grid-template-columns: 1fr auto; align-items: center; padding: 26px; }
+  .teacher-header-actions { width: auto; margin-top: 0; }
   .teacher-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .teacher-course-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .teacher-action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -98,4 +100,193 @@ body {
   .teacher-summary-card { grid-template-columns: 1fr; align-content: center; gap: 5px; min-height: 116px; }
   .teacher-summary-card strong { font-size: 1.55rem; }
   .teacher-action { grid-template-columns: 1fr; align-content: center; min-height: 100px; }
+}
+
+/* Fase 1.87: densidad y jerarquía visual coherentes con Academic Hub. */
+.teacher-header,
+.teacher-section {
+  overflow: hidden;
+}
+
+.teacher-section {
+  transition: box-shadow .18s ease, border-color .18s ease;
+}
+
+.teacher-section .section-heading {
+  padding-bottom: 11px;
+  border-bottom: 1px solid #edf2f6;
+}
+
+.teacher-summary-card,
+.teacher-course-card,
+.teacher-action {
+  box-shadow: 0 4px 12px rgba(23, 58, 84, .045);
+}
+
+.teacher-summary-card {
+  border-top: 3px solid transparent;
+}
+
+.teacher-summary-card:nth-child(1) { border-top-color: var(--teacher-blue); }
+.teacher-summary-card:nth-child(2) { border-top-color: #27704a; }
+.teacher-summary-card:nth-child(3) { border-top-color: var(--teacher-gold); }
+.teacher-summary-card:nth-child(4) { border-top-color: #735aa4; }
+
+.teacher-course-card {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.course-details {
+  flex: 1;
+}
+
+.teacher-course-link {
+  margin-top: auto;
+  min-height: 42px;
+}
+
+.teacher-action {
+  border-left: 3px solid #dfeaf3;
+}
+
+.teacher-action b {
+  line-height: 1.35;
+}
+
+.teacher-action small {
+  line-height: 1.4;
+}
+
+.teacher-empty-state {
+  padding: 16px;
+  border: 1px dashed #bfd0de;
+  border-radius: 14px;
+  background: #f8fbfd;
+  color: var(--teacher-muted);
+  font-size: .75rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(215, 169, 40, .68);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .teacher-course-card:hover,
+  .teacher-action:hover {
+    border-color: #b8d0e2;
+    box-shadow: 0 10px 22px rgba(23, 58, 84, .1);
+  }
+
+  .teacher-course-link:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 639px) {
+  .teacher-demo { padding-bottom: 28px; }
+  .teacher-header { gap: 18px; }
+  .teacher-profile { align-items: flex-start; }
+  .teacher-header-actions { margin-left: 61px; }
+  .teacher-section { margin-top: 14px; padding: 15px; border-radius: 17px; }
+  .teacher-summary-card { min-height: 68px; }
+  .teacher-course-link { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Fase 1.89: métricas de lectura del resumen docente. */
+.teacher-course-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.teacher-course-metric {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #e3edf4;
+  border-radius: 11px;
+  background: #f8fbfd;
+}
+
+.teacher-course-metric-label,
+.teacher-course-metric-value {
+  display: block;
+}
+
+.teacher-course-analysis {
+  display: grid;
+  gap: 4px;
+  margin: -3px 0 13px;
+  padding: 10px 11px;
+  border-left: 3px solid var(--teacher-blue);
+  border-radius: 0 10px 10px 0;
+  background: #f4f8fb;
+  color: var(--teacher-muted);
+  font-size: .72rem;
+  line-height: 1.4;
+}
+
+.teacher-course-analysis span:first-child { color: var(--teacher-navy); font-weight: 800; }
+
+.teacher-course-metric-label {
+  color: var(--teacher-muted);
+  font-size: .7rem;
+  line-height: 1.3;
+}
+
+.teacher-course-metric-value {
+  margin-top: 3px;
+  color: var(--teacher-navy);
+  font-size: .87rem;
+  line-height: 1.35;
+}
+
+.teacher-recent-activity {
+  display: grid;
+  gap: 9px;
+}
+
+.teacher-activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 13px;
+  border: 1px solid #e1ebf2;
+  border-radius: 12px;
+  background: #fbfdff;
+}
+
+.teacher-activity-row strong,
+.teacher-activity-row span,
+.teacher-activity-row small {
+  display: block;
+}
+
+.teacher-activity-row strong { color: var(--teacher-navy); font-size: .82rem; }
+.teacher-activity-row span,
+.teacher-activity-row small { color: var(--teacher-muted); font-size: .72rem; line-height: 1.4; }
+.teacher-activity-row span { margin-top: 2px; }
+.teacher-activity-row small { flex: 0 0 auto; text-align: right; }
+
+@media (max-width: 639px) {
+  .teacher-course-metrics { gap: 7px; }
+  .teacher-course-metric { padding: 9px; }
+  .teacher-activity-row { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .teacher-activity-row small { text-align: left; }
 }

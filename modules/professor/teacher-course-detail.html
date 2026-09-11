@@ -10,9 +10,12 @@
 <body>
   <main id="teacher-course-detail" class="teacher-course-demo" aria-labelledby="teacher-course-title">
     <header class="course-detail-header">
-      <div class="course-detail-brand">
-        <span>UNIVERSIDAD</span>
-        <strong>BERNARDO O'HIGGINS</strong>
+      <div class="course-detail-header-top">
+        <div class="course-detail-brand">
+          <span>UNIVERSIDAD</span>
+          <strong>BERNARDO O'HIGGINS</strong>
+        </div>
+        <a class="course-back-link" href="./teacher-dashboard.html">← Volver a mis cursos</a>
       </div>
       <p>PANEL DOCENTE · DETALLE DE CURSO</p>
       <h1 id="teacher-course-title"></h1>
@@ -24,6 +27,20 @@
       <article><span>Horario</span><strong id="teacher-course-schedule"></strong></article>
       <article><span>Sala</span><strong id="teacher-course-room"></strong></article>
       <article><span>Alumnos</span><strong id="teacher-course-student-count"></strong></article>
+    </section>
+
+    <section class="course-detail-section course-dashboard-summary-section" aria-labelledby="course-dashboard-summary-title">
+      <div class="section-heading">
+        <div><p>RESUMEN DOCENTE · DEMO</p><h2 id="course-dashboard-summary-title">Resumen del curso</h2></div>
+      </div>
+      <div id="teacher-course-dashboard-summary" class="course-dashboard-summary" aria-live="polite"></div>
+    </section>
+
+    <section class="course-detail-section course-analytics-section" aria-labelledby="course-analytics-title">
+      <div class="section-heading">
+        <div><p>ANÁLISIS ACADÉMICO · DEMO</p><h2 id="course-analytics-title">Análisis del curso</h2></div>
+      </div>
+      <div id="teacher-course-analytics" class="course-analytics" aria-live="polite"></div>
     </section>
 
     <section class="course-detail-section" aria-labelledby="course-students-title">
@@ -41,14 +58,26 @@
           <label for="teacher-attendance-date">Fecha de la clase<input id="teacher-attendance-date" type="date" required /></label>
           <button id="prepare-attendance-btn" class="attendance-secondary-btn" type="button">Preparar lista</button>
         </div>
-        <p class="attendance-helper">Selecciona una fecha válida para cargar únicamente a los alumnos inscritos en este curso.</p>
+        <p class="attendance-helper">Selecciona una fecha válida para cargar a los alumnos inscritos. Los estudiantes sin estado permanecen sin registrar; los datos demo se guardan solo en este dispositivo.</p>
         <div id="attendance-student-list" class="attendance-student-list" aria-live="polite"></div>
         <div class="attendance-actions"><button id="save-attendance-btn" class="attendance-save-btn" type="submit" disabled>Guardar asistencia</button></div>
         <div id="attendance-feedback" class="attendance-feedback" role="status" aria-live="polite"></div>
       </form>
-    </section>
+      </section>
 
-    <section class="course-detail-section" aria-labelledby="course-grades-title">
+      <section class="course-detail-section" aria-labelledby="course-announcements-title">
+        <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-announcements-title">Avisos</h2></div><span id="announcements-summary"></span></div>
+        <div id="teacher-course-announcements" class="announcements-list" aria-live="polite"></div>
+        <form id="teacher-announcement-form" class="announcement-form" novalidate>
+          <input id="teacher-announcement-id" type="hidden" />
+          <label for="teacher-announcement-title">Título<input id="teacher-announcement-title" type="text" maxlength="120" required /></label>
+          <label for="teacher-announcement-content">Contenido<textarea id="teacher-announcement-content" maxlength="2000" required></textarea></label>
+          <div class="announcement-actions"><button id="save-announcement-btn" class="material-save-btn" type="submit">Publicar aviso</button><button id="cancel-announcement-btn" class="grades-cancel-btn" type="button" hidden>Cancelar edición</button></div>
+          <div id="announcement-feedback" class="announcement-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section class="course-detail-section" aria-labelledby="course-grades-title">
       <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-grades-title">Notas</h2></div><span id="grades-summary"></span></div>
       <form id="teacher-grades-form" class="grades-registration-form">
         <label class="grades-evaluation-select" for="teacher-grade-evaluation">Evaluación oficial
@@ -59,25 +88,38 @@
         <div class="grades-actions"><button id="save-grades-btn" class="grades-save-btn" type="submit" disabled>Guardar notas</button></div>
         <div id="grades-feedback" class="grades-feedback" role="status" aria-live="polite"></div>
       </form>
+      <div class="demo-grades-management" aria-labelledby="demo-grades-title">
+        <div class="demo-grades-heading"><h3 id="demo-grades-title">Notas demo gestionadas por el profesor</h3><span id="demo-grades-summary"></span></div>
+        <p class="grades-helper">Las notas institucionales anteriores no se modifican. Esta sección guarda únicamente registros demo en este dispositivo.</p>
+        <div id="teacher-demo-grades" class="demo-grades-list" aria-live="polite"></div>
+        <form id="teacher-demo-grade-form" class="demo-grade-form" novalidate>
+          <input id="teacher-demo-grade-id" type="hidden" />
+          <label for="teacher-demo-grade-assessment">Nombre de evaluación<input id="teacher-demo-grade-assessment" type="text" maxlength="80" placeholder="Ej.: Prueba 1" required /></label>
+          <label for="teacher-demo-grade-student">Estudiante<select id="teacher-demo-grade-student" required></select></label>
+          <label for="teacher-demo-grade-value">Nota<input id="teacher-demo-grade-value" type="text" inputmode="decimal" placeholder="Ej.: 5,5" required /></label>
+          <div class="demo-grade-actions"><button id="save-demo-grade-btn" class="grades-save-btn" type="submit">Guardar nota demo</button><button id="cancel-demo-grade-btn" class="grades-cancel-btn" type="button" hidden>Cancelar edición</button></div>
+          <div id="demo-grade-feedback" class="grades-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </div>
     </section>
 
     <section class="course-detail-section" aria-labelledby="course-materials-title">
-      <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-materials-title">Material académico</h2></div><span id="materials-summary"></span></div>
+      <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-materials-title">Material del curso</h2></div><span id="materials-summary"></span></div>
       <div id="teacher-course-materials" class="materials-list" aria-live="polite"></div>
       <form id="teacher-material-form" class="material-registration-form" novalidate>
-        <h3>Agregar referencia de material</h3>
-        <label for="teacher-material-title">Título<input id="teacher-material-title" type="text" required /></label>
+        <h3>Agregar material demo</h3>
+        <label for="teacher-material-title">Título<input id="teacher-material-title" type="text" maxlength="120" required /></label>
+        <label for="teacher-material-description">Descripción <span>(opcional)</span><textarea id="teacher-material-description" maxlength="1000" rows="3"></textarea></label>
         <label for="teacher-material-type">Tipo
           <select id="teacher-material-type">
-            <option value="PDF">PDF</option>
-            <option value="Presentación">Presentación</option>
-            <option value="Documento">Documento</option>
-            <option value="Enlace">Enlace</option>
-            <option value="Otro">Otro</option>
+            <option value="DOCUMENTO">Documento</option>
+            <option value="PRESENTACIÓN">Presentación</option>
+            <option value="VIDEO">Video</option>
+            <option value="GUÍA">Guía</option>
+            <option value="OTRO">Otro</option>
           </select>
         </label>
-        <label for="teacher-material-url">URL <span>(obligatoria para Enlace)</span><input id="teacher-material-url" type="url" inputmode="url" placeholder="https://" /></label>
-        <p class="material-helper">No se cargan archivos físicos en esta etapa; solo se guardan referencias URL válidas en memoria.</p>
+        <p class="material-helper">El material demo se guarda solo en este dispositivo. No se cargan archivos físicos ni se envían datos a un servidor.</p>
         <div class="material-actions"><button id="save-material-btn" class="material-save-btn" type="submit">Agregar material</button></div>
         <div id="material-feedback" class="material-feedback" role="status" aria-live="polite"></div>
       </form>
