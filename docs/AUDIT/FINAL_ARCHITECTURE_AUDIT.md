@@ -47,8 +47,8 @@ No se eliminaron archivos en esta fase.
 ## PWA
 
 - `manifest.json` declara nombre, `start_url`, alcance, colores e iconos PNG de 192 y 512 px.
-- El Service Worker activo definido en código usa `ubo-academic-hub-v142`.
-- El precache referencia `app.js?v=117`, coherente con el script de `index.html`.
+- El Service Worker activo definido en código usa `ubo-academic-hub-v145`.
+- El precache referencia `app.js?v=120`, coherente con el script de `index.html`.
 - La PWA no incluye UniEcosystemCore ni dependencias de `localhost:3101` en su precache.
 
 **PWA_READY**

@@ -70,3 +70,9 @@ La aplicación legacy aún tiene renderizadores dinámicos con `innerHTML`. Much
 - `INNERHTML_AUDIT_COMPLETE`: sí.
 - `DYNAMIC_INNERHTML_REMOVED`: parcial; completado para Admin, Profesor y bloques críticos de Inicio enumerados arriba.
 - `XSS_HARDENING_OK`: parcial; no puede declararse global hasta migrar los 103 usos legacy restantes.
+
+## Post-hardening syntax repair — Fase 1.92.23
+
+El diagnóstico confirmó que `$()` permanece como el helper interno declarado mediante `document.querySelector`; no es una referencia inválida a jQuery. La causa estaba en `calculateAttendance()`: los textos de porcentaje actual y asistencias proyectadas tenían su backtick de cierre después de la coma del arreglo, dejando las interpolaciones mal delimitadas. La comprobación de Node no lo detectó porque la secuencia seguía siendo parseable como un template literal más amplio; el navegador sí fallaba al procesar el módulo.
+
+La reparación cierra ambos template literals antes de sus etiquetas correspondientes y restaura el cierre de `entries.forEach()` en `renderGradeSimulator()`. Además, la identidad del recurso PWA se actualiza a `app.js?v=120` y `ubo-academic-hub-v145` para impedir que una copia antigua del script vuelva a servirse. No se modificaron renderizadores, lógica académica, servicios ni Core.

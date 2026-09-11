@@ -62,7 +62,7 @@ Los perfiles docente y administrativo se abren desde el selector demo: `modules/
 
 - Los renderizadores dinámicos priorizan nodos DOM y `textContent`; la auditoría de hardening XSS está documentada en `docs/AUDIT/`.
 - La integración con UniEcosystemCore permanece aislada y desactivada: no se activan Core Session, Identity Canary, Career ni Room canónicos.
-- El Service Worker vigente utiliza la caché `ubo-academic-hub-v142` y precachea `app.js?v=117`.
+- El Service Worker vigente utiliza la caché `ubo-academic-hub-v145` y precachea `app.js?v=120`.
 
 ## Validación
 

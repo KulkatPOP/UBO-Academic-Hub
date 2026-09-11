@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ubo-academic-hub-v142';
-const APP_ASSETS = ['./', './index.html', './styles.css?v=113', './app.js?v=117', './config/institution.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'ubo-academic-hub-v145';
+const APP_ASSETS = ['./', './index.html', './styles.css?v=113', './app.js?v=120', './config/institution.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 const DEMO_SHELL_ASSETS = [
   './modules/demo/demo-selector.html',
   './modules/demo/demo-selector.css',
