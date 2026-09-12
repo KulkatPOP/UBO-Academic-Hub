@@ -20,7 +20,7 @@ body {
 }
 
 .demo-selector { width: min(100%, 960px); margin: 0 auto; padding: 20px 16px 36px; }
-.demo-header, .demo-user-card, .demo-status { border: 1px solid var(--demo-border); border-radius: 20px; background: #fff; box-shadow: var(--demo-shadow); }
+.demo-header, .institutional-login-form, .demo-status { border: 1px solid var(--demo-border); border-radius: 20px; background: #fff; box-shadow: var(--demo-shadow); }
 .demo-header { padding: 22px; background: linear-gradient(135deg, var(--demo-navy), var(--demo-blue)); color: #fff; }
 .demo-header p, .demo-section-heading p { margin: 0 0 5px; font-size: .66rem; font-weight: 800; letter-spacing: .09em; }
 .demo-header p { color: #dbe7ff; }
@@ -29,27 +29,19 @@ body {
 .demo-section-heading { margin: 25px 0 14px; }
 .demo-section-heading p { color: var(--demo-blue); }
 .demo-section-heading h2 { margin: 0; color: var(--demo-navy); font-size: 1.08rem; }
-.demo-user-grid { display: grid; gap: 12px; }
-.demo-user-card { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 12px; padding: 14px; }
-.demo-user-icon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; background: #edf4fb; color: var(--demo-blue); font-size: 1.15rem; }
-.demo-role { margin: 0; color: var(--demo-blue); font-size: .66rem; font-weight: 800; letter-spacing: .04em; }
-.demo-user-card h3 { margin: 4px 0; color: var(--demo-navy); font-size: .98rem; }
-.demo-user-card span:not(.demo-user-icon), .demo-user-card small { display: block; color: var(--demo-muted); font-size: .73rem; line-height: 1.45; }
-.demo-user-card small { margin-top: 3px; font-weight: 700; }
-.demo-user-card button { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 10px 13px; border: 1px solid var(--demo-navy); border-radius: 12px; background: var(--demo-navy); color: #fff; cursor: pointer; font: 700 .76rem inherit; text-align: left; }
-.demo-user-card button:hover { background: #18306f; }
-.demo-user-card button i { font-size: 1.25rem; font-style: normal; }
+.institutional-login-form { display: grid; gap: 14px; max-width: 480px; margin: 0 auto; padding: 20px; }
+.institutional-login-form label { display: grid; gap: 7px; color: var(--demo-text); font-size: .8rem; font-weight: 700; }
+.institutional-login-form input { min-height: 46px; padding: 10px 12px; border: 1px solid var(--demo-border); border-radius: 12px; color: var(--demo-text); font: inherit; }
+.institutional-login-form input:focus { outline: 3px solid #3158a533; border-color: var(--demo-blue); }
+.institutional-login-form button { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 10px 14px; border: 1px solid var(--demo-navy); border-radius: 12px; background: var(--demo-navy); color: #fff; cursor: pointer; font: 700 .8rem inherit; }
+.institutional-login-form button:hover { background: #18306f; }
 .demo-status { margin: 18px 0 0; padding: 13px 14px; color: var(--demo-muted); font-size: .75rem; line-height: 1.45; }
 
 @media (min-width: 640px) {
   .demo-selector { padding: 28px; }
-  .demo-user-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .demo-user-card { grid-template-columns: 42px minmax(0, 1fr); }
-  .demo-user-card button { grid-column: 2; }
 }
 
 @media (min-width: 920px) {
   .demo-selector { padding: 36px; }
-  .demo-user-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .demo-user-card { min-height: 230px; align-content: start; }
+  .institutional-login-form { padding: 24px; }
 }

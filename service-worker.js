@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ubo-academic-hub-v145';
-const APP_ASSETS = ['./', './index.html', './styles.css?v=113', './app.js?v=120', './config/institution.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'ubo-academic-hub-v161';
+const APP_ASSETS = ['./', './index.html', './styles.css?v=120', './app.js?v=135', './config/institution.js', './data/users.js', './data/users.js?v=2', './services/institutional-session-service.js', './services/api/auth-api-service.js', './services/theme-preference-service.js', './services/qr-attendance-service.js', './services/message-service.js', './services/evaluation-service.js', './services/evaluation/question-bank-service.js', './services/analytics/academic-risk-service.js', './services/ai/academic-tutor-service.js', './services/ai/knowledge-base-service.js', './services/recommendation/academic-recommendation-service.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 const DEMO_SHELL_ASSETS = [
   './modules/demo/demo-selector.html',
   './modules/demo/demo-selector.css',
@@ -26,9 +26,17 @@ const DEMO_SHELL_ASSETS = [
   './services/teacher-actions/teacher-material-management-service.js',
   './services/teacher-actions/teacher-grade-management-service.js',
   './services/teacher-actions/teacher-attendance-management-service.js',
+  './services/qr-attendance-service.js',
+  './services/message-service.js',
+  './services/evaluation-service.js',
+  './services/evaluation/question-bank-service.js',
   './services/teacher-actions/teacher-announcement-management-service.js',
   './services/teacher-actions/teacher-dashboard-summary-service.js',
   './services/analytics/academic-analytics-service.js',
+  './services/analytics/academic-risk-service.js',
+  './services/ai/academic-tutor-service.js',
+  './services/ai/knowledge-base-service.js',
+  './services/recommendation/academic-recommendation-service.js',
   './services/student-actions/student-announcement-service.js',
   './services/student-actions/student-material-service.js',
   './services/student-actions/student-grade-service.js',
@@ -70,4 +78,4 @@ const OFFLINE_DOCUMENTS = {
 const PRECACHE_ASSETS = [...APP_ASSETS, ...DEMO_SHELL_ASSETS];
 self.addEventListener('install', event => {event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_ASSETS)));self.skipWaiting()});
 self.addEventListener('activate', event => {event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))));self.clients.claim()});
-self.addEventListener('fetch', event => {if(event.request.method !== 'GET')return;const isDocument=event.request.mode==='navigate'||event.request.destination==='document';if(isDocument){event.respondWith(fetch(event.request).then(response=>{const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));return response}).catch(()=>{const pathname=new URL(event.request.url).pathname;return caches.match(event.request).then(cached=>cached||caches.match(OFFLINE_DOCUMENTS[pathname]||'./index.html'))}));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)))});
+self.addEventListener('fetch', event => {if(event.request.method !== 'GET')return;const isDocument=event.request.mode==='navigate'||event.request.destination==='document';if(isDocument){event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(response.ok&&response.type==='basic'){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy))}return response}).catch(()=>{const pathname=new URL(event.request.url).pathname;return caches.match(event.request).then(cached=>cached||caches.match(OFFLINE_DOCUMENTS[pathname]||'./index.html'))}));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)))});

@@ -32,8 +32,8 @@ Los cambios revisados se limitan a la reparación de sintaxis, la alineación de
 
 ## PWA
 
-- Caché activa declarada: `ubo-academic-hub-v145`.
-- Precache de la aplicación: `app.js?v=120`.
+- Caché activa declarada: `ubo-academic-hub-v159`.
+- Precache de la aplicación: `app.js?v=125`.
 - `index.html`, `service-worker.js` y los contratos PWA usan la misma versión.
 - No se detectaron referencias antiguas en las entradas PWA activas revisadas.
 

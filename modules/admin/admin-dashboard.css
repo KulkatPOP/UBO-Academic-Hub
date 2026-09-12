@@ -31,7 +31,8 @@ body {
 .admin-intro,
 .metrics-grid,
 .management-grid,
-.statistics-layout { margin-bottom: 28px; }
+.statistics-layout,
+.admin-account-section { margin-bottom: 28px; }
 
 .admin-header {
   display: flex;
@@ -63,7 +64,7 @@ body {
 .admin-profile strong, .admin-profile small { display: block; white-space: nowrap; }
 .admin-profile strong { font-size: 0.88rem; }
 .admin-profile small { margin-top: 3px; color: #c9dbf0; font-size: 0.72rem; }
-.admin-header-actions { display: grid; width: 100%; gap: 8px; margin-top: 2px; }.admin-selector-link, .admin-demo-logout { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 10px; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: .7rem; font-weight: 800; text-decoration: none; cursor: pointer; transition: background .18s ease, transform .18s ease; }.admin-selector-link:hover, .admin-demo-logout:hover { background: rgba(255, 255, 255, .2); }.admin-selector-link:focus-visible, .admin-demo-logout:focus-visible { outline: 3px solid #d7a62a99; outline-offset: 2px; }.admin-selector-link:active, .admin-demo-logout:active { transform: translateY(1px); }
+.admin-header-actions { display: grid; width: 100%; gap: 8px; margin-top: 2px; }.admin-selector-link, .admin-demo-logout, .admin-theme-toggle { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 8px 10px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 10px; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: .7rem; font-weight: 800; text-decoration: none; cursor: pointer; transition: background .18s ease, transform .18s ease; }.admin-selector-link:hover, .admin-demo-logout:hover, .admin-theme-toggle:hover { background: rgba(255, 255, 255, .2); }.admin-selector-link:focus-visible, .admin-demo-logout:focus-visible, .admin-theme-toggle:focus-visible { outline: 3px solid #d7a62a99; outline-offset: 2px; }.admin-selector-link:active, .admin-demo-logout:active, .admin-theme-toggle:active { transform: translateY(1px); }
 
 .admin-avatar {
   display: grid;
@@ -78,6 +79,11 @@ body {
   font-size: 0.76rem;
   font-weight: 800;
 }
+
+.admin-account-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.admin-account-item { display: grid; gap: 3px; min-width: 0; padding: 12px; border: 1px solid var(--admin-border); border-radius: 14px; background: var(--admin-surface); box-shadow: 0 5px 16px rgba(20, 48, 86, .06); }
+.admin-account-label { color: var(--admin-muted); font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.admin-account-value { overflow-wrap: anywhere; color: var(--admin-ink); font-size: .8rem; line-height: 1.35; }
 
 .admin-intro { padding: 4px 2px; }
 .eyebrow { color: var(--admin-blue); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; }
@@ -119,6 +125,8 @@ body {
 .management-count { min-width: 28px; color: var(--admin-blue); font-size: 0.83rem; font-weight: 800; text-align: right; }
 
 .statistics-layout { grid-template-columns: 1fr; }
+.admin-risk-section{margin-bottom:30px}.admin-academic-risk{display:grid;gap:12px}.admin-risk-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.admin-risk-metric{display:grid;gap:5px;min-width:0;padding:13px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface);box-shadow:0 5px 16px rgba(20,48,86,.06)}.admin-risk-metric span{color:var(--admin-muted);font-size:.7rem;line-height:1.35}.admin-risk-metric strong{color:var(--admin-navy);font-size:1.15rem}.admin-risk-distribution{display:flex;flex-wrap:wrap;gap:8px}.admin-risk-distribution span{padding:7px 9px;border:1px solid var(--admin-border);border-radius:9px;background:#f6f9fc;color:var(--admin-ink);font-size:.73rem;font-weight:750}.admin-risk-note{margin:0;color:var(--admin-muted);font-size:.74rem;line-height:1.45}@media(min-width:620px){.admin-risk-metrics{grid-template-columns:repeat(5,minmax(0,1fr))}}html[data-theme="dark"] .admin-risk-metric,html[data-theme="dark"] .admin-risk-distribution span{background:var(--admin-surface);border-color:var(--admin-border);color:var(--admin-ink)}html[data-theme="dark"] .teacher-risk-card,html[data-theme="dark"] .teacher-risk-student,html[data-theme="dark"] .teacher-risk-counts span{background:#21354a;border-color:var(--teacher-border);color:var(--teacher-text)}
+.admin-academic-recommendations{display:grid;gap:7px;margin-top:12px;padding:13px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface)}.admin-academic-recommendations strong{color:var(--admin-navy);font-size:.82rem}.admin-academic-recommendations p,.admin-academic-recommendations li{margin:0;color:var(--admin-muted);font-size:.74rem;line-height:1.45}.admin-academic-recommendations ul{display:grid;gap:3px;margin:0;padding-left:17px}
 .admin-summary-metrics,
 .admin-demo-detail-grid { display: grid; gap: 12px; margin-bottom: 30px; }
 .admin-summary-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -254,6 +262,14 @@ a:focus-visible {
   .section-note { text-align: left; }
 }
 
+@media (min-width: 620px) {
+  .admin-account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 980px) {
+  .admin-account-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;
@@ -262,3 +278,7 @@ a:focus-visible {
     animation-iteration-count: 1 !important;
   }
 }
+
+html[data-theme="dark"] { color-scheme: dark; --admin-navy:#b4d1ff; --admin-blue:#8fc7ff; --admin-gold:#e8c155; --admin-ink:#eef5ff; --admin-muted:#bdcad8; --admin-surface:#182535; --admin-background:#101a27; --admin-border:#334b63; --admin-shadow:0 10px 28px rgba(0,0,0,.35); }
+html[data-theme="dark"] .metric-card,html[data-theme="dark"] .management-card,html[data-theme="dark"] .statistics-card,html[data-theme="dark"] .admin-account-item,html[data-theme="dark"] .admin-summary-metric,html[data-theme="dark"] .admin-demo-status-card,html[data-theme="dark"] .admin-activity-row{background:var(--admin-surface);border-color:var(--admin-border);color:var(--admin-ink)}
+html[data-theme="dark"] .operation-row strong{background:#263d55;color:var(--admin-ink)}

@@ -1,0 +1,21 @@
+{
+  "name": "ubo-academic-hub-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Capa inteligente complementaria de UBO Academic Hub.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test test/*.test.js",
+    "db:start": "docker compose up -d postgres",
+    "db:migrate": "node src/database/migrate.js",
+    "db:seed": "node src/database/seed.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pg": "^8.12.0"
+  }
+}

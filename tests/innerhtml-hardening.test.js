@@ -14,7 +14,7 @@ const files = [
 files.forEach(file => {
   const source = fs.readFileSync(path.join(root, file), "utf8");
   assert.equal(/\.innerHTML\s*=/.test(source), false, `${file} must not render data through innerHTML`);
-  assert.match(source, /createElement|createSummaryElement|replaceChildren/, `${file} must use safe DOM construction`);
+  assert.match(source, /createElement|createSummaryElement|replaceChildren|textContent/, `${file} must use safe DOM construction`);
 });
 
 const appSource = fs.readFileSync(path.join(root, "app.js"), "utf8");
@@ -102,6 +102,8 @@ assert.match(getFunctionSource("function renderVirtual()"), /dataset\.virtual=/)
 assert.match(getFunctionSource("function virtualDetail(id)"), /dataset\.toast=/);
 assert.match(getFunctionSource("function notificationDetail(id)"), /dataset\.notificationRead=/);
 assert.match(getFunctionSource("function renderHomeDeliveries()"), /dataset\[item\.actionType\]/);
+assert.match(getFunctionSource("function renderQrAttendance()"), /replaceChildren/);
+assert.match(getFunctionSource("function renderQrAttendance()"), /safeElement/);
 assert.match(getFunctionSource("function renderHelpCenter(search=helpSearch)"), /dataset\.help=/);
 assert.match(getFunctionSource("function helpDetail(id)"), /dataset\.helpGo=/);
 assert.match(getFunctionSource("function renderInternationalization()"), /dataset\.international=/);

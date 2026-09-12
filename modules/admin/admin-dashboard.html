@@ -21,11 +21,22 @@
             <small id="admin-role">Gestión institucional</small>
           </div>
           <div class="admin-header-actions" aria-label="Navegación del panel administrativo">
-            <a class="admin-selector-link" href="../demo/demo-selector.html">Selector Demo <span aria-hidden="true">↗</span></a>
-            <button id="admin-demo-logout" class="admin-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+            <button id="admin-theme-toggle" class="admin-theme-toggle" type="button" aria-label="Cambiar tema visual" aria-pressed="false">Modo oscuro <span aria-hidden="true">◐</span></button>
+            <a class="admin-selector-link" href="../demo/demo-selector.html">Cambiar usuario <span aria-hidden="true">↗</span></a>
+            <button id="admin-demo-logout" class="admin-demo-logout" type="button">Cerrar sesión <span aria-hidden="true">→</span></button>
           </div>
         </div>
       </header>
+
+      <section class="admin-account-section" aria-labelledby="admin-account-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CUENTA INSTITUCIONAL</p>
+            <h2 id="admin-account-title">Mi perfil</h2>
+          </div>
+        </div>
+        <div id="admin-account-profile" class="admin-account-grid" aria-live="polite"></div>
+      </section>
 
       <section class="admin-intro" aria-labelledby="admin-title">
         <p class="eyebrow">GESTIÓN INSTITUCIONAL</p>
@@ -48,6 +59,14 @@
           <div><p class="eyebrow">RESUMEN INSTITUCIONAL · DEMO</p><h2 id="admin-demo-summary-title">Actividad académica</h2></div>
         </div>
         <div id="admin-dashboard-summary" class="admin-summary-metrics" aria-live="polite"></div>
+      </section>
+
+      <section class="admin-risk-section" aria-labelledby="admin-risk-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">ANALÍTICA INSTITUCIONAL · DEMO</p><h2 id="admin-risk-title">Riesgo académico</h2></div>
+        </div>
+        <div id="admin-academic-risk" class="admin-academic-risk" aria-live="polite"></div>
+        <div id="admin-academic-recommendations" class="admin-academic-recommendations" aria-live="polite"></div>
       </section>
 
       <section class="admin-demo-detail-grid" aria-label="Estado académico y actividad reciente demo">

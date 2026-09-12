@@ -16,7 +16,11 @@ import {
 import { getAvailableAdministrativeActions } from "../../services/admin-actions/administrative-action-service.js";
 import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
+import { clearInstitutionalSession, getInstitutionalSession } from "../../services/institutional-session-service.js";
+import { applyThemePreference, getThemePreference, toggleThemePreference } from "../../services/theme-preference-service.js";
 import { getAdminDashboardSummary } from "../../services/admin-actions/admin-dashboard-summary-service.js";
+import { getInstitutionalAcademicRiskSummary } from "../../services/analytics/academic-risk-service.js";
+import { getInstitutionalAcademicRecommendations } from "../../services/recommendation/academic-recommendation-service.js";
 
 const managementMetadata = [
   { key: "estudiantes", label: "Estudiantes", icon: "🎓", description: "Matrícula y datos académicos." },
@@ -35,8 +39,37 @@ function getElement(id) {
 
 function renderHeader() {
   const admin = getAdminProfile();
-  getElement("admin-name").textContent = admin.nombre;
+  const session = getInstitutionalSession();
+  const name = session?.role === "ADMIN" ? session.nombre : admin.nombre;
+  getElement("admin-name").textContent = name;
   getElement("admin-role").textContent = "Gestión institucional";
+  const avatar = document.querySelector(".admin-avatar");
+  if (avatar) avatar.textContent = String(name).split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
+}
+
+function renderAccountProfile() {
+  const admin = getAdminProfile();
+  const session = getInstitutionalSession();
+  const account = session?.role === "ADMIN" ? session : {
+    nombre: admin.nombre,
+    username: "admin",
+    email: "administrador@ubo.cl"
+  };
+  const items = [
+    ["Nombre", account.nombre],
+    ["Usuario", account.username],
+    ["Rol", "Administrador"],
+    ["Correo", account.email || "No disponible"],
+    ["Panel", "Gestión institucional"]
+  ];
+  const container = getElement("admin-account-profile");
+  const fragment = document.createDocumentFragment();
+  items.forEach(([label, value]) => {
+    const item = createSummaryElement("article", "admin-account-item");
+    item.append(createSummaryElement("span", "admin-account-label", label), createSummaryElement("strong", "admin-account-value", value));
+    fragment.append(item);
+  });
+  container.replaceChildren(fragment);
 }
 
 function renderSummary() {
@@ -183,20 +216,92 @@ function renderDemoDashboardSummary() {
   if (result.warnings.length) status.append(createSummaryElement("p", "admin-summary-note", "Algunas fuentes demo no estuvieron disponibles; se muestran las métricas que pudieron calcularse."));
 }
 
+function renderAcademicRisk() {
+  const container = getElement("admin-academic-risk");
+  if (!container) return;
+  const result = getInstitutionalAcademicRiskSummary();
+  container.replaceChildren();
+  if (!result.available) {
+    container.append(createSummaryElement("p", "admin-empty-state", "No fue posible calcular la analítica académica demo."));
+    return;
+  }
+  const metrics = [
+    ["Estudiantes analizados", result.metrics.studentsAnalyzed],
+    ["Cursos críticos", result.metrics.criticalCourses],
+    ["Promedio general demo", result.metrics.average === null ? "Sin datos" : result.metrics.average.toFixed(1).replace(".", ",")],
+    ["Asistencia promedio demo", result.metrics.attendance === null ? "Sin datos" : `${result.metrics.attendance.toFixed(1).replace(".", ",")}%`],
+    ["Alertas de seguimiento", result.metrics.alerts]
+  ];
+  const fragment = document.createDocumentFragment();
+  const metricGrid = createSummaryElement("div", "admin-risk-metrics");
+  metrics.forEach(([label, value]) => {
+    const card = createSummaryElement("article", "admin-risk-metric");
+    card.append(createSummaryElement("span", "", label), createSummaryElement("strong", "", String(value)));
+    metricGrid.append(card);
+  });
+  const distribution = createSummaryElement("div", "admin-risk-distribution");
+  [["🟢", "Bajo", result.metrics.counts.LOW], ["🟡", "Medio", result.metrics.counts.MEDIUM], ["🔴", "Alto", result.metrics.counts.HIGH]].forEach(([icon, label, value]) => {
+    distribution.append(createSummaryElement("span", "", `${icon} ${label}: ${value}`));
+  });
+  fragment.append(metricGrid, distribution);
+  if (result.criticalCourses.length) {
+    const critical = createSummaryElement("p", "admin-risk-note", `Cursos demo que requieren seguimiento: ${result.criticalCourses.map(course => course.name).join(" · ")}`);
+    fragment.append(critical);
+  }
+  container.append(fragment);
+}
+
+function renderAcademicRecommendations() {
+  const container = getElement("admin-academic-recommendations");
+  if (!container) return;
+  const result = getInstitutionalAcademicRecommendations();
+  container.replaceChildren();
+  if (!result.available) {
+    container.append(createSummaryElement("p", "admin-empty-state", "No hay acciones recomendadas disponibles."));
+    return;
+  }
+  const actions = document.createElement("ul");
+  result.actions.forEach(action => actions.append(createSummaryElement("li", "", action)));
+  const courses = result.courses.length ? result.courses.map(course => course.name).join(" · ") : "Sin cursos críticos demo";
+  container.append(createSummaryElement("strong", "", "Acciones recomendadas"), createSummaryElement("p", "", `Cursos con mayor necesidad: ${courses}`), actions);
+}
+
 function renderAdminDashboard() {
   renderHeader();
+  renderAccountProfile();
   renderSummary();
   renderManagement();
   renderStatistics();
   renderDemoDashboardSummary();
+  renderAcademicRisk();
+  renderAcademicRecommendations();
 }
 
 function setupDemoLogout() {
   getElement("admin-demo-logout")?.addEventListener("click", () => {
     clearCurrentDemoIdentity();
+    clearInstitutionalSession();
     window.location.replace("../demo/demo-selector.html");
   });
 }
+
+function syncAdminThemeButton() {
+  const button = getElement("admin-theme-toggle");
+  if (!button) return;
+  const dark = getThemePreference() === "dark";
+  button.firstChild.textContent = dark ? "Modo claro " : "Modo oscuro ";
+  button.setAttribute("aria-pressed", String(dark));
+}
+
+function setupThemePreference() {
+  syncAdminThemeButton();
+  getElement("admin-theme-toggle")?.addEventListener("click", () => {
+    toggleThemePreference();
+    syncAdminThemeButton();
+  });
+}
+
+applyThemePreference();
 
 const adminRouteGuard = enforceDemoRouteGuard("ADMIN", {
   STUDENT: "../../index.html",
@@ -208,4 +313,5 @@ const adminRouteGuard = enforceDemoRouteGuard("ADMIN", {
 if (adminRouteGuard.allowed) {
   renderAdminDashboard();
   setupDemoLogout();
+  setupThemePreference();
 }

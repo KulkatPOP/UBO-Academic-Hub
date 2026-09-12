@@ -65,6 +65,57 @@
       </form>
       </section>
 
+      <section class="course-detail-section qr-attendance-section" aria-labelledby="course-qr-attendance-title">
+        <div class="section-heading"><div><p>GESTIÓN DOCENTE · DEMO</p><h2 id="course-qr-attendance-title">Asistencia QR</h2></div><span id="teacher-qr-attendance-status">Sin sesión activa</span></div>
+        <p class="attendance-helper">Genera una sesión temporal para que los estudiantes inscritos registren su presencia mediante el código demo. No reemplaza la asistencia docente existente.</p>
+        <button id="generate-qr-attendance-btn" class="attendance-secondary-btn" type="button">Generar QR de asistencia</button>
+        <div id="teacher-qr-attendance-session" class="teacher-qr-attendance-session" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="course-detail-section" aria-labelledby="course-messages-title">
+        <div class="section-heading"><div><p>COMUNICACIÓN DOCENTE · DEMO</p><h2 id="course-messages-title">Comunicación</h2></div><span id="course-messages-summary"></span></div>
+        <p class="attendance-helper">El mensaje se envía a todos los estudiantes inscritos en este curso y permanece solo en este dispositivo.</p>
+        <div id="teacher-course-messages" class="teacher-message-list" aria-live="polite"></div>
+        <form id="teacher-message-form" class="teacher-message-form" novalidate>
+          <label for="teacher-message-recipients">Destinatario<input id="teacher-message-recipients" value="Curso completo" readonly /></label>
+          <label for="teacher-message-subject">Asunto<input id="teacher-message-subject" type="text" maxlength="120" required /></label>
+          <label for="teacher-message-content">Mensaje<textarea id="teacher-message-content" maxlength="2000" required></textarea></label>
+          <div class="material-actions"><button class="material-save-btn" type="submit">Enviar mensaje</button></div>
+          <div id="teacher-message-feedback" class="announcement-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section class="course-detail-section" aria-labelledby="course-evaluations-title">
+        <div class="section-heading"><div><p>EVALUACIONES ONLINE · DEMO</p><h2 id="course-evaluations-title">Evaluaciones</h2></div><span id="course-evaluations-summary"></span></div>
+        <p class="attendance-helper">Las evaluaciones y respuestas se conservan solo en este dispositivo. No modifican evaluaciones ni notas institucionales.</p>
+        <div id="teacher-course-evaluations" class="teacher-evaluation-list" aria-live="polite"></div>
+        <section class="teacher-question-bank" aria-labelledby="teacher-question-bank-title">
+          <h3 id="teacher-question-bank-title">Banco de preguntas</h3>
+          <p class="attendance-helper">Selecciona preguntas reutilizables para la evaluación o crea una nueva pregunta demo.</p>
+          <div id="teacher-question-bank-list" class="teacher-question-bank-list" aria-live="polite"></div>
+          <form id="teacher-question-form" class="teacher-evaluation-form" novalidate>
+            <label for="teacher-question-text">Pregunta<textarea id="teacher-question-text" maxlength="1000" required></textarea></label>
+            <label for="teacher-question-type">Tipo<select id="teacher-question-type"><option value="MULTIPLE_CHOICE">Alternativa</option><option value="TRUE_FALSE">Verdadero/Falso</option><option value="SHORT_ANSWER">Respuesta corta</option></select></label>
+            <label for="teacher-question-options">Opciones (una por línea)<textarea id="teacher-question-options" maxlength="1000" placeholder="Opción A&#10;Opción B&#10;Opción C"></textarea></label>
+            <label for="teacher-question-correct">Alternativa correcta (0 = primera)<input id="teacher-question-correct" type="number" min="0" step="1" value="0" /></label>
+            <label for="teacher-question-topic">Tema<input id="teacher-question-topic" type="text" maxlength="120" value="Sin tema" /></label>
+            <label for="teacher-question-difficulty">Dificultad<select id="teacher-question-difficulty"><option value="LOW">Baja</option><option value="MEDIUM" selected>Media</option><option value="HIGH">Alta</option></select></label>
+            <div class="material-actions"><button class="outline-btn" type="submit">Agregar al banco</button></div>
+          </form>
+        </section>
+        <form id="teacher-evaluation-form" class="teacher-evaluation-form" novalidate>
+          <label for="teacher-evaluation-title">Título<input id="teacher-evaluation-title" type="text" maxlength="120" required /></label>
+          <label for="teacher-evaluation-description">Descripción<textarea id="teacher-evaluation-description" maxlength="2000"></textarea></label>
+          <label for="teacher-evaluation-type">Tipo<select id="teacher-evaluation-type"><option value="QUIZ">Alternativa</option><option value="DEVELOPMENT">Desarrollo</option></select></label>
+          <label for="teacher-evaluation-question-count">Cantidad desde el banco<input id="teacher-evaluation-question-count" type="number" min="0" step="1" value="0" aria-describedby="teacher-question-count-help" /></label>
+          <small id="teacher-question-count-help" class="attendance-helper">0 utiliza todas las preguntas seleccionadas.</small>
+          <label for="teacher-evaluation-due-date">Fecha límite<input id="teacher-evaluation-due-date" type="date" required /></label>
+          <div class="material-actions"><button class="material-save-btn" type="submit">Publicar evaluación</button></div>
+          <div id="teacher-evaluation-feedback" class="announcement-feedback" role="status" aria-live="polite"></div>
+        </form>
+        <div id="teacher-evaluation-review" class="teacher-evaluation-review" aria-live="polite"></div>
+      </section>
+
       <section class="course-detail-section" aria-labelledby="course-announcements-title">
         <div class="section-heading"><div><p>GESTIÓN DOCENTE</p><h2 id="course-announcements-title">Avisos</h2></div><span id="announcements-summary"></span></div>
         <div id="teacher-course-announcements" class="announcements-list" aria-live="polite"></div>

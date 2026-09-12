@@ -22,11 +22,22 @@
           <p id="teacher-department"></p>
         </div>
         <div class="teacher-header-actions" aria-label="Navegación del panel docente">
-          <a class="teacher-selector-link" href="../demo/demo-selector.html">Selector Demo <span aria-hidden="true">↗</span></a>
-          <button id="teacher-demo-logout" class="teacher-demo-logout" type="button">Cerrar sesión demo <span aria-hidden="true">→</span></button>
+          <button id="teacher-theme-toggle" class="teacher-theme-toggle" type="button" aria-label="Cambiar tema visual" aria-pressed="false">Modo oscuro <span aria-hidden="true">◐</span></button>
+          <a class="teacher-selector-link" href="../demo/demo-selector.html">Cambiar usuario <span aria-hidden="true">↗</span></a>
+          <button id="teacher-demo-logout" class="teacher-demo-logout" type="button">Cerrar sesión <span aria-hidden="true">→</span></button>
         </div>
       </div>
     </header>
+
+    <section class="teacher-section teacher-account-section" aria-labelledby="teacher-account-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">CUENTA INSTITUCIONAL</p>
+          <h2 id="teacher-account-title">Mi perfil</h2>
+        </div>
+      </div>
+      <div id="teacher-account-profile" class="teacher-account-grid" aria-live="polite"></div>
+    </section>
 
     <section class="teacher-section" aria-labelledby="teacher-summary-title">
       <div class="section-heading">
@@ -47,6 +58,26 @@
         </div>
       </div>
       <div id="teacher-courses" class="teacher-course-grid"></div>
+    </section>
+
+    <section class="teacher-section teacher-risk-section" aria-labelledby="teacher-risk-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">SEGUIMIENTO ACADÉMICO · DEMO</p>
+          <h2 id="teacher-risk-title">Seguimiento académico</h2>
+        </div>
+      </div>
+      <div id="teacher-academic-risk" class="teacher-academic-risk" aria-live="polite"></div>
+    </section>
+
+    <section class="teacher-section teacher-recommendations-section" aria-labelledby="teacher-recommendations-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">RECOMENDACIONES DEL CURSO · DEMO</p>
+          <h2 id="teacher-recommendations-title">Acciones sugeridas</h2>
+        </div>
+      </div>
+      <div id="teacher-course-recommendations" class="teacher-course-recommendations" aria-live="polite"></div>
     </section>
 
     <section class="teacher-section teacher-activity-section" aria-labelledby="teacher-activity-title">

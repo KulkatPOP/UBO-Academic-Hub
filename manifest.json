@@ -1,8 +1,8 @@
 {
   "name": "Ubo Academic Hub",
-  "short_name": "Academic Hub",
-  "description": "Gestor académico estudiantil de la Universidad Bernardo O'Higgins.",
-  "start_url": "./index.html",
+  "short_name": "UBO Hub",
+  "description": "Plataforma académica institucional UBO",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],

@@ -11,8 +11,12 @@ import {
 import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 import { getInstitutionConfig } from "../../config/institution.js";
+import { clearInstitutionalSession, getInstitutionalSession } from "../../services/institutional-session-service.js";
+import { applyThemePreference, getThemePreference, toggleThemePreference } from "../../services/theme-preference-service.js";
 import { getTeacherDashboardSummary } from "../../services/teacher-actions/teacher-dashboard-summary-service.js";
 import { getTeacherCourseAnalytics } from "../../services/analytics/academic-analytics-service.js";
+import { getTeacherAcademicRiskSummary } from "../../services/analytics/academic-risk-service.js";
+import { getTeacherCourseRecommendations } from "../../services/recommendation/academic-recommendation-service.js";
 
 const $ = selector => document.querySelector(selector);
 
@@ -133,6 +137,64 @@ function renderRecentActivity(activity) {
   container.replaceChildren(list);
 }
 
+function renderAcademicRisk(profile) {
+  const container = $("#teacher-academic-risk");
+  if (!container) return;
+  const result = getTeacherAcademicRiskSummary({ teacherId: profile.id });
+  container.replaceChildren();
+  if (!result.available || !result.courses.length) {
+    container.append(createElement("p", "teacher-empty-state", result.warnings?.[0]?.message || "No hay cursos disponibles para seguimiento académico demo."));
+    return;
+  }
+  const fragment = document.createDocumentFragment();
+  result.courses.forEach(course => {
+    const card = createElement("article", "teacher-risk-card");
+    const heading = document.createElement("div");
+    heading.append(createElement("h3", "", course.courseName), createElement("span", "teacher-risk-total", `Total: ${course.totalStudents}`));
+    const counts = createElement("div", "teacher-risk-counts");
+    [["🟢", "Bajo", course.counts.LOW], ["🟡", "Medio", course.counts.MEDIUM], ["🔴", "Alto", course.counts.HIGH]].forEach(([icon, label, value]) => {
+      counts.append(createElement("span", "", `${icon} ${label}: ${value}`));
+    });
+    const list = createElement("div", "teacher-risk-list");
+    course.difficultQuestions?.forEach(question => list.append(createElement("p", "teacher-risk-empty", `Pregunta con mayor error: ${question.question} · ${question.correctPercentage}% correcta`)));
+    if (!course.studentsAtRisk.length) list.append(createElement("p", "teacher-risk-empty", "No hay estudiantes demo que requieran seguimiento."));
+    course.studentsAtRisk.forEach(student => {
+      const row = createElement("article", `teacher-risk-student ${student.level.toLowerCase()}`);
+      const content = document.createElement("div");
+      const reasons = document.createElement("ul");
+      student.reasons.forEach(reason => reasons.append(createElement("li", "", reason)));
+      content.append(createElement("strong", "", student.studentName), reasons);
+      row.append(content, createElement("small", "", student.recommendation));
+      list.append(row);
+    });
+    card.append(heading, counts, list);
+    fragment.append(card);
+  });
+  container.append(fragment);
+}
+
+function renderCourseRecommendations(profile) {
+  const container = $("#teacher-course-recommendations");
+  if (!container) return;
+  const result = getTeacherCourseRecommendations({ teacherId: profile.id });
+  container.replaceChildren();
+  if (!result.available || !result.courses.length) {
+    container.append(createElement("p", "teacher-risk-empty", "No hay recomendaciones de curso disponibles."));
+    return;
+  }
+  const fragment = document.createDocumentFragment();
+  result.courses.forEach(course => {
+    const card = createElement("article", "teacher-course-recommendation");
+    const actions = document.createElement("ul");
+    card.append(createElement("h3", "", course.courseName));
+    if (course.criticalTopic) card.append(createElement("p", "teacher-course-recommendation-topic", `Tema crítico: ${course.criticalTopic}`));
+    course.actions.forEach(action => actions.append(createElement("li", "", action)));
+    card.append(actions);
+    fragment.append(card);
+  });
+  container.append(fragment);
+}
+
 function renderActions(actions) {
   const container = $("#teacher-actions");
   const fragment = document.createDocumentFragment();
@@ -149,17 +211,58 @@ function renderActions(actions) {
   container.replaceChildren(fragment);
 }
 
+function initials(name) {
+  return String(name || "Profesor")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function renderTeacherAccountProfile(profile, courses) {
+  const session = getInstitutionalSession();
+  const account = session?.role === "TEACHER" ? session : {
+    nombre: profile.nombre,
+    username: "pcarlos",
+    email: "carlos.perez@ubo.cl"
+  };
+  const container = $("#teacher-account-profile");
+  const items = [
+    ["Nombre", account.nombre],
+    ["Usuario", account.username],
+    ["Rol", "Profesor"],
+    ["Correo", account.email || "No disponible"],
+    ["Cursos asignados", courses.map(course => course.nombre).join(" · ") || "Sin cursos asignados"]
+  ];
+  const fragment = document.createDocumentFragment();
+  items.forEach(([label, value]) => {
+    const row = createElement("article", "teacher-account-item");
+    row.append(createElement("span", "teacher-account-label", label), createElement("strong", "teacher-account-value", value));
+    fragment.append(row);
+  });
+  container.replaceChildren(fragment);
+  const avatar = $(".teacher-avatar");
+  if (avatar) avatar.textContent = initials(account.nombre);
+}
+
 function renderTeacherDashboard() {
   const profile = getTeacherProfile();
   const day = currentDay();
+  const assignedCourses = getAssignedCourses();
+  const session = getInstitutionalSession();
 
-  $("#teacher-title").textContent = profile.nombre;
+  $("#teacher-title").textContent = session?.role === "TEACHER" ? session.nombre : profile.nombre;
   $("#teacher-department").textContent = `Departamento de ${profile.departamento || profile.department || "Sin departamento asignado"}`;
   $("#teacher-day").textContent = day;
+  renderTeacherAccountProfile(profile, assignedCourses);
   renderSummary(getTeacherSummary(day));
   const dashboardSummary = getTeacherDashboardSummary({ teacherId: profile.id });
   const courseAnalytics = getTeacherCourseAnalytics({ teacherId: profile.id });
-  renderCourses(getAssignedCourses(), dashboardSummary.courses, courseAnalytics.courses);
+  renderCourses(assignedCourses, dashboardSummary.courses, courseAnalytics.courses);
+  renderAcademicRisk(profile);
+  renderCourseRecommendations(profile);
   renderRecentActivity(dashboardSummary.activity);
   renderActions(getFutureTeacherActions());
 }
@@ -167,7 +270,24 @@ function renderTeacherDashboard() {
 function setupDemoLogout() {
   document.getElementById("teacher-demo-logout")?.addEventListener("click", () => {
     clearCurrentDemoIdentity();
+    clearInstitutionalSession();
     window.location.replace("../demo/demo-selector.html");
+  });
+}
+
+function syncTeacherThemeButton() {
+  const button = document.getElementById("teacher-theme-toggle");
+  if (!button) return;
+  const dark = getThemePreference() === "dark";
+  button.firstChild.textContent = dark ? "Modo claro " : "Modo oscuro ";
+  button.setAttribute("aria-pressed", String(dark));
+}
+
+function setupThemePreference() {
+  syncTeacherThemeButton();
+  document.getElementById("teacher-theme-toggle")?.addEventListener("click", () => {
+    toggleThemePreference();
+    syncTeacherThemeButton();
   });
 }
 
@@ -186,6 +306,8 @@ function observeTeacherIdentityCanary(identity) {
     }));
 }
 
+applyThemePreference();
+
 const teacherRouteGuard = enforceDemoRouteGuard("TEACHER", {
   STUDENT: "../../index.html",
   ADMIN: "../admin/admin-dashboard.html",
@@ -197,4 +319,5 @@ if (teacherRouteGuard.allowed) {
   observeTeacherIdentityCanary(teacherRouteGuard.identity);
   renderTeacherDashboard();
   setupDemoLogout();
+  setupThemePreference();
 }

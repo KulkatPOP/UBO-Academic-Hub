@@ -7,6 +7,8 @@ import { getStudentAnnouncements } from "./student-announcement-service.js";
 import { getStudentAttendance } from "./student-attendance-service.js";
 import { getStudentGrades } from "./student-grade-service.js";
 import { getStudentMaterials } from "./student-material-service.js";
+import { getStudentMessages } from "../message-service.js";
+import { getStudentEvaluations } from "../evaluation-service.js";
 
 const clone = value => JSON.parse(JSON.stringify(value));
 const severityOrder = { HIGH: 0, MEDIUM: 1, INFO: 2 };
@@ -55,7 +57,9 @@ function sourceSet(overrides = {}) {
     grades: overrides.grades || getStudentGrades,
     attendance: overrides.attendance || getStudentAttendance,
     materials: overrides.materials || getStudentMaterials,
-    announcements: overrides.announcements || getStudentAnnouncements
+    announcements: overrides.announcements || getStudentAnnouncements,
+    messages: overrides.messages || getStudentMessages,
+    evaluations: overrides.evaluations || getStudentEvaluations
   };
 }
 
@@ -77,6 +81,8 @@ export function getStudentAcademicAlerts({ studentId, courseId = null, storage, 
   const attendanceResult = safeSource(selectedSources.attendance, "asistencia", params, { available: false, courses: [] }, warnings);
   const materialsResult = safeSource(selectedSources.materials, "material", params, { available: false, materials: [] }, warnings);
   const announcementsResult = safeSource(selectedSources.announcements, "avisos", params, { available: false, announcements: [] }, warnings);
+  const messagesResult = safeSource(selectedSources.messages, "mensajes", params, { available: false, messages: [] }, warnings);
+  const evaluationsResult = safeSource(selectedSources.evaluations, "evaluaciones", params, { available: false, evaluations: [] }, warnings);
   const alerts = [];
   const visibleCourse = id => courseMap.get(id) && (!courseId || id === courseId);
 
@@ -104,6 +110,24 @@ export function getStudentAcademicAlerts({ studentId, courseId = null, storage, 
     if (!visibleCourse(item.courseId)) return;
     const course = courseMap.get(item.courseId);
     alerts.push(createAlert({ type: "NEW_ANNOUNCEMENT", severity: "INFO", title: "Nuevo aviso del profesor", description: `Hay un aviso demo reciente en ${course.nombre}.`, courseId: course.id, courseName: course.nombre, createdAt: item.createdAt, sourceId: item.id }));
+  });
+
+  firstByCourse((Array.isArray(messagesResult.messages) ? messagesResult.messages : []).filter(item => !item.read)).forEach(item => {
+    if (!visibleCourse(item.courseId)) return;
+    const course = courseMap.get(item.courseId);
+    alerts.push(createAlert({ type: "MESSAGE_INFO", severity: "INFO", title: "Nuevo mensaje recibido", description: `Tienes un nuevo mensaje de tu profesor en ${course.nombre}.`, courseId: course.id, courseName: course.nombre, createdAt: item.createdAt, sourceId: item.id }));
+  });
+
+  firstByCourse((Array.isArray(evaluationsResult.evaluations) ? evaluationsResult.evaluations : []).filter(item => item.submission)).forEach(item => {
+    if (!visibleCourse(item.courseId)) return;
+    const course = courseMap.get(item.courseId);
+    const submission = item.submission;
+    if (submission.status === "GRADED" && Number.isFinite(submission.grade)) {
+      const positive = submission.grade >= 4;
+      alerts.push(createAlert({ type: positive ? "GOOD_PERFORMANCE" : "GRADE_WARNING", severity: positive ? "INFO" : "MEDIUM", title: positive ? "Resultado de evaluación publicado" : "Revisar resultado de evaluación", description: `Tu resultado demo en ${course.nombre} fue publicado.`, courseId: course.id, courseName: course.nombre, createdAt: submission.submittedAt, sourceId: submission.id }));
+      return;
+    }
+    alerts.push(createAlert({ type: "EVALUATION_COMPLETED", severity: "INFO", title: "Evaluación enviada", description: `Tu evaluación demo en ${course.nombre} fue enviada y está pendiente de revisión.`, courseId: course.id, courseName: course.nombre, createdAt: submission.submittedAt, sourceId: submission.id }));
   });
 
   const ordered = alerts.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity] || String(b.createdAt).localeCompare(String(a.createdAt)) || a.id.localeCompare(b.id)).slice(0, 5);

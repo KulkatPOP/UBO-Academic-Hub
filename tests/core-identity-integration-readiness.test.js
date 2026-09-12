@@ -51,7 +51,7 @@ for (const asset of [
 ]) {
   assert.match(serviceWorkerSource, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 }
-assert.match(serviceWorkerSource, /ubo-academic-hub-v145/);
+assert.match(serviceWorkerSource, /ubo-academic-hub-v161/);
 assert.doesNotMatch(serviceWorkerSource, /UniEcosystemCore|127\.0\.0\.1:3101|identity-snapshot\.js/);
 console.log("PWA_IMPACT_IDENTIFIED");
 

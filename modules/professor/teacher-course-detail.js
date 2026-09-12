@@ -12,6 +12,12 @@ import {
   saveTeacherAttendance
 } from "../../services/teacher-actions/teacher-attendance-management-service.js";
 import {
+  generateQrAttendanceSession,
+  getQrAttendancePayload,
+  getQrAttendanceSession,
+  getQrAttendanceTimeRemaining
+} from "../../services/qr-attendance-service.js";
+import {
   getCourseGrades,
   prepareGradeEntry,
   saveStudentGrade,
@@ -41,11 +47,21 @@ import {
 import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { getTeacherDashboardSummary } from "../../services/teacher-actions/teacher-dashboard-summary-service.js";
 import { getTeacherCourseAnalytics } from "../../services/analytics/academic-analytics-service.js";
+import { getCourseMessages, sendCourseMessage } from "../../services/message-service.js";
+import {
+  createEvaluation,
+  getEvaluationAutoGradeStatistics,
+  getEvaluationSubmissions,
+  getTeacherCourseEvaluations,
+  gradeEvaluationSubmission
+} from "../../services/evaluation-service.js";
+import { createQuestion, getQuestionBank } from "../../services/evaluation/question-bank-service.js";
 
 const $ = selector => document.querySelector(selector);
 const dayLabels = { lunes: "Lunes", martes: "Martes", miércoles: "Miércoles", jueves: "Jueves", viernes: "Viernes", sábado: "Sábado", domingo: "Domingo" };
 let activeCourseId = null;
 let activeGradeEvaluationId = null;
+let qrAttendanceTimer = null;
 const teacherRouteGuard = enforceDemoRouteGuard("TEACHER", {
   STUDENT: "../../index.html",
   ADMIN: "../admin/admin-dashboard.html",
@@ -254,6 +270,272 @@ function setupAttendanceRegistration(courseId) {
     $("#save-attendance-btn").disabled = true;
     showAttendanceFeedback("");
     renderAttendanceSummary(courseId);
+  });
+}
+
+function formatQrTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function qrDemoMatrix(payload, size = 21) {
+  let value = 2166136261;
+  for (const character of payload) value = Math.imul(value ^ character.charCodeAt(0), 16777619);
+  return Array.from({ length: size }, (_, row) => Array.from({ length: size }, (_, column) => {
+    const finder = (row < 7 && column < 7) || (row < 7 && column >= size - 7) || (row >= size - 7 && column < 7);
+    if (finder) {
+      const localRow = row < 7 ? row : row - (size - 7);
+      const localColumn = column < 7 ? column : column - (size - 7);
+      return localRow === 0 || localRow === 6 || localColumn === 0 || localColumn === 6 || (localRow >= 2 && localRow <= 4 && localColumn >= 2 && localColumn <= 4);
+    }
+    value = Math.imul(value ^ (row * size + column + 1), 16777619);
+    return Boolean(value & 1);
+  }));
+}
+
+function createQrDemoCanvas(payload) {
+  const size = 21;
+  const cell = 8;
+  const canvas = document.createElement("canvas");
+  canvas.className = "teacher-qr-canvas";
+  canvas.width = size * cell;
+  canvas.height = size * cell;
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", "Código QR visual de demostración para asistencia");
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "#20377D";
+  qrDemoMatrix(payload, size).forEach((row, rowIndex) => row.forEach((filled, columnIndex) => {
+    if (filled) context.fillRect(columnIndex * cell, rowIndex * cell, cell, cell);
+  }));
+  return canvas;
+}
+
+function renderQrAttendanceSession(sessionId) {
+  const container = $("#teacher-qr-attendance-session");
+  const status = $("#teacher-qr-attendance-status");
+  if (qrAttendanceTimer) window.clearInterval(qrAttendanceTimer);
+  const update = () => {
+    const { session } = getQrAttendanceSession(sessionId);
+    container.replaceChildren();
+    if (!session) {
+      status.textContent = "Sin sesión activa";
+      container.append(createSummaryElement("p", "attendance-feedback error", "No fue posible recuperar la sesión QR."));
+      return;
+    }
+    const remaining = getQrAttendanceTimeRemaining(session);
+    const course = getCourseById(session.courseId);
+    if (!remaining) {
+      status.textContent = "Sesión expirada";
+      container.append(createSummaryElement("p", "attendance-feedback error", "La sesión QR expiró. Genera una nueva sesión si es necesario."));
+      if (qrAttendanceTimer) window.clearInterval(qrAttendanceTimer);
+      return;
+    }
+    const payload = getQrAttendancePayload(session);
+    const card = createSummaryElement("article", "teacher-qr-session-card");
+    const detail = document.createElement("div");
+    const code = createSummaryElement("code", "teacher-qr-payload", payload);
+    detail.append(createSummaryElement("small", "", "Sesión activa"), createSummaryElement("b", "", course?.nombre || "Curso"), createSummaryElement("p", "", `Tiempo restante: ${formatQrTime(remaining)}`), createSummaryElement("small", "", "Código demo para registrar asistencia:"), code);
+    card.append(createQrDemoCanvas(payload), detail);
+    container.append(card);
+    status.textContent = "Sesión activa";
+  };
+  update();
+  qrAttendanceTimer = window.setInterval(update, 1000);
+}
+
+function setupQrAttendance(courseId) {
+  const button = $("#generate-qr-attendance-btn");
+  button.addEventListener("click", () => {
+    const result = generateQrAttendanceSession({ courseId, teacherId: teacherRouteGuard.identity?.id });
+    if (!result.created) {
+      $("#teacher-qr-attendance-status").textContent = "No disponible";
+      $("#teacher-qr-attendance-session").replaceChildren(createSummaryElement("p", "attendance-feedback error", result.warning || "No fue posible generar el código QR."));
+      return;
+    }
+    renderQrAttendanceSession(result.session.id);
+  });
+}
+
+function showMessageFeedback(message, tone = "") {
+  const feedback = $("#teacher-message-feedback");
+  feedback.textContent = message;
+  feedback.className = `announcement-feedback ${tone}`;
+}
+
+function renderCourseMessages(courseId) {
+  const result = getCourseMessages({ courseId, identity: teacherRouteGuard.identity });
+  $("#course-messages-summary").textContent = `${result.messages.length} enviado(s)`;
+  const container = $("#teacher-course-messages");
+  if (!result.allowed) {
+    container.replaceChildren(createSummaryElement("p", "empty-state", result.warning || "No fue posible cargar los mensajes."));
+    return showMessageFeedback(result.warning || "No tienes acceso a estos mensajes.", "error");
+  }
+  const fragment = document.createDocumentFragment();
+  result.messages.forEach(message => {
+    const row = createSummaryElement("article", "teacher-message-row");
+    const detail = document.createElement("div");
+    detail.append(createSummaryElement("b", "", message.subject), createSummaryElement("p", "", message.message), createSummaryElement("small", "", `Enviado: ${formatAnnouncementDate(message.createdAt)}`));
+    row.append(detail, createSummaryElement("span", "message-recipient-count", "Curso completo"));
+    fragment.append(row);
+  });
+  container.replaceChildren(result.messages.length ? fragment : createSummaryElement("p", "empty-state", "Aún no has enviado mensajes a este curso."));
+  if (result.warning) showMessageFeedback(result.warning, "error");
+}
+
+function setupCourseMessages(courseId) {
+  renderCourseMessages(courseId);
+  $("#teacher-message-form").addEventListener("submit", event => {
+    event.preventDefault();
+    const result = sendCourseMessage({
+      courseId,
+      subject: $("#teacher-message-subject").value,
+      message: $("#teacher-message-content").value,
+      identity: teacherRouteGuard.identity
+    });
+    if (!result.sent) return showMessageFeedback((result.errors || ["No fue posible enviar el mensaje."]).join(" "), "error");
+    event.currentTarget.reset();
+    renderCourseMessages(courseId);
+    showMessageFeedback("Mensaje enviado correctamente.", "success");
+  });
+}
+
+function showEvaluationFeedback(message, tone = "") {
+  const feedback = $("#teacher-evaluation-feedback");
+  feedback.textContent = message;
+  feedback.className = `announcement-feedback ${tone}`;
+}
+
+function renderEvaluationReview(evaluationId) {
+  const container = $("#teacher-evaluation-review");
+  const result = getEvaluationSubmissions({ evaluationId, identity: teacherRouteGuard.identity });
+  container.replaceChildren();
+  if (!result.allowed) {
+    container.append(createSummaryElement("p", "empty-state", result.warning || "No fue posible cargar las respuestas."));
+    return;
+  }
+  const heading = createSummaryElement("h3", "", `Revisar respuestas · ${result.evaluation.title}`);
+  const fragment = document.createDocumentFragment();
+  const students = new Map(getStudentsByCourse(activeCourseId).map(student => [student.id, student]));
+  result.submissions.forEach(submission => {
+    const row = createSummaryElement("article", "teacher-evaluation-submission");
+    const student = students.get(submission.studentId);
+    const answers = document.createElement("div");
+    answers.className = "teacher-evaluation-answers";
+    result.evaluation.questions.forEach(question => {
+      const answer = createSummaryElement("p", "", submission.answers[question.id] || "Sin respuesta");
+      answer.prepend(createSummaryElement("b", "", `${question.question || question.prompt || "Pregunta demo"}: `));
+      answers.append(answer);
+    });
+    const form = createSummaryElement("form", "teacher-evaluation-grade-form");
+    form.noValidate = true;
+    form.dataset.evaluationSubmission = submission.id;
+    const grade = document.createElement("input");
+    grade.type = "text"; grade.inputMode = "decimal"; grade.name = "grade"; grade.value = submission.grade ?? ""; grade.placeholder = "Ej.: 5,5"; grade.setAttribute("aria-label", `Nota para ${student?.nombre || "estudiante"}`);
+    const comment = document.createElement("textarea");
+    comment.name = "comment"; comment.maxLength = 2000; comment.placeholder = "Comentario opcional"; comment.value = submission.comment || ""; comment.setAttribute("aria-label", `Comentario para ${student?.nombre || "estudiante"}`);
+    const save = createSummaryElement("button", "grades-save-btn", submission.grade === null ? "Publicar nota demo" : "Actualizar nota demo");
+    save.type = "submit";
+    form.append(grade, comment, save);
+    if (submission.autoGrade) row.append(createSummaryElement("small", "", submission.autoGrade.grade === null ? "Corrección automática pendiente de revisión docente." : `Nota automática demo: ${submission.autoGrade.grade.toFixed(1).replace(".", ",")}`));
+    row.append(createSummaryElement("b", "", student?.nombre || "Estudiante"), createSummaryElement("small", "", `Enviada: ${formatAnnouncementDate(submission.submittedAt)}`), answers, form);
+    fragment.append(row);
+  });
+  container.append(heading, result.submissions.length ? fragment : createSummaryElement("p", "empty-state", "Aún no hay respuestas para esta evaluación."));
+}
+
+function renderQuestionBank(courseId) {
+  const container = $("#teacher-question-bank-list");
+  const result = getQuestionBank({ courseId, identity: teacherRouteGuard.identity });
+  container.replaceChildren();
+  if (!result.allowed) return container.append(createSummaryElement("p", "empty-state", result.warning || "No fue posible cargar el banco de preguntas."));
+  if (!result.questions.length) return container.append(createSummaryElement("p", "empty-state", "Aún no hay preguntas demo para este curso."));
+  const fragment = document.createDocumentFragment();
+  result.questions.forEach(question => {
+    const label = createSummaryElement("label", "teacher-question-bank-item");
+    const check = document.createElement("input");
+    check.type = "checkbox"; check.name = "teacher-evaluation-question"; check.value = question.id;
+    const detail = document.createElement("span");
+    detail.append(createSummaryElement("b", "", question.question), createSummaryElement("small", "", `${question.topic} · ${question.type}`));
+    label.append(check, detail);
+    fragment.append(label);
+  });
+  container.append(fragment);
+}
+
+function renderEvaluationStatistics(evaluationId) {
+  const result = getEvaluationAutoGradeStatistics({ evaluationId, identity: teacherRouteGuard.identity });
+  if (!result.allowed || !result.statistics) return;
+  const container = $("#teacher-evaluation-review");
+  const stats = createSummaryElement("article", "teacher-evaluation-statistics");
+  const average = result.statistics.average === null ? "Sin resultados automáticos" : result.statistics.average.toFixed(1).replace(".", ",");
+  stats.append(createSummaryElement("h3", "", "Estadísticas de evaluación"), createSummaryElement("p", "", `Promedio automático demo: ${average} · Respuestas: ${result.statistics.submissions}`));
+  result.statistics.difficultQuestions.forEach(question => stats.append(createSummaryElement("p", "", `${question.topic} · ${question.correctPercentage === null ? "Pendiente de corrección" : `${question.correctPercentage}% correcto`}`)));
+  if (result.statistics.weakTopics.length) stats.append(createSummaryElement("small", "", `Temas a reforzar: ${result.statistics.weakTopics.join(" · ")}`));
+  container.prepend(stats);
+}
+
+function renderCourseEvaluations(courseId) {
+  const result = getTeacherCourseEvaluations({ courseId, identity: teacherRouteGuard.identity });
+  $("#course-evaluations-summary").textContent = `${result.evaluations.length} publicada(s)`;
+  const container = $("#teacher-course-evaluations");
+  if (!result.allowed) {
+    container.replaceChildren(createSummaryElement("p", "empty-state", result.warning || "No fue posible cargar las evaluaciones."));
+    return showEvaluationFeedback(result.warning || "No tienes acceso a estas evaluaciones.", "error");
+  }
+  const fragment = document.createDocumentFragment();
+  result.evaluations.forEach(evaluation => {
+    const row = createSummaryElement("article", "teacher-evaluation-row");
+    const detail = document.createElement("div");
+    const review = createSummaryElement("button", "outline-btn", "Revisar respuestas");
+    review.type = "button"; review.dataset.evaluationReview = evaluation.id;
+    detail.append(createSummaryElement("b", "", evaluation.title), createSummaryElement("p", "", evaluation.description || "Sin descripción adicional."), createSummaryElement("small", "", `Fecha límite: ${evaluation.dueDate} · ${evaluation.type === "QUIZ" ? "Alternativa" : "Desarrollo"}`));
+    row.append(detail, createSummaryElement("span", "message-recipient-count", `${evaluation.submissionsCount} respuesta(s)`), review);
+    fragment.append(row);
+  });
+  container.replaceChildren(result.evaluations.length ? fragment : createSummaryElement("p", "empty-state", "Aún no has publicado evaluaciones demo para este curso."));
+  if (result.warning) showEvaluationFeedback(result.warning, "error");
+}
+
+function setupCourseEvaluations(courseId) {
+  const dueDate = $("#teacher-evaluation-due-date");
+  dueDate.min = new Date().toISOString().slice(0, 10);
+  renderCourseEvaluations(courseId);
+  renderQuestionBank(courseId);
+  $("#teacher-question-form").addEventListener("submit", event => {
+    event.preventDefault();
+    const options = $("#teacher-question-options").value.split(/\r?\n/);
+    const result = createQuestion({ courseId, identity: teacherRouteGuard.identity, type: $("#teacher-question-type").value, question: $("#teacher-question-text").value, options, correctAnswer: $("#teacher-question-correct").value, topic: $("#teacher-question-topic").value, difficulty: $("#teacher-question-difficulty").value });
+    if (!result.created) return showEvaluationFeedback((result.errors || ["No fue posible guardar la pregunta demo."]).join(" "), "error");
+    event.currentTarget.reset();
+    renderQuestionBank(courseId);
+    showEvaluationFeedback("Pregunta agregada al banco correctamente.", "success");
+  });
+  $("#teacher-evaluation-form").addEventListener("submit", event => {
+    event.preventDefault();
+    const selectedQuestionIds = [...document.querySelectorAll("[name='teacher-evaluation-question']:checked")].map(input => input.value);
+    const requestedCount = Number($("#teacher-evaluation-question-count").value);
+    const questionIds = Number.isInteger(requestedCount) && requestedCount > 0 ? selectedQuestionIds.slice(0, requestedCount) : selectedQuestionIds;
+    const result = createEvaluation({ courseId, title: $("#teacher-evaluation-title").value, description: $("#teacher-evaluation-description").value, type: $("#teacher-evaluation-type").value, dueDate: dueDate.value, questionIds, identity: teacherRouteGuard.identity });
+    if (!result.created) return showEvaluationFeedback((result.errors || ["No fue posible publicar la evaluación."]).join(" "), "error");
+    event.currentTarget.reset();
+    renderCourseEvaluations(courseId);
+    showEvaluationFeedback("Evaluación publicada correctamente.", "success");
+  });
+  $("#teacher-course-evaluations").addEventListener("click", event => {
+    const button = event.target.closest("[data-evaluation-review]");
+    if (button) { renderEvaluationReview(button.dataset.evaluationReview); renderEvaluationStatistics(button.dataset.evaluationReview); }
+  });
+  $("#teacher-evaluation-review").addEventListener("submit", event => {
+    const form = event.target.closest("[data-evaluation-submission]");
+    if (!form) return;
+    event.preventDefault();
+    const result = gradeEvaluationSubmission({ submissionId: form.dataset.evaluationSubmission, grade: form.elements.grade.value, comment: form.elements.comment.value, identity: teacherRouteGuard.identity });
+    if (!result.graded) return showEvaluationFeedback((result.errors || ["No fue posible publicar la nota demo."]).join(" "), "error");
+    renderEvaluationReview(result.submission.evaluationId);
+    renderCourseEvaluations(courseId);
+    showEvaluationFeedback("Nota demo publicada correctamente.", "success");
   });
 }
 
@@ -689,6 +971,9 @@ function renderCourseDetail() {
   renderCourseAnalytics(course.id);
   renderStudents(course.id);
   setupAttendanceRegistration(course.id);
+  setupQrAttendance(course.id);
+  setupCourseMessages(course.id);
+  setupCourseEvaluations(course.id);
   setupGradesRegistration(course.id);
   setupDemoGradeManagement(course.id);
   setupMaterialRegistration(course.id);

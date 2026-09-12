@@ -35,11 +35,11 @@ Luego abrir [http://localhost:3000](http://localhost:3000). También puede utili
 
 | Perfil | Usuario | Credencial demo | Acceso |
 | --- | --- | --- | --- |
-| Estudiante | Sofía Martínez Rojas | `sofia.martinez` / `demo123` | Aplicación principal |
-| Profesor | Carlos Pérez | Selección demo | `modules/professor/teacher-dashboard.html` |
-| Administrador | Administrador UBO | Selección demo | `modules/admin/admin-dashboard.html` |
+| Estudiante | Sofía Martínez Rojas | `msofia` / `123456` | Aplicación principal |
+| Profesor | Carlos Pérez | `pcarlos` / `123456` | `modules/professor/teacher-dashboard.html` |
+| Administrador | Administrador UBO | `admin` / `admin123` | `modules/admin/admin-dashboard.html` |
 
-Los perfiles docente y administrativo se abren desde el selector demo: `modules/demo/demo-selector.html`.
+El acceso es simulado y únicamente usa credenciales demo. No representa autenticación institucional real ni almacena contraseñas productivas.
 
 ## Estructura
 
@@ -62,7 +62,7 @@ Los perfiles docente y administrativo se abren desde el selector demo: `modules/
 
 - Los renderizadores dinámicos priorizan nodos DOM y `textContent`; la auditoría de hardening XSS está documentada en `docs/AUDIT/`.
 - La integración con UniEcosystemCore permanece aislada y desactivada: no se activan Core Session, Identity Canary, Career ni Room canónicos.
-- El Service Worker vigente utiliza la caché `ubo-academic-hub-v145` y precachea `app.js?v=120`.
+- El Service Worker vigente utiliza la caché `ubo-academic-hub-v160` y precachea `app.js?v=134`.
 
 ## Validación
 
