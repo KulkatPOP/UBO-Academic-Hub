@@ -34,7 +34,7 @@ El paquete excluye `.git/`, dependencias instaladas, `.env` reales, logs, caché
 
 ## 6. PWA
 
-El Service Worker real usa `ubo-academic-hub-v198` y la hoja de estilos se carga como `styles.css?v=129`. La colección de precache se deduplica con `Set` y no incluye rutas privadas `/api/*`. La validación PWA/ESM forma parte de la suite frontend aprobada.
+El Service Worker real usa `ubo-academic-hub-v200` y la hoja de estilos se carga como `styles.css?v=131`. La colección de precache se deduplica con `Set` y no incluye rutas privadas `/api/*`. La validación PWA/ESM forma parte de la suite frontend aprobada. La Fase 2.54 ajustó únicamente el espacio útil del shell Student respecto de la navegación inferior y el asistente flotante; conserva Light Mode y no afecta los shells Teacher/Admin.
 
 ## 7. Pruebas realizadas
 
@@ -77,6 +77,8 @@ La reconstrucción definitiva queda documentada en `docs/AUDIT/FINAL_RELEASE_REB
 El SHA-256 del contenedor se registra como evidencia externa al ZIP para evitar un checksum autorreferente: incluir el hash del ZIP dentro del propio ZIP cambiaría el artefacto y lo invalidaría.
 
 Los metadatos verificables del contenedor final —tamaño, entradas, SHA-256, apertura, extracción y exclusiones— se registran como evidencia externa de la entrega para no introducir un checksum autorreferente dentro del ZIP.
+
+La reconstrucción final de 2026-09-19 produjo `C:\Users\shari\Desktop\UBO-Academic-Hub-Release-1.0.zip`: 1,220,479 bytes, 525 entradas y SHA-256 `2E3C7632A1136A8CE5E18B8ACCE4F2F214A5E5A94277DFBCB79070C3A63559AD`. Se abrió mediante `System.IO.Compression.ZipFile`, se listó mediante `tar.exe` y se extrajo correctamente a una ubicación temporal. La comprobación física confirmó `README.md`, `backend/`, `data/`, `docs/`, `services/` y `tests/`, sin `.git`, `node_modules`, `.env` real, logs, cachés, temporales, backups ni archivos de claves.
 
 ## Cierre basado en evidencia
 

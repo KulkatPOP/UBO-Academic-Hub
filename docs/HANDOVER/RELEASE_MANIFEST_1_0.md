@@ -35,10 +35,14 @@ El paquete no contiene SSO, fuentes institucionales, datos reales de UBO ni cone
 
 ## PWA
 
-- Service Worker: `ubo-academic-hub-v198`.
-- Hoja de estilos principal: `styles.css?v=129`.
+- Service Worker: `ubo-academic-hub-v200`.
+- Hoja de estilos principal: `styles.css?v=131`.
 - El precache contiene shells y módulos estáticos necesarios.
 - No se precachean rutas privadas `/api/*`.
+
+La corrección visual final de Fase 2.54 usa las superficies y variables
+existentes del shell Student para mantener el contenido sobre la navegación
+inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 
 ## Validaciones de preparación
 
@@ -68,6 +72,16 @@ El paquete no contiene SSO, fuentes institucionales, datos reales de UBO ni cone
 - La evidencia externa del contenedor final registra tamaño, cantidad de archivos, SHA-256, apertura y extracción. El contenido de este manifiesto permanece estable dentro del ZIP para no invalidar el checksum del propio archivo.
 - El hash de un archivo ZIP no se inserta dentro de ese mismo ZIP: hacerlo alteraría el artefacto y volvería a invalidar el checksum. El SHA-256 definitivo se registra fuera del artefacto en `docs/AUDIT/FINAL_RELEASE_REBUILD_1_0.md`, junto con la comprobación física de apertura y extracción.
 - El ZIP incluye este manifiesto con versión PWA, versión CSS, alcance, exclusiones y resultados de validación; la integridad del contenedor se verifica mediante el hash externo del archivo final.
+
+### Evidencia externa de reconstrucción final
+
+- **Archivo:** `C:\Users\shari\Desktop\UBO-Academic-Hub-Release-1.0.zip`
+- **Fecha de verificación:** 2026-09-19
+- **Tamaño:** 1,220,479 bytes
+- **Entradas:** 525
+- **SHA-256:** `2E3C7632A1136A8CE5E18B8ACCE4F2F214A5E5A94277DFBCB79070C3A63559AD`
+- **Verificación:** apertura con `System.IO.Compression.ZipFile`, listado independiente con `tar.exe` y extracción temporal correcta con `Expand-Archive`.
+- **Estructura comprobada:** `README.md`, `backend/`, `data/`, `docs/`, `services/` y `tests/`. Las migraciones y seeds se mantienen únicamente bajo `backend/src/database/`; no existe una carpeta `database/` artificial en la raíz.
 
 ## Estado Git
 
