@@ -78,8 +78,6 @@ El SHA-256 del contenedor se registra como evidencia externa al ZIP para evitar 
 
 Los metadatos verificables del contenedor final —tamaño, entradas, SHA-256, apertura, extracción y exclusiones— se registran como evidencia externa de la entrega para no introducir un checksum autorreferente dentro del ZIP.
 
-La reconstrucción final de 2026-09-19 produjo `C:\Users\shari\Desktop\UBO-Academic-Hub-Release-1.0.zip`: 1,220,479 bytes, 525 entradas y SHA-256 `2E3C7632A1136A8CE5E18B8ACCE4F2F214A5E5A94277DFBCB79070C3A63559AD`. Se abrió mediante `System.IO.Compression.ZipFile`, se listó mediante `tar.exe` y se extrajo correctamente a una ubicación temporal. La comprobación física confirmó `README.md`, `backend/`, `data/`, `docs/`, `services/` y `tests/`, sin `.git`, `node_modules`, `.env` real, logs, cachés, temporales, backups ni archivos de claves.
-
 ## Cierre basado en evidencia
 
 - `RELEASE_1_0_PREPARED`

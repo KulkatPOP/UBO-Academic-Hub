@@ -95,7 +95,8 @@ Estas credenciales son únicamente DEMO: no son institucionales ni deben reutili
 
 ## PWA y caché
 
-- Caché vigente: `ubo-academic-hub-v198`.
+- Caché vigente: `ubo-academic-hub-v200`.
+- Hoja de estilos vigente: `styles.css?v=131`.
 - Asset principal vigente: `app.js?v=150`.
 - Las rutas privadas `/api/*` no forman parte del precache.
 - Antes de cambiar el Service Worker, revisar el grafo ESM y los assets incluidos en precache.

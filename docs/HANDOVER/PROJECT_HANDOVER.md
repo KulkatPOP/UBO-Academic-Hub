@@ -94,7 +94,7 @@ Estas medidas son adecuadas para el alcance LMS local DEMO. No sustituyen SSO, c
 
 ## PWA
 
-La caché actual es `ubo-academic-hub-v198`. Si se actualizan assets precacheados, se debe revisar el grafo ESM y el Service Worker antes de cambiar versión. No incorporar API privada ni UniEcosystemCore al precache.
+La caché actual es `ubo-academic-hub-v200` y la hoja de estilos vigente es `styles.css?v=131`. La corrección final de Fase 2.54 mantiene el contenido del shell Student por encima de la navegación inferior y del asistente, respetando safe-area y los viewports 390×844, 768×1024 y 1920×1080. Si se actualizan assets precacheados, se debe revisar el grafo ESM y el Service Worker antes de cambiar versión. No incorporar API privada ni UniEcosystemCore al precache.
 
 ## Pruebas disponibles
 

@@ -73,16 +73,6 @@ inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 - El hash de un archivo ZIP no se inserta dentro de ese mismo ZIP: hacerlo alteraría el artefacto y volvería a invalidar el checksum. El SHA-256 definitivo se registra fuera del artefacto en `docs/AUDIT/FINAL_RELEASE_REBUILD_1_0.md`, junto con la comprobación física de apertura y extracción.
 - El ZIP incluye este manifiesto con versión PWA, versión CSS, alcance, exclusiones y resultados de validación; la integridad del contenedor se verifica mediante el hash externo del archivo final.
 
-### Evidencia externa de reconstrucción final
-
-- **Archivo:** `C:\Users\shari\Desktop\UBO-Academic-Hub-Release-1.0.zip`
-- **Fecha de verificación:** 2026-09-19
-- **Tamaño:** 1,220,479 bytes
-- **Entradas:** 525
-- **SHA-256:** `2E3C7632A1136A8CE5E18B8ACCE4F2F214A5E5A94277DFBCB79070C3A63559AD`
-- **Verificación:** apertura con `System.IO.Compression.ZipFile`, listado independiente con `tar.exe` y extracción temporal correcta con `Expand-Archive`.
-- **Estructura comprobada:** `README.md`, `backend/`, `data/`, `docs/`, `services/` y `tests/`. Las migraciones y seeds se mantienen únicamente bajo `backend/src/database/`; no existe una carpeta `database/` artificial en la raíz.
-
 ## Estado Git
 
 El repositorio fuente tenía modificaciones y archivos no rastreados legítimos de fases previas al preparar este manifiesto. No se descartaron, alteraron ni confirmaron mediante commit. No hubo push ni deploy.
