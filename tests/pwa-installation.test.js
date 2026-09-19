@@ -20,7 +20,7 @@ assert.match(index, /id="pwa-install-state"/);
 assert.match(app, /beforeinstallprompt/);
 assert.match(app, /appinstalled/);
 assert.match(app, /UBO Academic Hub instalada correctamente/);
-assert.match(worker, /ubo-academic-hub-v161/);
+assert.match(worker, /ubo-academic-hub-v198/);
 assert.match(worker, /cache:'no-store'/);
 assert.doesNotMatch(app.match(/function setupPwaInstallation\(\)[\s\S]*?function init/)?.[0] || "", /innerHTML/);
 console.log("PWA_INSTALLATION_UPGRADE_OK");

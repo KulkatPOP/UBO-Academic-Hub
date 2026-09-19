@@ -1715,6 +1715,7 @@ body:has(#home.active) .topbar{display:none}
 /* Fase 2.08: tutor académico local con historial aislado por estudiante. */
 .student-academic-tutor,.student-tutor-history{display:grid;gap:11px}.student-tutor-form{display:grid;gap:10px;padding:14px;border:1px solid var(--border);border-radius:15px;background:var(--card-surface);box-shadow:var(--shadow)}.student-tutor-form label{display:grid;gap:6px;color:var(--navy);font-size:.8rem;font-weight:800}.student-tutor-form textarea{min-height:82px;resize:vertical}.student-tutor-feedback{min-height:1.2em;color:#28734f;font-size:.76rem;line-height:1.45}.student-tutor-feedback.error{color:#b53636}.student-tutor-history h4{margin:0;color:var(--navy);font-size:.85rem}.student-tutor-history-item{display:grid;gap:6px;padding:12px;border-left:3px solid var(--sky);border-radius:0 12px 12px 0;background:var(--pale)}.student-tutor-history-item b{font-size:.78rem}.student-tutor-history-item p,.student-tutor-history-item li{margin:0;color:var(--muted);font-size:.73rem;line-height:1.45}.student-tutor-history-item ul{display:grid;gap:3px;margin:0;padding-left:17px}.student-tutor-sources{display:grid;gap:3px;padding-top:3px;color:var(--muted);font-size:.72rem}.student-tutor-sources>b{color:var(--navy)}.student-tutor-sources span{color:#28734f;font-weight:700}.student-tutor-sources small{font-size:.7rem;line-height:1.35}
 .student-academic-recommendations{display:grid;gap:10px}.student-recommendation-status,.student-recommendation-list,.student-study-plan{display:grid;gap:6px;padding:12px;border:1px solid var(--border);border-radius:13px;background:var(--card-surface);box-shadow:var(--shadow)}.student-recommendation-status{border-left:3px solid #c78a21}.student-recommendation-status.low{border-left-color:#28734f}.student-recommendation-status.high{border-left-color:#b53636}.student-recommendation-status p,.student-recommendation-list span,.student-study-plan span{margin:0;color:var(--muted);font-size:.74rem;line-height:1.45}.student-recommendation-label,.student-recommendation-list b,.student-study-plan b{color:var(--navy);font-size:.78rem}.student-study-plan{margin:0;padding-left:28px}.student-study-plan li{display:grid;gap:2px;padding-left:2px}
+.student-recommendation-status.lms{border-left-color:var(--sky)}.student-lms-recommendation-list{display:grid;gap:8px}.student-lms-recommendation{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--border);border-radius:13px;background:var(--card-surface);box-shadow:var(--shadow)}.student-lms-recommendation>div{display:grid;gap:4px;min-width:0}.student-lms-recommendation b{color:var(--navy);font-size:.78rem}.student-lms-recommendation p,.student-lms-recommendation small{margin:0;color:var(--muted);font-size:.74rem;line-height:1.45}.student-lms-recommendation .badge{flex:0 0 auto}
 
 /* Fase 1.90: progreso demo del estudiante, sin sustituir datos institucionales. */
 #home .student-academic-progress { display: grid; gap: 10px; }
@@ -1787,6 +1788,148 @@ body:has(#home.active) .topbar{display:none}
   margin-top:0!important;
   position:relative;
   z-index:1;
+}
+
+/* Fase 2.52: overrides finales para reglas Student con especificidad de pantalla. */
+html[data-theme="dark"] #home .student-summary-card,
+html[data-theme="dark"] #home .student-summary-course,
+html[data-theme="dark"] #home .student-material-card,
+html[data-theme="dark"] #home .student-grade-card,
+html[data-theme="dark"] #home .student-attendance-card,
+html[data-theme="dark"] #home .student-demo-evaluation-card,
+html[data-theme="dark"] #home .student-lms-recommendation,
+html[data-theme="dark"] #home .student-recommendation-status,
+html[data-theme="dark"] #home .student-recommendation-list,
+html[data-theme="dark"] #home .student-study-plan,
+html[data-theme="dark"] #home .student-academic-alert,
+html[data-theme="dark"] #home .home-announcement-card,
+html[data-theme="dark"] #home .home-mail-card,
+html[data-theme="dark"] #home .home-delivery-card,
+html[data-theme="dark"] #home .home-notification-card,
+html[data-theme="dark"] #home .today-class-card,
+html[data-theme="dark"] #home .today-evaluation,
+html[data-theme="dark"] #home .dashboard-attention-card {
+  background:var(--dark-card);
+  border-color:var(--dark-border);
+  box-shadow:var(--dark-shadow);
+  color:var(--text);
+}
+
+html[data-theme="dark"] #home .student-academic-alert-empty,
+html[data-theme="dark"] #home .student-academic-alert-note,
+html[data-theme="dark"] #home .home-mail-empty,
+html[data-theme="dark"] #home .today-empty,
+html[data-theme="dark"] #home .schedule-empty {
+  background:var(--dark-subtle);
+  border-color:var(--dark-border);
+  color:var(--text);
+}
+
+html[data-theme="dark"] #home .student-material-card,
+html[data-theme="dark"] #home .student-grade-card,
+html[data-theme="dark"] #home .student-attendance-card,
+html[data-theme="dark"] #home .student-demo-evaluation-card,
+html[data-theme="dark"] #home .student-summary-card,
+html[data-theme="dark"] #home .student-summary-course { border-color:var(--dark-border); }
+
+/* Fase 2.37: refinamiento visual de sesión y tema, sin alterar flujos. */
+.profile-session-card .logout{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  min-height:46px;
+  padding:10px 12px;
+  border:1px solid color-mix(in srgb,var(--red) 42%,var(--border));
+  border-radius:var(--radius-control,10px);
+  background:color-mix(in srgb,var(--red) 7%,transparent);
+  color:var(--red);
+  font:800 .78rem "Open Sans",Arial,sans-serif;
+  text-align:left;
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.profile-session-card .logout:hover{background:color-mix(in srgb,var(--red) 13%,transparent);border-color:color-mix(in srgb,var(--red) 65%,var(--border));}
+.profile-session-card .logout:active{transform:translateY(1px)}
+.profile-session-card .logout:focus-visible{outline:3px solid color-mix(in srgb,var(--sky) 72%,transparent);outline-offset:3px}
+.profile-session-card .logout-icon{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:color-mix(in srgb,var(--red) 14%,transparent);font-size:1rem;line-height:1}
+.profile-session-card .logout small{color:inherit;font-size:.66rem;font-weight:700;opacity:.78;white-space:nowrap}
+
+html[data-theme="dark"]{
+  --navy:#b8d1ee;
+  --sky:#82bddd;
+  --pale:#1a2b3e;
+  --bg:#111c29;
+  --text:#e3edf6;
+  --muted:#aab9c9;
+  --border:#30465d;
+  --card-surface:#182738;
+  --card-border:#30465d;
+  --card-shadow:0 8px 22px rgba(0,0,0,.24);
+  --shadow:0 5px 16px rgba(0,0,0,.22);
+  --shadow-raised:0 10px 28px rgba(0,0,0,.28);
+}
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .bottom-nav,
+html[data-theme="dark"] .bottom-nav button,
+html[data-theme="dark"] .login-card,
+html[data-theme="dark"] .dashboard-summary,
+html[data-theme="dark"] #home .dashboard-section,
+html[data-theme="dark"] .today-section,
+html[data-theme="dark"] .important-alerts-section,
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .summary-row,
+html[data-theme="dark"] .material-row,
+html[data-theme="dark"] .task-row,
+html[data-theme="dark"] .card-section,
+html[data-theme="dark"] .student-lms-course-detail .detail-title,
+html[data-theme="dark"] .student-lms-course-detail .card-meta,
+html[data-theme="dark"] .student-tutor-form,
+html[data-theme="dark"] .toast{
+  background:var(--card-surface);
+  border-color:var(--border);
+  color:var(--text);
+}
+html[data-theme="dark"] .dashboard-summary{background:linear-gradient(145deg,#162638,#1a2b3d);box-shadow:inset 0 0 0 1px var(--border)}
+html[data-theme="dark"] .quick-card,
+html[data-theme="dark"] .dashboard-summary article,
+html[data-theme="dark"] .dashboard-attention-card,
+html[data-theme="dark"] .student-summary-card,
+html[data-theme="dark"] .student-summary-course,
+html[data-theme="dark"] .home-announcement-card,
+html[data-theme="dark"] .student-material-card,
+html[data-theme="dark"] .student-grade-card,
+html[data-theme="dark"] .student-attendance-card,
+html[data-theme="dark"] .student-risk-card,
+html[data-theme="dark"] .student-recommendation-status,
+html[data-theme="dark"] .student-recommendation-list,
+html[data-theme="dark"] .student-study-plan,
+html[data-theme="dark"] .student-lms-recommendation{background:var(--card-surface);border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] .student-lms-course-detail .card-section{box-shadow:none}
+html[data-theme="dark"] .student-lms-course-detail .summary-row,
+html[data-theme="dark"] .student-lms-course-detail .material-row,
+html[data-theme="dark"] .student-lms-course-detail .task-row{box-shadow:none}
+html[data-theme="dark"] .outline-btn{background:#1b3045;border-color:#42637f;color:#b9dcf3}
+html[data-theme="dark"] .outline-btn:hover{background:#233c55;border-color:#6c9bbb}
+html[data-theme="dark"] .primary-btn{background:#365d8b;box-shadow:0 6px 15px rgba(0,0,0,.22)}
+html[data-theme="dark"] .primary-btn:hover{background:#4271a4}
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea{background:#122235;border-color:#38546e;color:var(--text)}
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder{color:#91a4b8;opacity:1}
+html[data-theme="dark"] .login-card>p,
+html[data-theme="dark"] .login-help,
+html[data-theme="dark"] .material-row p,
+html[data-theme="dark"] .task-row p,
+html[data-theme="dark"] .summary-row p{color:var(--muted)}
+html[data-theme="dark"] .profile-session-card .logout{background:rgba(214,91,101,.12);border-color:rgba(235,135,143,.48);color:#f1b7bd}
+html[data-theme="dark"] .profile-session-card .logout:hover{background:rgba(214,91,101,.19);border-color:#f1b7bd}
+html[data-theme="dark"] .profile-session-card .logout-icon{background:rgba(241,183,189,.14)}
+
+@media(max-width:390px){
+  .profile-session-card .logout{grid-template-columns:auto minmax(0,1fr)}
+  .profile-session-card .logout small{grid-column:2;font-size:.62rem}
 }
 
 /* Fase 2.06: indicador académico predictivo DEMO, solo de lectura. */
@@ -2187,9 +2330,181 @@ html[data-theme="dark"] body,html[data-theme="dark"] .phone-shell,html[data-them
 html[data-theme="dark"] .info-card,html[data-theme="dark"] .section-intro,html[data-theme="dark"] .today-card,html[data-theme="dark"] .form-card,html[data-theme="dark"] .settings-list,html[data-theme="dark"] .profile-hero,html[data-theme="dark"] .summary-card,html[data-theme="dark"] .card-section,html[data-theme="dark"] .stack>*,html[data-theme="dark"] .module-card,html[data-theme="dark"] .quick-action-card,html[data-theme="dark"] .service-card{background:#182535;border-color:var(--border);color:var(--text)}
 html[data-theme="dark"] h1,html[data-theme="dark"] h2,html[data-theme="dark"] h3,html[data-theme="dark"] h4,html[data-theme="dark"] b,html[data-theme="dark"] strong,html[data-theme="dark"] .profile-session-card h3,html[data-theme="dark"] .profile-theme-preference>b,html[data-theme="dark"] .profile-theme-preference strong{color:var(--text)}
 html[data-theme="dark"] p,html[data-theme="dark"] small,html[data-theme="dark"] .profile-theme-preference>span,html[data-theme="dark"] .section-intro p{color:var(--muted)}
+/* Inicio conserva superficies oscuras cuando sus reglas visuales específicas usan selectores con ID. */
+html[data-theme="dark"] #home .dashboard-summary{background:linear-gradient(145deg,#162638,#1a2b3d);box-shadow:inset 0 0 0 1px var(--border)}
+html[data-theme="dark"] #home .summary-card,
+html[data-theme="dark"] #home .today-section,
+html[data-theme="dark"] #home .today-section.dashboard-card .today-class-card,
+html[data-theme="dark"] #home .today-section .today-evaluation,
+html[data-theme="dark"] #home .commitments-section,
+html[data-theme="dark"] #home .home-brief-grid .home-mail-section,
+html[data-theme="dark"] #home .home-brief-grid .dashboard-attention-section{background:var(--card-surface);border-color:var(--border);color:var(--text)}
+html[data-theme="dark"] #home .today-section .today-heading>span{background:#223a52;color:var(--text)}
+html[data-theme="dark"] #course-detail .card-meta:only-child,
+html[data-theme="dark"] #course-detail .student-attendance .card-meta,
+html[data-theme="dark"] #course-detail .student-grades .card-meta,
+html[data-theme="dark"] #course-detail .student-materials .card-meta{background:var(--card-surface)!important;border-color:var(--border)!important;color:var(--muted)!important}
+/* Estados vacíos de Inicio: mantienen la superficie secundaria del modo oscuro. */
+html[data-theme="dark"] #home .card-meta:only-child{background:var(--dark-subtle);border-color:var(--dark-border);color:var(--text)!important}
 html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#102032;color:var(--text);border-color:var(--border)}
 html[data-theme="dark"] .settings-list button,html[data-theme="dark"] .theme-toggle{background:#182535;color:var(--text);border-color:var(--border)}
 html[data-theme="dark"] .settings-list button.active,html[data-theme="dark"] .theme-toggle:hover{background:#243b55;border-color:var(--sky)}
+
+/* Fase 2.52: jerarquía de superficies del modo oscuro. Solo refina presentación. */
+html[data-theme="dark"] {
+  --dark-surface: #171a22;
+  --dark-card: #1d212b;
+  --dark-elevated: #242936;
+  --dark-border: rgba(255,255,255,.08);
+  --dark-subtle: #202632;
+  --dark-field: #151b25;
+  --dark-shadow: 0 10px 24px rgba(0,0,0,.24);
+}
+
+html[data-theme="dark"] .quick-card,
+html[data-theme="dark"] .course-card,
+html[data-theme="dark"] .certificate-card,
+html[data-theme="dark"] .virtual-card,
+html[data-theme="dark"] .assignment-card,
+html[data-theme="dark"] .alert-card,
+html[data-theme="dark"] .summary-row,
+html[data-theme="dark"] .home-announcement-card,
+html[data-theme="dark"] .student-material-card,
+html[data-theme="dark"] .student-grade-card,
+html[data-theme="dark"] .student-attendance-card,
+html[data-theme="dark"] .student-demo-evaluation-card,
+html[data-theme="dark"] .student-evaluation-detail-card,
+html[data-theme="dark"] .student-summary-card,
+html[data-theme="dark"] .student-summary-course,
+html[data-theme="dark"] .grade-simulator-course,
+html[data-theme="dark"] .grade-simulator-card,
+html[data-theme="dark"] .grade-needed-card,
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .mail-card,
+html[data-theme="dark"] .home-mail-card,
+html[data-theme="dark"] .community-card,
+html[data-theme="dark"] .international-card,
+html[data-theme="dark"] .announcement-card,
+html[data-theme="dark"] .help-category-card,
+html[data-theme="dark"] .help-faq-row,
+html[data-theme="dark"] .document-card,
+html[data-theme="dark"] .library-book-card,
+html[data-theme="dark"] .campus-event-card,
+html[data-theme="dark"] .notification-card,
+html[data-theme="dark"] .home-notification-card,
+html[data-theme="dark"] .home-delivery-card,
+html[data-theme="dark"] .evaluation-card,
+html[data-theme="dark"] .today-class-card,
+html[data-theme="dark"] .weekly-class-card,
+html[data-theme="dark"] .upcoming-event-card,
+html[data-theme="dark"] .material-row,
+html[data-theme="dark"] .task-row {
+  background: var(--dark-card);
+  border-color: var(--dark-border);
+  box-shadow: var(--dark-shadow);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .grade-evaluation,
+html[data-theme="dark"] .grade-evaluation.locked,
+html[data-theme="dark"] .student-evaluation-question,
+html[data-theme="dark"] .student-evaluation-result,
+html[data-theme="dark"] .student-academic-alert,
+html[data-theme="dark"] .student-academic-alert-empty,
+html[data-theme="dark"] .student-academic-alert-note,
+html[data-theme="dark"] .home-mail-empty,
+html[data-theme="dark"] .dashboard-attention-card,
+html[data-theme="dark"] .today-empty,
+html[data-theme="dark"] .schedule-empty,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .empty-material-card {
+  background: var(--dark-subtle);
+  border-color: var(--dark-border);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .dashboard-summary article,
+html[data-theme="dark"] .grade-simulator-summary article,
+html[data-theme="dark"] .attendance-result-grid span,
+html[data-theme="dark"] .calendar-event-card,
+html[data-theme="dark"] .campus-location-node,
+html[data-theme="dark"] .location-nearby-event,
+html[data-theme="dark"] .dashboard-icon-btn,
+html[data-theme="dark"] .dashboard-avatar-btn,
+html[data-theme="dark"] .filter-btn,
+html[data-theme="dark"] .calendar-day,
+html[data-theme="dark"] .ai-widget-messages .ai-message,
+html[data-theme="dark"] .ai-widget-suggestions button,
+html[data-theme="dark"] #ai-widget-form {
+  background: var(--dark-elevated);
+  border-color: var(--dark-border);
+  color: var(--text);
+}
+
+/* Indicador secundario dentro de las tarjetas de notas, sin fondo claro. */
+html[data-theme="dark"] #home .student-grade-card strong {
+  background: var(--dark-elevated);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .today-evaluation,
+html[data-theme="dark"] .today-evaluation.request,
+html[data-theme="dark"] .today-evaluation.available,
+html[data-theme="dark"] .today-evaluation.holiday,
+html[data-theme="dark"] .today-evaluation.reminder,
+html[data-theme="dark"] .attention-card,
+html[data-theme="dark"] .alert-card.high,
+html[data-theme="dark"] .alert-card.medium,
+html[data-theme="dark"] .alert-card.is-read {
+  background: var(--dark-card);
+}
+
+html[data-theme="dark"] .student-academic-alert-description,
+html[data-theme="dark"] .student-attendance-records,
+html[data-theme="dark"] .alert-meta,
+html[data-theme="dark"] .settings-list button,
+html[data-theme="dark"] .profile-nav-grid button {
+  border-color: var(--dark-border);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .library-search,
+html[data-theme="dark"] .grade-simulator-course select,
+html[data-theme="dark"] .grade-evaluation input,
+html[data-theme="dark"] .grade-add-form input {
+  background: var(--dark-field);
+  border-color: var(--dark-border);
+  color: var(--text);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #aeb4c0; }
+
+html[data-theme="dark"] input:-webkit-autofill,
+html[data-theme="dark"] input:-webkit-autofill:hover,
+html[data-theme="dark"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--dark-field) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+html[data-theme="dark"] .bottom-nav,
+html[data-theme="dark"] .bottom-nav button,
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .login-card {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+html[data-theme="dark"] .quick-card:hover,
+html[data-theme="dark"] .student-demo-evaluation-card:hover,
+html[data-theme="dark"] .profile-nav-grid button:hover,
+html[data-theme="dark"] .help-faq-row:hover {
+  background: var(--dark-elevated);
+  border-color: rgba(128,187,223,.52);
+}
 
 /* Visibilidad del saludo existente dentro de Inicio. */
 #home.active > .dashboard-hero{

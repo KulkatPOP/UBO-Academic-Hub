@@ -1,0 +1,7 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { getStudentCourseProgress, getStudentProgress } from "../services/api/progress-api-service.js";
+class Storage { constructor(value) { this.value = value; } getItem() { return this.value || null; } }
+const session = JSON.stringify({ userId: "student-id", name: "Sofía", role: "STUDENT", source: "backend" });
+test("cliente de progreso usa sesión LMS y no credenciales", async () => { const calls=[]; const fetchImpl=async(url,options)=>{calls.push({url,options});return new Response(JSON.stringify({source:"LMS",studentId:"student-id",courses:[],overall:null}),{status:200})}; const options={storage:new Storage(session),fetchImpl}; assert.equal((await getStudentProgress(options)).source,"LMS"); assert.equal((await getStudentCourseProgress("course id",options)).source,"LMS"); assert.ok(calls.every(call=>call.options.headers["x-user-id"]==="student-id")); assert.doesNotMatch(JSON.stringify(calls),/password/); });
+test("cliente conserva fallback cuando no hay sesión, red o HTTP", async()=>{assert.equal((await getStudentProgress({fallback:{source:"DEMO"},storage:new Storage()})).progress.source,"DEMO");assert.equal((await getStudentProgress({storage:new Storage(session),fetchImpl:async()=>{throw new Error("offline")}})).source,"demo-fallback");assert.equal((await getStudentProgress({storage:new Storage(session),fetchImpl:async()=>new Response("{}",{status:403})})).available,false);});

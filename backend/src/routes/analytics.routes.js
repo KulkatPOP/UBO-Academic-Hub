@@ -1,4 +1,1 @@
-import { Router } from "express";
-
-// Reservado para analítica derivada de Hub.
-export const analyticsRouter = Router();
+import {Router} from "express";import * as c from "../controllers/analytics-controller.js";export const analyticsRouter=Router();analyticsRouter.get("/student",c.student);analyticsRouter.get("/student/:courseId",c.studentCourse);analyticsRouter.get("/teacher/courses",c.teacher);analyticsRouter.get("/teacher/courses/:courseId",c.teacherCourse);analyticsRouter.get("/admin/overview",c.admin);

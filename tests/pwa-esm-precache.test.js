@@ -57,9 +57,10 @@ function findSpecifierOccurrences(source) {
 }
 
 function resolveLocalImport(importerPath, specifier) {
-  const basePath = specifier.startsWith("/")
-    ? resolve(projectRoot, `.${specifier}`)
-    : resolve(dirname(importerPath), specifier);
+  const cleanSpecifier = specifier.replace(/[?#].*$/, "");
+  const basePath = cleanSpecifier.startsWith("/")
+    ? resolve(projectRoot, `.${cleanSpecifier}`)
+    : resolve(dirname(importerPath), cleanSpecifier);
   const candidates = extname(basePath)
     ? [basePath]
     : [basePath, `${basePath}.js`, resolve(basePath, "index.js")];
@@ -236,6 +237,12 @@ function verifyRegressionDetection(graphAssets, precacheAssets, futureModule, ma
 const precacheCollection = extractPrecacheCollection();
 const precacheAssets = new Set(precacheCollection.assets);
 const offlineDocuments = extractOfflineDocumentMap();
+const serviceWorkerSource = readFileSync(serviceWorkerPath, "utf8");
+assert.match(
+  serviceWorkerSource,
+  /const PRECACHE_ASSETS\s*=\s*\[\.\.\.new Set\(\[\.\.\.APP_ASSETS, \.\.\.DEMO_SHELL_ASSETS\]\)\];/,
+  "El precache combinado debe deduplicar APP_ASSETS y DEMO_SHELL_ASSETS antes de Cache.addAll()."
+);
 const duplicatePrecacheAssets = precacheCollection.assets.filter((asset, index) => precacheCollection.assets.indexOf(asset) !== index);
 const allGraphAssets = new Set();
 const allExpectedShellAssets = new Set();

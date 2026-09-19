@@ -91,7 +91,8 @@ console.log("DEMO_SESSION_RELOAD_AND_LOGOUT_PRECEDENCE_OK");
 // El logout legacy debe invocar la frontera central sin duplicar su lógica.
 const appSource = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 assert.match(appSource, /import\s*\{\s*clearCurrentDemoIdentity\s*\}\s*from\s*"\.\/core\/demo-identity-session\.js"/);
-assert.match(appSource, /function logout\(\)\s*\{\s*clearCurrentDemoIdentity\(\);\s*localStorage\.removeItem\("uboSession"\)/);
+assert.match(appSource, /import\s*\{[^}]*logout as logoutFromApi[^}]*\}\s*from\s*"\.\/services\/api\/auth-api-service\.js"/);
+assert.match(appSource, /async function logout\(\)\s*\{\s*await logoutFromApi\(\);\s*clearCurrentDemoIdentity\(\);\s*localStorage\.removeItem\("uboSession"\)/);
 console.log("LEGACY_LOGOUT_COORDINATES_DEMO_IDENTITY_OK");
 
 clearCurrentDemoIdentity(options);

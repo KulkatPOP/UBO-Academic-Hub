@@ -282,3 +282,24 @@ a:focus-visible {
 html[data-theme="dark"] { color-scheme: dark; --admin-navy:#b4d1ff; --admin-blue:#8fc7ff; --admin-gold:#e8c155; --admin-ink:#eef5ff; --admin-muted:#bdcad8; --admin-surface:#182535; --admin-background:#101a27; --admin-border:#334b63; --admin-shadow:0 10px 28px rgba(0,0,0,.35); }
 html[data-theme="dark"] .metric-card,html[data-theme="dark"] .management-card,html[data-theme="dark"] .statistics-card,html[data-theme="dark"] .admin-account-item,html[data-theme="dark"] .admin-summary-metric,html[data-theme="dark"] .admin-demo-status-card,html[data-theme="dark"] .admin-activity-row{background:var(--admin-surface);border-color:var(--admin-border);color:var(--admin-ink)}
 html[data-theme="dark"] .operation-row strong{background:#263d55;color:var(--admin-ink)}
+
+/* Fase 2.52: consistencia de tarjetas, listas y estados del panel administrativo. */
+html[data-theme="dark"] .metric-card,
+html[data-theme="dark"] .management-card,
+html[data-theme="dark"] .statistics-card,
+html[data-theme="dark"] .admin-account-item,
+html[data-theme="dark"] .admin-summary-metric,
+html[data-theme="dark"] .admin-risk-metric,
+html[data-theme="dark"] .admin-academic-recommendations {
+  background:#1d212b;
+  border-color:rgba(255,255,255,.08);
+  box-shadow:0 10px 24px rgba(0,0,0,.24);
+}
+html[data-theme="dark"] .management-icon,
+html[data-theme="dark"] .operation-icon,
+html[data-theme="dark"] .operation-row strong,
+html[data-theme="dark"] .admin-risk-distribution span { background:#242936; border-color:rgba(255,255,255,.08); color:var(--admin-ink); }
+html[data-theme="dark"] .admin-demo-status-card { background:rgba(49,135,92,.16); border-color:rgba(89,185,131,.25); }
+html[data-theme="dark"] .admin-activity-row,
+html[data-theme="dark"] .stat-row,
+html[data-theme="dark"] .operation-row { border-color:rgba(255,255,255,.08); }

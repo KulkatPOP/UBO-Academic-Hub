@@ -17,9 +17,12 @@ import { getAvailableAdministrativeActions } from "../../services/admin-actions/
 import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 import { clearInstitutionalSession, getInstitutionalSession } from "../../services/institutional-session-service.js";
-import { applyThemePreference, getThemePreference, toggleThemePreference } from "../../services/theme-preference-service.js";
+import { logout as logoutFromApi } from "../../services/api/auth-api-service.js?v=2";
+import { applyThemePreference, getThemePreference, hydrateThemePreferenceFromApi, toggleThemePreference } from "../../services/theme-preference-service.js";
+import { getCurrentUser as getCurrentUserFromApi, hydrateCurrentSession } from "../../services/api/user-api-service.js";
 import { getAdminDashboardSummary } from "../../services/admin-actions/admin-dashboard-summary-service.js";
 import { getInstitutionalAcademicRiskSummary } from "../../services/analytics/academic-risk-service.js";
+import { getAdminOverview as getAdminOverviewFromApi } from "../../services/api/analytics-api-service.js";
 import { getInstitutionalAcademicRecommendations } from "../../services/recommendation/academic-recommendation-service.js";
 
 const managementMetadata = [
@@ -37,24 +40,25 @@ function getElement(id) {
   return document.getElementById(id);
 }
 
-function renderHeader() {
+function renderHeader(publicProfile = null) {
   const admin = getAdminProfile();
   const session = getInstitutionalSession();
-  const name = session?.role === "ADMIN" ? session.nombre : admin.nombre;
+  const name = publicProfile?.name || (session?.role === "ADMIN" ? session.nombre : admin.nombre);
   getElement("admin-name").textContent = name;
   getElement("admin-role").textContent = "Gestión institucional";
   const avatar = document.querySelector(".admin-avatar");
   if (avatar) avatar.textContent = String(name).split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
 }
 
-function renderAccountProfile() {
+function renderAccountProfile(publicProfile = null) {
   const admin = getAdminProfile();
   const session = getInstitutionalSession();
-  const account = session?.role === "ADMIN" ? session : {
+  const baseAccount = session?.role === "ADMIN" ? session : {
     nombre: admin.nombre,
     username: "admin",
     email: "administrador@ubo.cl"
   };
+  const account = publicProfile?.name ? { ...baseAccount, nombre: publicProfile.name } : baseAccount;
   const items = [
     ["Nombre", account.nombre],
     ["Usuario", account.username],
@@ -70,6 +74,13 @@ function renderAccountProfile() {
     fragment.append(item);
   });
   container.replaceChildren(fragment);
+}
+
+async function hydrateAdminProfileFromApi() {
+  const result = await getCurrentUserFromApi();
+  if (!result.success || result.user.role !== "ADMIN") return;
+  renderHeader(result.user);
+  renderAccountProfile(result.user);
 }
 
 function renderSummary() {
@@ -251,6 +262,48 @@ function renderAcademicRisk() {
   container.append(fragment);
 }
 
+async function hydrateAdminAcademicRiskFromApi() {
+  const container = getElement("admin-academic-risk");
+  if (!container) return;
+  const response = await getAdminOverviewFromApi();
+  if (!response.available || response.body?.source !== "LMS") return;
+  const overview = response.body.overview || {};
+  const metrics = [
+    ["Usuarios LMS", overview.users?.total],
+    ["Estudiantes LMS", overview.users?.students],
+    ["Docentes LMS", overview.users?.teachers],
+    ["Cursos LMS", overview.courses?.total],
+    ["Matrículas LMS", overview.courses?.enrollments],
+    ["Materiales LMS", overview.materials?.total],
+    ["Evaluaciones publicadas LMS", overview.evaluations?.published],
+    ["Entregas LMS", overview.submissions?.total],
+    ["Entregas revisadas LMS", overview.submissions?.reviewed],
+    ["Entregas pendientes LMS", overview.submissions?.pending],
+    ["Sesiones de asistencia LMS", overview.attendance?.sessions],
+    ["Registros de asistencia LMS", overview.attendance?.records],
+    ["Mensajes LMS", overview.messages?.total],
+    ["Notificaciones LMS sin leer", overview.notifications?.unread],
+    ["Eventos de actividad LMS", overview.activity?.total],
+    ["Consultas Tutor LMS", overview.tutor?.queries],
+    ["Recomendaciones LMS", overview.recommendations?.total]
+  ];
+  const grid = createSummaryElement("div", "admin-risk-metrics");
+  metrics.forEach(([label, value]) => {
+    const card = createSummaryElement("article", "admin-risk-metric");
+    card.append(createSummaryElement("span", "", label), createSummaryElement("strong", "", value === null || value === undefined ? "Datos LMS insuficientes" : String(value)));
+    grid.append(card);
+  });
+  const activity = Array.isArray(overview.activity?.eventTypes) ? overview.activity.eventTypes : [];
+  const activityCaption = activity.length
+    ? `Tipos de actividad LMS: ${activity.map(item => `${item.type}: ${item.count}`).join(" · ")}`
+    : "Tipos de actividad LMS: Datos LMS insuficientes";
+  container.replaceChildren(
+    createSummaryElement("p", "admin-risk-note", "Origen: Datos del LMS Academic Hub · Métricas operativas agregadas, no información académica oficial UBO."),
+    grid,
+    createSummaryElement("p", "admin-risk-note", activityCaption)
+  );
+}
+
 function renderAcademicRecommendations() {
   const container = getElement("admin-academic-recommendations");
   if (!container) return;
@@ -269,20 +322,26 @@ function renderAcademicRecommendations() {
 function renderAdminDashboard() {
   renderHeader();
   renderAccountProfile();
+  void hydrateCurrentSession().then(() => hydrateAdminProfileFromApi());
   renderSummary();
   renderManagement();
   renderStatistics();
   renderDemoDashboardSummary();
   renderAcademicRisk();
+  hydrateAdminAcademicRiskFromApi();
   renderAcademicRecommendations();
 }
 
-function setupDemoLogout() {
-  getElement("admin-demo-logout")?.addEventListener("click", () => {
+async function endAdminDemoSession() {
+    await logoutFromApi();
     clearCurrentDemoIdentity();
     clearInstitutionalSession();
     window.location.replace("../demo/demo-selector.html");
-  });
+}
+
+function setupDemoLogout() {
+  getElement("admin-demo-logout")?.addEventListener("click", endAdminDemoSession);
+  getElement("admin-change-user")?.addEventListener("click", endAdminDemoSession);
 }
 
 function syncAdminThemeButton() {
@@ -294,6 +353,7 @@ function syncAdminThemeButton() {
 }
 
 function setupThemePreference() {
+  void hydrateThemePreferenceFromApi().then(() => syncAdminThemeButton());
   syncAdminThemeButton();
   getElement("admin-theme-toggle")?.addEventListener("click", () => {
     toggleThemePreference();

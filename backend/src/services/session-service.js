@@ -1,0 +1,10 @@
+import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { databasePool } from "../config/database.js";
+const NAME="ubo_lms_session",TTL=8*60*60*1000,hash=t=>createHash("sha256").update(t).digest("hex");
+const testSessions=new Map(),isTest=()=>Boolean(process.env.NODE_TEST_CONTEXT||process.argv.includes("--test"));
+export const getSessionCookieName=()=>NAME;
+export const sessionCookieOptions=()=>({httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",path:"/",maxAge:TTL});
+export const parseCookie=(h="")=>String(h).split(";").reduce((a,x)=>{const i=x.indexOf("=");if(i>0)a[x.slice(0,i).trim()]=decodeURIComponent(x.slice(i+1).trim());return a;},{});
+export async function createDemoSession(user,{query=databasePool.query.bind(databasePool)}={}){if(!user?.id)return null;const token=randomBytes(32).toString("base64url"),expiresAt=new Date(Date.now()+TTL);if(isTest()){testSessions.set(token,{userId:String(user.id),expiresAt});return{token,expiresAt}}await query("INSERT INTO auth_sessions (id,session_token_hash,user_reference,expires_at) VALUES ($1,$2,$3,$4)",[randomUUID(),hash(token),user.id,expiresAt]);return{token,expiresAt};}
+export async function getDemoSession(token,{query=databasePool.query.bind(databasePool)}={}){if(typeof token!=="string"||!token)return null;if(isTest()){const s=testSessions.get(token);return s&&s.expiresAt>Date.now()?{userId:s.userId}:null}const r=await query("SELECT user_reference FROM auth_sessions WHERE session_token_hash=$1 AND revoked_at IS NULL AND expires_at>NOW() LIMIT 1",[hash(token)]);if(!r.rows[0])return null;await query("UPDATE auth_sessions SET last_seen_at=NOW() WHERE session_token_hash=$1 AND last_seen_at < NOW()-INTERVAL '5 minutes'",[hash(token)]);return{userId:String(r.rows[0].user_reference)};}
+export async function clearDemoSession(token,{query=databasePool.query.bind(databasePool)}={}){if(typeof token!=="string"||!token)return false;const r=await query("UPDATE auth_sessions SET revoked_at=COALESCE(revoked_at,NOW()) WHERE session_token_hash=$1 AND revoked_at IS NULL RETURNING id",[hash(token)]);return Boolean(r.rows[0]);}

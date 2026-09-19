@@ -5,6 +5,7 @@ import { demoUsers, findInstitutionalDemoUser } from "../../data/users.js";
 import { clearCurrentDemoIdentity, getCurrentDemoIdentity, setCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 import { getRolePermissions } from "../../core/permissions.js";
 import { setInstitutionalSession } from "../../services/institutional-session-service.js";
+import { getCurrentSession } from "../../services/api/auth-api-service.js";
 
 const experienceByRole = {
   STUDENT: "Estudiante",
@@ -26,6 +27,7 @@ export function getDemoUsers() {
 }
 
 export function selectDemoUser(userId) {
+  if (getCurrentSession()?.source === "backend") return null;
   const user = demoUsers.find(item => item.id === userId);
 
   if (!user) return null;
@@ -35,6 +37,7 @@ export function selectDemoUser(userId) {
 }
 
 export function authenticateDemoLogin(username, password) {
+  if (getCurrentSession()?.source === "backend") return null;
   const user = findInstitutionalDemoUser(username, password);
   if (!user) return null;
 

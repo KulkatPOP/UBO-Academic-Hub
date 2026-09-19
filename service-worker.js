@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ubo-academic-hub-v161';
-const APP_ASSETS = ['./', './index.html', './styles.css?v=120', './app.js?v=135', './config/institution.js', './data/users.js', './data/users.js?v=2', './services/institutional-session-service.js', './services/api/auth-api-service.js', './services/theme-preference-service.js', './services/qr-attendance-service.js', './services/message-service.js', './services/evaluation-service.js', './services/evaluation/question-bank-service.js', './services/analytics/academic-risk-service.js', './services/ai/academic-tutor-service.js', './services/ai/knowledge-base-service.js', './services/recommendation/academic-recommendation-service.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'ubo-academic-hub-v198';
+const APP_ASSETS = ['./', './index.html', './styles.css?v=129', './app.js?v=150', './config/institution.js', './data/users.js', './data/users.js?v=2', './services/institutional-session-service.js', './services/api/auth-api-service.js?v=2', './services/api/user-preferences-api-service.js', './services/api/notification-api-service.js', './services/api/progress-api-service.js', './services/api/academic-intelligence-api-service.js', './services/api/course-detail-api-service.js', './services/api/teacher-dashboard-api-service.js', './services/api/user-api-service.js', './services/api/course-api-service.js', './services/api/material-api-service.js', './services/api/tutor-api-service.js', './services/api/course-identity-api-service.js', './services/api/recommendation-api-service.js', './services/api/evaluation-api-service.js', './services/api/message-api-service.js', './services/api/qr-attendance-api-service.js', './services/api/analytics-api-service.js', './services/theme-preference-service.js', './services/qr-attendance-service.js', './services/message-service.js', './services/evaluation-service.js', './services/evaluation/question-bank-service.js', './services/analytics/academic-risk-service.js', './services/ai/academic-tutor-service.js', './services/ai/knowledge-base-service.js', './services/recommendation/academic-recommendation-service.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 const DEMO_SHELL_ASSETS = [
   './modules/demo/demo-selector.html',
   './modules/demo/demo-selector.css',
@@ -8,21 +8,22 @@ const DEMO_SHELL_ASSETS = [
   './modules/demo/demo-router.js',
   './services/adapters/core-identity-adapter.js',
   './modules/professor/teacher-dashboard.html',
-  './modules/professor/teacher-dashboard.css',
-  './modules/professor/teacher-dashboard.js',
+  './modules/professor/teacher-dashboard.css?v=2',
+  './modules/professor/teacher-dashboard.js?v=4',
   './modules/professor/dashboard.js',
   './modules/professor/teacher-course-detail.html',
-  './modules/professor/teacher-course-detail.css',
-  './modules/professor/teacher-course-detail.js',
+  './modules/professor/teacher-course-detail.css?v=5',
+  './modules/professor/teacher-course-detail.js?v=3',
   './modules/admin/admin-dashboard.html',
-  './modules/admin/admin-dashboard.css',
-  './modules/admin/admin-dashboard.js',
+  './modules/admin/admin-dashboard.css?v=2',
+  './modules/admin/admin-dashboard.js?v=4',
   './services/course-service.js',
   './services/professor-service.js',
   './services/student-service.js',
   './services/admin-service.js',
   './services/admin-actions/administrative-action-service.js',
   './services/admin-actions/admin-dashboard-summary-service.js',
+  './services/api/user-api-service.js',
   './services/teacher-actions/teacher-material-management-service.js',
   './services/teacher-actions/teacher-grade-management-service.js',
   './services/teacher-actions/teacher-attendance-management-service.js',
@@ -75,7 +76,8 @@ const OFFLINE_DOCUMENTS = {
   '/modules/professor/teacher-course-detail.html': './modules/professor/teacher-course-detail.html',
   '/modules/admin/admin-dashboard.html': './modules/admin/admin-dashboard.html'
 };
-const PRECACHE_ASSETS = [...APP_ASSETS, ...DEMO_SHELL_ASSETS];
+// Unifica referencias repetidas entre el shell y los módulos sin eliminar assets necesarios.
+const PRECACHE_ASSETS = [...new Set([...APP_ASSETS, ...DEMO_SHELL_ASSETS])];
 self.addEventListener('install', event => {event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_ASSETS)));self.skipWaiting()});
 self.addEventListener('activate', event => {event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))));self.clients.claim()});
 self.addEventListener('fetch', event => {if(event.request.method !== 'GET')return;const isDocument=event.request.mode==='navigate'||event.request.destination==='document';if(isDocument){event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(response.ok&&response.type==='basic'){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy))}return response}).catch(()=>{const pathname=new URL(event.request.url).pathname;return caches.match(event.request).then(cached=>cached||caches.match(OFFLINE_DOCUMENTS[pathname]||'./index.html'))}));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)))});

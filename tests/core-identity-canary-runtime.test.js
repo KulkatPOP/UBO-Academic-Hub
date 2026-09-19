@@ -11,7 +11,7 @@ const teacherIdentity = Object.freeze({ id: "teacher-carlos-perez", role: "TEACH
 const serviceWorker = readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
 const teacherShell = readFileSync(new URL("../modules/professor/teacher-dashboard.js", import.meta.url), "utf8");
 
-const precacheAssets = [...serviceWorker.matchAll(/["']([^"']+)["']/g)].map(([, asset]) => asset.replace(/^\.\//, ""));
+const precacheAssets = [...serviceWorker.matchAll(/["']([^"']+)["']/g)].map(([, asset]) => asset.replace(/^\.\//, "").replace(/[?#].*$/, ""));
 const prospectiveAdapterAsset = "services/adapters/core-identity-adapter.js";
 
 assert.equal(precacheAssets.includes("modules/professor/teacher-dashboard.js"), true);

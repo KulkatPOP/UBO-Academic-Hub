@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ACADEMIC_SESSION_STORAGE_KEY, login, saveAcademicSession } from "../services/api/auth-api-service.js";
+import { ACADEMIC_SESSION_STORAGE_KEY, login, logout, saveAcademicSession } from "../services/api/auth-api-service.js";
 
 function response(status, body) { return { ok: status >= 200 && status < 300, status, json: async () => body }; }
 function memoryStorage() { const values = new Map(); return { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, String(value)), removeItem: key => values.delete(key) }; }
@@ -22,6 +22,17 @@ test("rechaza contraseña incorrecta y usuario inexistente", async () => {
 test("guarda una sesión backend sin contraseña", () => {
   const storage = memoryStorage();
   const session = saveAcademicSession({ id: "student-id", name: "Sofía Martínez", role: "STUDENT", password: "no-debe-estar" }, { storage });
-  assert.deepEqual(session, { id: "student-id", name: "Sofía Martínez", role: "STUDENT", source: "backend" });
+  assert.deepEqual(session, { id: "student-id", userId: "student-id", name: "Sofía Martínez", role: "STUDENT", source: "backend" });
   assert.doesNotMatch(storage.getItem(ACADEMIC_SESSION_STORAGE_KEY), /password/);
+});
+
+test("revoca sesión mediante cookie HttpOnly sin leer ni persistir tokens", async () => {
+  let request = null;
+  const result = await logout({ fetchImpl: async (url, options) => {
+    request = { url, options };
+    return { status: 204 };
+  } });
+  assert.deepEqual(result, { success: true, status: 204 });
+  assert.equal(request.url, "http://localhost:3001/api/auth/logout");
+  assert.deepEqual(request.options, { method: "POST", credentials: "include" });
 });

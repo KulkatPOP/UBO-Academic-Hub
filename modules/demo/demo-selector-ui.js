@@ -2,11 +2,23 @@
 
 import { authenticateDemoLogin } from "./demo-selector.js";
 import { selectDemoRoute } from "./demo-router.js";
+import { getCurrentSession } from "../../services/api/auth-api-service.js";
 
 const $ = selector => document.querySelector(selector);
 
+const backendSession = getCurrentSession();
+if (backendSession?.source === "backend") {
+  $("#institutional-login-form")?.querySelectorAll("input, button").forEach(control => { control.disabled = true; });
+  $("#demo-selector-status").textContent = `Sesión backend activa para ${backendSession.name}. Cierra sesión para cambiar de perfil.`;
+}
+
 $("#institutional-login-form")?.addEventListener("submit", event => {
   event.preventDefault();
+
+  if (getCurrentSession()?.source === "backend") {
+    $("#demo-selector-status").textContent = "El perfil proviene de la sesión backend activa.";
+    return;
+  }
 
   const username = $("#institutional-username").value.trim().toLowerCase();
   const password = $("#institutional-password").value;

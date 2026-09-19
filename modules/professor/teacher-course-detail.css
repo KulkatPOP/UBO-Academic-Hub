@@ -10,6 +10,52 @@
   --detail-shadow: 0 10px 26px rgba(23, 58, 84, .1);
 }
 
+html[data-theme="dark"] {
+  --detail-blue: #9ecbff;
+  --detail-text: #e7eef8;
+  --detail-muted: #afbdd0;
+  --detail-border: #314257;
+  --detail-bg: #0d1825;
+  --detail-card: #172536;
+  --detail-shadow: 0 10px 26px rgba(0, 0, 0, .28);
+}
+
+html[data-theme="dark"] .course-summary article,
+html[data-theme="dark"] .student-row,
+html[data-theme="dark"] .future-tool-card,
+html[data-theme="dark"] .attendance-student-row,
+html[data-theme="dark"] .teacher-qr-session-card,
+html[data-theme="dark"] .teacher-message-row,
+html[data-theme="dark"] .teacher-evaluation-row,
+html[data-theme="dark"] .teacher-evaluation-submission,
+html[data-theme="dark"] .grades-student-row,
+html[data-theme="dark"] .demo-grade-row,
+html[data-theme="dark"] .material-row,
+html[data-theme="dark"] .announcement-row,
+html[data-theme="dark"] .empty-material-card,
+html[data-theme="dark"] .empty-state { background: #1b2b3d; }
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .grades-evaluation-select select,
+html[data-theme="dark"] .grades-student-row input,
+html[data-theme="dark"] .teacher-qr-canvas { background: #101d2b; color: var(--detail-text); }
+
+html[data-theme="dark"] .section-heading > span,
+html[data-theme="dark"] .message-recipient-count,
+html[data-theme="dark"] .grade-entry-status,
+html[data-theme="dark"] .demo-grades-heading span,
+html[data-theme="dark"] .teacher-qr-payload,
+html[data-theme="dark"] .teacher-message-form input[readonly] { background: #223a55; color: #b9d8ff; }
+
+html[data-theme="dark"] .course-summary span { color: #b7c7da; }
+html[data-theme="dark"] .course-summary strong { color: #eff6ff; }
+html[data-theme="dark"] .course-dashboard-metric,
+html[data-theme="dark"] .course-analytics-card { border-color: var(--detail-border); background: #1b2b3d; }
+html[data-theme="dark"] .course-dashboard-metric strong,
+html[data-theme="dark"] .course-analytics-card b { color: #eff6ff; }
+
 * { box-sizing: border-box; }
 body { min-width: 320px; margin: 0; background: var(--detail-bg); color: var(--detail-text); font-family: "Open Sans", "Montserrat", Arial, sans-serif; }
 .teacher-course-demo { width: min(100%, 1040px); margin: 0 auto; padding: 20px 16px 36px; }
@@ -211,4 +257,71 @@ textarea:focus-visible {
 @media (max-width: 639px) {
   .course-dashboard-summary { grid-template-columns: 1fr; gap: 8px; }
   .course-dashboard-metric { padding: 12px; }
+}
+
+/* Fase 2.52: superficies del detalle docente en modo oscuro. */
+html[data-theme="dark"] .course-detail-section,
+html[data-theme="dark"] .course-summary,
+html[data-theme="dark"] .course-summary article,
+html[data-theme="dark"] .student-row,
+html[data-theme="dark"] .future-tool-card,
+html[data-theme="dark"] .attendance-student-row,
+html[data-theme="dark"] .teacher-qr-session-card,
+html[data-theme="dark"] .teacher-message-row,
+html[data-theme="dark"] .teacher-evaluation-row,
+html[data-theme="dark"] .teacher-evaluation-submission,
+html[data-theme="dark"] .grades-student-row,
+html[data-theme="dark"] .demo-grade-row,
+html[data-theme="dark"] .material-row,
+html[data-theme="dark"] .announcement-row,
+html[data-theme="dark"] .empty-material-card,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .course-dashboard-metric,
+html[data-theme="dark"] .course-analytics-card {
+  background: #1d212b;
+  border-color: rgba(255,255,255,.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,.22);
+}
+
+html[data-theme="dark"] .attendance-registration-form,
+html[data-theme="dark"] .grades-registration-form,
+html[data-theme="dark"] .material-registration-form,
+html[data-theme="dark"] .announcement-form,
+html[data-theme="dark"] .course-analytics-followup,
+html[data-theme="dark"] .attendance-feedback,
+html[data-theme="dark"] .grades-feedback,
+html[data-theme="dark"] .material-feedback,
+html[data-theme="dark"] .announcement-feedback {
+  background: #242936;
+  border-color: rgba(255,255,255,.08);
+  color: var(--detail-text);
+}
+
+html[data-theme="dark"] .attendance-secondary-btn,
+html[data-theme="dark"] .future-tool-card button,
+html[data-theme="dark"] .demo-grade-row-actions button,
+html[data-theme="dark"] .grades-cancel-btn,
+html[data-theme="dark"] .announcement-row-actions button {
+  background: #242936;
+  border-color: rgba(255,255,255,.12);
+  color: #b9d8ff;
+}
+
+html[data-theme="dark"] .material-delete-btn,
+html[data-theme="dark"] .demo-grade-row-actions button[data-delete-demo-grade],
+html[data-theme="dark"] .announcement-row-actions button[data-delete-announcement] {
+  background: rgba(201,75,84,.16);
+  border-color: rgba(241,153,159,.4);
+  color: #f0b8bc;
+}
+
+html[data-theme="dark"] .teacher-qr-payload,
+html[data-theme="dark"] .message-recipient-count,
+html[data-theme="dark"] .grade-entry-status,
+html[data-theme="dark"] .demo-grades-heading span,
+html[data-theme="dark"] .teacher-message-form input[readonly],
+html[data-theme="dark"] .grades-student-row.is-recorded input,
+html[data-theme="dark"] .demo-grade-form select:disabled {
+  background: #26354a;
+  color: #c7dafa;
 }

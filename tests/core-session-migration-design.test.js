@@ -40,7 +40,8 @@ console.log("CORE_SESSION_FLAGS_OFF_FINAL_OK");
 // autoridad. El contrato futuro no debe cambiarla ni trasladar datos académicos.
 assert.match(appSource, /function session\(\)\{const value=json\("uboSession",null\);return value\?\.loggedIn&&value\.username&&value\.studentData\?value:null\}/);
 assert.match(appSource, /localStorage\.setItem\("uboSession",JSON\.stringify\(\{loggedIn:true,username,studentData:data\}\)\)/);
-assert.match(appSource, /function logout\(\)\{clearCurrentDemoIdentity\(\);localStorage\.removeItem\("uboSession"\)/);
+assert.match(appSource, /import\s*\{[^}]*logout as logoutFromApi[^}]*\}\s*from\s*"\.\/services\/api\/auth-api-service\.js"/);
+assert.match(appSource, /async function logout\(\)\{await logoutFromApi\(\);clearCurrentDemoIdentity\(\);localStorage\.removeItem\("uboSession"\)/);
 console.log("UBO_SESSION_LEGACY_AUTHORITY_OK");
 
 // El contrato Core es efímero y recibe únicamente un IdentitySnapshot.

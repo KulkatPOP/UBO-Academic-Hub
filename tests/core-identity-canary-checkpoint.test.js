@@ -115,7 +115,7 @@ for (const source of runtimeFiles) {
 console.log("CORE_SESSION_RUNTIME_CONSUMERS=0");
 console.log("CORE_AUTHORIZATION_RUNTIME_CONSUMERS=0");
 
-assert.match(serviceWorker, /ubo-academic-hub-v161/);
+assert.match(serviceWorker, /ubo-academic-hub-v198/);
 assert.match(serviceWorker, /services\/adapters\/core-identity-adapter\.js/);
 assert.doesNotMatch(serviceWorker, /UniEcosystemCore|127\.0\.0\.1:3101|identity-snapshot\.js/);
 console.log("PWA_CORE_ISOLATION_OK");

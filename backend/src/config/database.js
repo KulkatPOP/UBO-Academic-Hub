@@ -4,7 +4,8 @@ const { Pool } = pg;
 
 function databaseConfig() {
   return {
-    host: process.env.DB_HOST || "localhost",
+    // Evita la resolución IPv6 local que puede resetear conexiones de pg en Windows.
+    host: process.env.DB_HOST || "127.0.0.1",
     port: Number.parseInt(process.env.DB_PORT || "5432", 10) || 5432,
     database: process.env.DB_NAME || "ubo_academic_hub",
     user: process.env.DB_USER || "ubo_admin",

@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { create, detail, grade, list, ownSubmission, publish, submit, submissions } from "../controllers/evaluation-controller.js";
+export const evaluationRouter = Router();
+evaluationRouter.get("/", list);
+evaluationRouter.post("/", create);
+evaluationRouter.get("/:id", detail);
+evaluationRouter.post("/:id/publish", publish);
+evaluationRouter.post("/:id/submit", submit);
+evaluationRouter.get("/:id/submission", ownSubmission);
+evaluationRouter.get("/:id/submissions", submissions);
+export const submissionRouter = Router();
+submissionRouter.post("/:id/grade", grade);

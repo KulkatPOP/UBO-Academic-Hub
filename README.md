@@ -1,91 +1,149 @@
 # UBO Academic Hub
 
-PWA académica demostrativa para centralizar la experiencia universitaria de la Universidad Bernardo O'Higgins. El proyecto muestra flujos aislados para estudiantes, profesores y administradores, conservando una aplicación principal independiente de la futura arquitectura institucional.
+UBO Academic Hub es un LMS local para flujos académicos demostrativos de Student, Teacher y Admin.
 
-> Estado: demo funcional con datos simulados. No utiliza sistemas institucionales reales, autenticación productiva ni backend.
+> El proyecto es un LMS local funcional con PostgreSQL, frontend PWA, backend Express, inteligencia académica determinista, recomendaciones y Tutor/RAG contextualizado.
 
-## Funcionalidades
+La integración con sistemas institucionales reales de UBO no forma parte de esta entrega. Su implementación posterior requiere los contratos, mecanismos de autenticación, identificadores y fuentes de datos que proporcione la institución.
 
-- Dashboard académico del estudiante: ramos, calificaciones, asistencia, material, avisos, alertas y resumen académico.
-- Herramientas de estudiante: simulador de notas y calculadora de asistencia.
-- Panel docente: cursos, estudiantes, asistencia, notas, materiales y avisos.
-- Panel administrativo: resumen institucional, gestión académica y analítica demo.
-- Módulos demo institucionales: biblioteca, eventos, casino, pagos y emergencias.
-- Progressive Web App con manifiesto, iconos y soporte offline básico mediante Service Worker.
+## Alcance actual
 
-## Tecnologías
+- **Student:** sesión, dashboard, cursos, Course Detail LMS, materiales, progreso, asistencia LMS/QR, recomendaciones, Tutor/RAG y cierre de sesión.
+- **Teacher:** cursos propios, estudiantes, Course Detail, materiales, evaluaciones LMS, asistencia, avisos, analítica y cierre de sesión.
+- **Admin:** sesión, overview y métricas agregadas del LMS.
+- **PWA:** manifiesto, iconos, Service Worker y shell offline básico.
+- **Inteligencia académica:** reglas deterministas, recomendaciones y consulta de conocimiento local por curso. No usa modelos IA externos ni modifica registros académicos oficiales.
 
-- HTML5 y CSS3.
-- JavaScript moderno con ES Modules.
-- Service Worker y Web App Manifest.
-- Datos y servicios demo en memoria; algunos flujos de la aplicación principal usan `localStorage` como persistencia temporal.
+Los datos, métricas, usuarios y credenciales de esta entrega son DEMO o locales. No representan datos institucionales reales.
 
-## Ejecución local
+## Arquitectura
 
-El proyecto es estático y debe servirse mediante un servidor HTTP local para que ES Modules y el Service Worker funcionen correctamente.
-
-```powershell
-cd "C:\Users\shari\Desktop\Ubo app academico"
-python -m http.server 3000
+```text
+Frontend estático (ES Modules + PWA, puerto 3000)
+  → API Express local (puerto 3001)
+  → PostgreSQL local en Docker (puerto 5432)
 ```
 
-Luego abrir [http://localhost:3000](http://localhost:3000). También puede utilizarse cualquier servidor estático equivalente.
-
-## Usuarios demo
-
-| Perfil | Usuario | Credencial demo | Acceso |
-| --- | --- | --- | --- |
-| Estudiante | Sofía Martínez Rojas | `msofia` / `123456` | Aplicación principal |
-| Profesor | Carlos Pérez | `pcarlos` / `123456` | `modules/professor/teacher-dashboard.html` |
-| Administrador | Administrador UBO | `admin` / `admin123` | `modules/admin/admin-dashboard.html` |
-
-El acceso es simulado y únicamente usa credenciales demo. No representa autenticación institucional real ni almacena contraseñas productivas.
-
-## Estructura
+El frontend utiliza flujos API-first para recursos LMS y conserva fallback DEMO/local cuando la API no está disponible. UniEcosystemCore permanece separado del proyecto y sus flags de integración continúan desactivados.
 
 ```text
 .
-├── index.html, app.js, styles.css       # Aplicación principal del estudiante
-├── config/                              # Configuración institucional demo
-├── core/                                # Infraestructura futura, aislada y no activada
-├── data/                                # Datos, mappings y modelos demo
-├── modules/                             # Interfaces por rol y módulos demo
-├── services/                            # Consultas, acciones y adaptadores
-├── tests/                               # Validaciones de regresión y arquitectura
-├── docs/                                # Arquitectura, auditorías y decisiones
-├── icons/                               # Iconos PWA
-├── manifest.json                        # Metadatos de instalación
-└── service-worker.js                    # Precache y soporte offline básico
+├── backend/                 # API Express, PostgreSQL local, migraciones y seeds DEMO
+├── config/                  # Configuración institucional DEMO
+├── core/                    # Infraestructura futura aislada
+├── data/                    # Datos, mappings y modelos DEMO
+├── docs/                    # Auditorías, arquitectura y handover
+├── modules/                 # Interfaces por rol y módulos DEMO
+├── services/                # Servicios frontend, API adapters y acciones
+├── tests/                   # Pruebas frontend y de arquitectura
+├── index.html, app.js       # Aplicación Student
+├── manifest.json            # Metadatos de instalación PWA
+└── service-worker.js        # Precache y soporte offline básico
 ```
 
-## Seguridad y estado técnico
+## Requisitos locales
 
-- Los renderizadores dinámicos priorizan nodos DOM y `textContent`; la auditoría de hardening XSS está documentada en `docs/AUDIT/`.
-- La integración con UniEcosystemCore permanece aislada y desactivada: no se activan Core Session, Identity Canary, Career ni Room canónicos.
-- El Service Worker vigente utiliza la caché `ubo-academic-hub-v160` y precachea `app.js?v=134`.
+- Node.js y npm compatibles con las dependencias declaradas en `backend/package.json`.
+- Docker Desktop con Docker Compose para PostgreSQL local.
+- Python u otro servidor HTTP estático para el frontend.
+
+El backend no declara actualmente una versión mínima mediante `engines`; verificar compatibilidad con las dependencias antes de cambiar de entorno.
+
+## Instalación y ejecución local
+
+### 1. PostgreSQL y API
+
+Desde la raíz del proyecto:
+
+```powershell
+cd backend
+npm install
+docker compose up -d postgres
+npm run db:migrate
+npm run db:seed
+npm start
+```
+
+La configuración de ejemplo está en `backend/.env.example`. No crear, versionar ni compartir un archivo `.env` con secretos reales. Las migraciones y seeds se deben ejecutar solo contra una base local de desarrollo o QA.
+
+Comprobación de servicios:
+
+```powershell
+Invoke-WebRequest http://localhost:3001/api/health -UseBasicParsing
+Invoke-WebRequest http://localhost:3001/api/database/health -UseBasicParsing
+```
+
+### 2. Frontend
+
+En otra terminal, desde la raíz:
+
+```powershell
+python -m http.server 3000
+```
+
+Abrir [http://localhost:3000](http://localhost:3000). Se requiere HTTP para ES Modules y Service Worker.
+
+## Credenciales DEMO
+
+| Rol | Usuario | Contraseña DEMO |
+| --- | --- | --- |
+| Student | `msofia` | `123456` |
+| Teacher | `pcarlos` | `123456` |
+| Admin | `admin` | `admin123` |
+
+Estas credenciales son únicamente DEMO: no son institucionales ni deben reutilizarse fuera del entorno local. La sesión no guarda contraseñas en el frontend.
+
+## PWA y caché
+
+- Caché vigente: `ubo-academic-hub-v198`.
+- Asset principal vigente: `app.js?v=150`.
+- Las rutas privadas `/api/*` no forman parte del precache.
+- Antes de cambiar el Service Worker, revisar el grafo ESM y los assets incluidos en precache.
+
+## Seguridad y límites
+
+- Los renderizadores dinámicos usan nodos DOM y `textContent` como patrón de seguridad.
+- Las sesiones LMS locales usan cookie `HttpOnly`, `SameSite=Lax`, expiración y revocación mediante logout.
+- El backend resuelve roles y pertenencia de curso; headers de identidad del cliente no son autoridad.
+- Esto es adecuado para un LMS local DEMO, no para producción institucional.
+
+Fuera de alcance: SSO/OAuth institucional, fuentes oficiales de matrícula/notas/asistencia, sincronización institucional, datos reales, TLS de producción, observabilidad, alta disponibilidad, backups, CI/CD institucional y gestión corporativa de secretos.
 
 ## Validación
 
-Ejemplos de comprobaciones locales:
-
 ```powershell
+# Frontend, desde la raíz
+node --test tests/*.test.js
+
+# Backend
+cd backend
+npm test
+
+# Sintaxis JavaScript (desde la raíz)
 Get-ChildItem -Recurse -Filter *.js | ForEach-Object { node --check $_.FullName }
-Get-ChildItem tests -Filter *.test.js | ForEach-Object { node $_.FullName }
-git diff --check
+
+# Core separado
+cd ..\..\UniEcosystemCore
+npm test
+npm run check
 ```
 
-Las validaciones `npm test` y `npm run check` corresponden al repositorio separado de UniEcosystemCore cuando se trabaja con sus contratos.
+También ejecutar `git diff --check` antes de una entrega. El frontend raíz no tiene `package.json`; sus pruebas se ejecutan con `node --test`.
 
-## Limitaciones y próximos pasos
+## Integración institucional futura
 
-- Los datos, credenciales y métricas son demo.
-- No existe backend, API institucional, autenticación real ni persistencia productiva.
-- Antes de producción se requiere integrar fuentes institucionales reales, autorización de servidor, gestión de secretos, observabilidad y pruebas end-to-end en navegadores compatibles.
+Antes de cualquier integración real, revisar:
+
+- `docs/AUDIT/INSTITUTIONAL_INTEGRATION_CONTRACT_2_48.md`
+- `docs/AUDIT/INSTITUTIONAL_INTEGRATION_READINESS_2_49.md`
+- `docs/HANDOVER/PROJECT_HANDOVER.md`
+
+La institución deberá proporcionar, como mínimo, el contrato de identidad, SSO/IdP, identificadores estables, datos autorizados, periodos, matrícula, reglas de autorización y actualización, ambiente QA y responsable técnico. No se deben inventar URLs, tokens, identificadores ni reglas institucionales.
 
 ## Capturas
 
-_Pendiente: añadir capturas verificadas de los flujos Student, Teacher y Admin antes de la publicación pública._
+Pendiente: agregar capturas verificadas de los flujos Student, Teacher y Admin antes de una publicación pública.
 
 ## Licencia
 
-Proyecto académico/prototipo. Definir una licencia explícita antes de una publicación pública.
+`LICENSE = NOT_DEFINED`. El repositorio no contiene un archivo de licencia; definirlo antes de cualquier publicación externa.

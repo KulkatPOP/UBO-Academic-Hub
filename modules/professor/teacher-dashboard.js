@@ -12,13 +12,21 @@ import { enforceDemoRouteGuard } from "../../core/demo-route-guard.js";
 import { clearCurrentDemoIdentity } from "../../core/demo-identity-session.js";
 import { getInstitutionConfig } from "../../config/institution.js";
 import { clearInstitutionalSession, getInstitutionalSession } from "../../services/institutional-session-service.js";
-import { applyThemePreference, getThemePreference, toggleThemePreference } from "../../services/theme-preference-service.js";
+import { logout as logoutFromApi } from "../../services/api/auth-api-service.js?v=2";
+import { applyThemePreference, getThemePreference, hydrateThemePreferenceFromApi, toggleThemePreference } from "../../services/theme-preference-service.js";
+import { getCurrentUser as getCurrentUserFromApi, hydrateCurrentSession } from "../../services/api/user-api-service.js";
 import { getTeacherDashboardSummary } from "../../services/teacher-actions/teacher-dashboard-summary-service.js";
 import { getTeacherCourseAnalytics } from "../../services/analytics/academic-analytics-service.js";
 import { getTeacherAcademicRiskSummary } from "../../services/analytics/academic-risk-service.js";
+import { getTeacherAnalytics as getTeacherAnalyticsFromApi } from "../../services/api/analytics-api-service.js";
 import { getTeacherCourseRecommendations } from "../../services/recommendation/academic-recommendation-service.js";
+import { getTeacherDashboard as getTeacherDashboardFromApi } from "../../services/api/teacher-dashboard-api-service.js";
 
 const $ = selector => document.querySelector(selector);
+
+function courseDetailHref(courseId) {
+  return `./teacher-course-detail.html#courseId=${encodeURIComponent(courseId)}`;
+}
 
 const actionIcons = {
   "Registrar asistencia": "◷",
@@ -110,7 +118,7 @@ function renderCourses(courses, summaryCourses = [], analyticsCourses = []) {
       : `${summary.attendancePercentage.toFixed(1).replace(".", ",")}% demo`;
     const footer = createElement("footer", "course-students", `▥ Asistencia: ${attendanceText}`);
     const link = createElement("a", "teacher-course-link", "Ingresar al curso ");
-    link.href = `./teacher-course-detail.html?courseId=${encodeURIComponent(course.id)}`;
+    link.href = courseDetailHref(course.id);
     const arrow = createElement("span", "", "→");
     arrow.setAttribute("aria-hidden", "true");
     link.append(arrow);
@@ -173,6 +181,30 @@ function renderAcademicRisk(profile) {
   container.append(fragment);
 }
 
+async function hydrateTeacherAcademicRiskFromApi() {
+  const container = $("#teacher-academic-risk");
+  if (!container) return;
+  const response = await getTeacherAnalyticsFromApi();
+  if (!response.available || response.body?.source !== "LMS") return;
+  const fragment = document.createDocumentFragment();
+  const sourceNote = createElement("p", "teacher-risk-empty", "Origen: Datos del LMS Academic Hub");
+  fragment.append(sourceNote);
+  if (!response.body.courses?.length) {
+    fragment.append(createElement("p", "teacher-empty-state", "El LMS no tiene cursos disponibles para seguimiento."));
+  } else {
+    response.body.courses.forEach(course => {
+      const card = createElement("article", "teacher-risk-card");
+      card.append(
+        createElement("h3", "", course.name),
+        createElement("p", "teacher-risk-empty", "Tendencia: datos LMS insuficientes"),
+        createElement("p", "teacher-risk-empty", course.weakTopics?.length ? `Temas a reforzar: ${course.weakTopics.join(", ")}` : "Temas débiles: sin datos LMS suficientes")
+      );
+      fragment.append(card);
+    });
+  }
+  container.replaceChildren(fragment);
+}
+
 function renderCourseRecommendations(profile) {
   const container = $("#teacher-course-recommendations");
   if (!container) return;
@@ -211,6 +243,70 @@ function renderActions(actions) {
   container.replaceChildren(fragment);
 }
 
+function renderLmsTeacherSummary(courses) {
+  const students = courses.every(course => Array.isArray(course.students))
+    ? courses.reduce((total, course) => total + course.students.length, 0)
+    : "Actividad insuficiente";
+  const evaluations = courses.every(course => Array.isArray(course.evaluations))
+    ? courses.reduce((total, course) => total + course.evaluations.length, 0)
+    : "Actividad insuficiente";
+  const attendance = courses.every(course => Array.isArray(course.attendance))
+    ? courses.reduce((total, course) => total + course.attendance.length, 0)
+    : "Actividad insuficiente";
+  const items = [["▤", "Cursos LMS", courses.length], ["◉", "Estudiantes", students], ["◷", "Registros LMS", attendance], ["!", "Evaluaciones LMS", evaluations]];
+  const fragment = document.createDocumentFragment();
+  items.forEach(([icon, label, value]) => {
+    const card = createElement("article", "teacher-summary-card");
+    card.append(createElement("span", "summary-icon", icon), createElement("span", "", label), createElement("strong", "", String(value)));
+    fragment.append(card);
+  });
+  $("#teacher-summary").replaceChildren(fragment);
+}
+
+function lmsCount(value, singular, empty = "Actividad insuficiente") {
+  return Array.isArray(value) ? `${value.length} ${singular}${value.length === 1 ? "" : "s"}` : empty;
+}
+
+function renderLmsTeacherCourses(courses, partial) {
+  const container = $("#teacher-courses");
+  const fragment = document.createDocumentFragment();
+  const source = createElement("p", "teacher-empty-state", partial ? "Datos del LMS Academic Hub · algunas secciones no están disponibles." : "Datos del LMS Academic Hub");
+  fragment.append(source);
+  if (!courses.length) {
+    fragment.append(createElement("p", "teacher-empty-state", "No hay cursos LMS disponibles."));
+  }
+  courses.forEach(course => {
+    const card = createElement("article", "teacher-course-card");
+    const head = createElement("div", "course-card-head");
+    const heading = document.createElement("div");
+    heading.append(createElement("span", "course-section", course.code || "Código LMS"), createElement("h3", "", course.name));
+    head.append(heading, createElement("span", "course-status", "LMS"));
+    const details = createElement("dl", "course-details");
+    [["Descripción", course.description || "Sin descripción LMS."], ["Estudiantes", lmsCount(course.students, "estudiante")], ["Materiales", lmsCount(course.materials, "material")], ["Evaluaciones LMS", lmsCount(course.evaluations, "evaluación")], ["Entregas", course.evaluations?.length ? "Sin datos de entregas suficientes" : "Sin evaluaciones LMS disponibles"], ["Asistencia LMS", lmsCount(course.attendance, "registro")], ["Mensajes", lmsCount(course.messages, "mensaje")], ["Analítica", course.analytics?.source === "LMS" ? "Datos LMS insuficientes" : "Actividad insuficiente"]].forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.append(createElement("dt", "", label), createElement("dd", "", value));
+      details.append(row);
+    });
+    const link = createElement("a", "teacher-course-link", "Ingresar al curso ");
+    link.href = courseDetailHref(course.id);
+    const arrow = createElement("span", "", "→");
+    arrow.setAttribute("aria-hidden", "true");
+    link.append(arrow);
+    card.append(head, details, link);
+    fragment.append(card);
+  });
+  container.replaceChildren(fragment);
+}
+
+async function hydrateTeacherDashboardFromApi() {
+  const result = await getTeacherDashboardFromApi();
+  if (!result.available || result.source !== "LMS") return;
+  renderLmsTeacherSummary(result.courses);
+  renderLmsTeacherCourses(result.courses, result.partial);
+  const coursesTitle = $("#teacher-courses-title");
+  if (coursesTitle) coursesTitle.textContent = "Mis cursos LMS";
+}
+
 function initials(name) {
   return String(name || "Profesor")
     .split(/\s+/)
@@ -247,6 +343,14 @@ function renderTeacherAccountProfile(profile, courses) {
   if (avatar) avatar.textContent = initials(account.nombre);
 }
 
+async function hydrateTeacherProfileFromApi(profile, courses) {
+  const result = await getCurrentUserFromApi();
+  if (!result.success || result.user.role !== "TEACHER") return;
+
+  $("#teacher-title").textContent = result.user.name;
+  renderTeacherAccountProfile({ ...profile, nombre: result.user.name }, courses);
+}
+
 function renderTeacherDashboard() {
   const profile = getTeacherProfile();
   const day = currentDay();
@@ -257,22 +361,29 @@ function renderTeacherDashboard() {
   $("#teacher-department").textContent = `Departamento de ${profile.departamento || profile.department || "Sin departamento asignado"}`;
   $("#teacher-day").textContent = day;
   renderTeacherAccountProfile(profile, assignedCourses);
+  void hydrateCurrentSession().then(() => hydrateTeacherProfileFromApi(profile, assignedCourses));
   renderSummary(getTeacherSummary(day));
   const dashboardSummary = getTeacherDashboardSummary({ teacherId: profile.id });
   const courseAnalytics = getTeacherCourseAnalytics({ teacherId: profile.id });
   renderCourses(assignedCourses, dashboardSummary.courses, courseAnalytics.courses);
   renderAcademicRisk(profile);
+  hydrateTeacherAcademicRiskFromApi();
   renderCourseRecommendations(profile);
   renderRecentActivity(dashboardSummary.activity);
   renderActions(getFutureTeacherActions());
+  void hydrateTeacherDashboardFromApi();
 }
 
-function setupDemoLogout() {
-  document.getElementById("teacher-demo-logout")?.addEventListener("click", () => {
+async function endTeacherDemoSession() {
+    await logoutFromApi();
     clearCurrentDemoIdentity();
     clearInstitutionalSession();
     window.location.replace("../demo/demo-selector.html");
-  });
+}
+
+function setupDemoLogout() {
+  document.getElementById("teacher-demo-logout")?.addEventListener("click", endTeacherDemoSession);
+  document.getElementById("teacher-change-user")?.addEventListener("click", endTeacherDemoSession);
 }
 
 function syncTeacherThemeButton() {
@@ -284,6 +395,7 @@ function syncTeacherThemeButton() {
 }
 
 function setupThemePreference() {
+  void hydrateThemePreferenceFromApi().then(() => syncTeacherThemeButton());
   syncTeacherThemeButton();
   document.getElementById("teacher-theme-toggle")?.addEventListener("click", () => {
     toggleThemePreference();

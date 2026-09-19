@@ -1,5 +1,5 @@
 // Detalle aislado para el futuro Panel Profesor.
-// Recibe ?courseId=<id> y no se integra con el router de la aplicación actual.
+// Recibe ?courseId=<id> o #courseId=<id> y no se integra con el router de la aplicación actual.
 
 import { getCourseById, getCourses } from "../../services/course-service.js";
 import { getProfessorById } from "../../services/professor-service.js";
@@ -56,6 +56,8 @@ import {
   gradeEvaluationSubmission
 } from "../../services/evaluation-service.js";
 import { createQuestion, getQuestionBank } from "../../services/evaluation/question-bank-service.js";
+import { getTeacherDashboard as getLmsTeacherDashboard } from "../../services/api/teacher-dashboard-api-service.js";
+import { applyThemePreference, getThemePreference } from "../../services/theme-preference-service.js";
 
 const $ = selector => document.querySelector(selector);
 const dayLabels = { lunes: "Lunes", martes: "Martes", miércoles: "Miércoles", jueves: "Jueves", viernes: "Viernes", sábado: "Sábado", domingo: "Domingo" };
@@ -70,7 +72,11 @@ const teacherRouteGuard = enforceDemoRouteGuard("TEACHER", {
 });
 
 function selectedCourseId() {
-  return new URLSearchParams(window.location.search).get("courseId") || getCourses()[0]?.id;
+  const queryCourseId = new URLSearchParams(window.location.search).get("courseId");
+  if (queryCourseId) return queryCourseId;
+
+  const hashCourseId = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("courseId");
+  return hashCourseId || getCourses()[0]?.id;
 }
 
 function getSchedules(course) {
@@ -96,6 +102,97 @@ function createSummaryElement(tag, className, text) {
   if (className) element.className = className;
   if (text !== undefined) element.textContent = text;
   return element;
+}
+
+function lmsValue(value, empty = "Datos LMS insuficientes") {
+  return value === null || value === undefined || value === "" ? empty : String(value);
+}
+
+function renderLmsList(container, items, className, emptyMessage, createItem) {
+  const safeItems = Array.isArray(items) ? items : [];
+  if (!safeItems.length) {
+    container.replaceChildren(createSummaryElement("p", "empty-state", emptyMessage));
+    return;
+  }
+  const fragment = document.createDocumentFragment();
+  safeItems.forEach(item => fragment.append(createItem(item)));
+  container.replaceChildren(fragment);
+}
+
+function disableDemoCourseMutations() {
+  document.querySelectorAll("#teacher-course-detail form input, #teacher-course-detail form textarea, #teacher-course-detail form select, #teacher-course-detail form button, #generate-qr-attendance-btn").forEach(control => {
+    control.disabled = true;
+  });
+}
+
+async function renderLmsCourseDetail(courseId) {
+  const result = await getLmsTeacherDashboard();
+  if (!result.available) {
+    $("#teacher-course-detail").replaceChildren(createSummaryElement("p", "empty-state", "No fue posible consultar este curso en el LMS. Los datos DEMO siguen disponibles desde el panel docente."));
+    return;
+  }
+  const course = result.courses.find(item => item.id === courseId);
+  if (!course) {
+    $("#teacher-course-detail").replaceChildren(createSummaryElement("p", "empty-state", "No tienes autorización para consultar este curso LMS o el curso no existe."));
+    return;
+  }
+
+  const students = Array.isArray(course.students) ? course.students : null;
+  const materials = Array.isArray(course.materials) ? course.materials : null;
+  const evaluations = Array.isArray(course.evaluations) ? course.evaluations : null;
+  const messages = Array.isArray(course.messages) ? course.messages : null;
+  const attendance = Array.isArray(course.attendance) ? course.attendance : null;
+  const attendancePresent = attendance ? attendance.filter(record => String(record.status || "").toUpperCase() === "PRESENT").length : null;
+
+  $("#teacher-course-title").textContent = lmsValue(course.name, "Curso LMS");
+  $("#teacher-course-section").textContent = lmsValue(course.code, "Código LMS no disponible");
+  $("#teacher-course-teacher").textContent = "Docente LMS asignado";
+  $("#teacher-course-schedule").textContent = "Horario LMS no disponible";
+  $("#teacher-course-room").textContent = "Sala LMS no disponible";
+  $("#teacher-course-student-count").textContent = students ? `${students.length} inscritos` : "Datos LMS insuficientes";
+  $("#course-students-caption").textContent = students ? `${students.length} inscritos LMS` : "Datos LMS insuficientes";
+
+  const summary = document.createDocumentFragment();
+  [
+    ["Estudiantes", students ? String(students.length) : "Datos LMS insuficientes"],
+    ["Material LMS", materials ? `${materials.length} disponible(s)` : "Datos LMS insuficientes"],
+    ["Evaluaciones LMS", evaluations ? `${evaluations.length} disponible(s)` : "Datos LMS insuficientes"],
+    ["Asistencia LMS", attendance ? `${attendancePresent} presente(s)` : "Datos LMS insuficientes"]
+  ].forEach(([label, value]) => {
+    const card = createSummaryElement("article", "course-dashboard-metric");
+    card.append(createSummaryElement("span", "", label), createSummaryElement("strong", "", value));
+    summary.append(card);
+  });
+  $("#teacher-course-dashboard-summary").replaceChildren(summary);
+  $("#teacher-course-analytics").replaceChildren(createSummaryElement("p", "empty-state", course.analytics ? "Analítica LMS disponible sin indicadores adicionales." : "Datos LMS insuficientes para analítica del curso."));
+
+  renderLmsList($("#teacher-course-students"), students, "student-row", "Datos LMS insuficientes para estudiantes.", student => {
+    const row = createSummaryElement("article", "student-row");
+    const identity = document.createElement("div");
+    identity.append(createSummaryElement("b", "", lmsValue(student.name, "Estudiante LMS")), createSummaryElement("small", "", lmsValue(student.role, "STUDENT")));
+    row.append(identity);
+    return row;
+  });
+  renderLmsList($("#teacher-course-materials"), materials, "material-card", "No hay materiales LMS disponibles.", material => {
+    const card = createSummaryElement("article", "material-card");
+    card.append(createSummaryElement("b", "", lmsValue(material.title, "Material LMS")), createSummaryElement("small", "", lmsValue(material.type, "Tipo no disponible")));
+    return card;
+  });
+  $("#materials-summary").textContent = materials ? `${materials.length} LMS` : "Datos LMS insuficientes";
+  renderLmsList($("#teacher-course-evaluations"), evaluations, "teacher-evaluation-card", "No hay evaluaciones LMS disponibles.", evaluation => {
+    const card = createSummaryElement("article", "teacher-evaluation-card");
+    card.append(createSummaryElement("b", "", lmsValue(evaluation.title, "Evaluación LMS")), createSummaryElement("small", "", `Evaluación LMS · ${lmsValue(evaluation.status, "Estado no disponible")}`));
+    return card;
+  });
+  $("#course-evaluations-summary").textContent = evaluations ? `${evaluations.length} LMS` : "Datos LMS insuficientes";
+  renderLmsList($("#teacher-course-messages"), messages, "teacher-message-card", "No hay mensajes LMS disponibles.", message => {
+    const card = createSummaryElement("article", "teacher-message-card");
+    card.append(createSummaryElement("b", "", lmsValue(message.subject, "Mensaje LMS")), createSummaryElement("small", "", "Mensaje LMS"));
+    return card;
+  });
+  $("#course-messages-summary").textContent = messages ? `${messages.length} LMS` : "Datos LMS insuficientes";
+  $("#attendance-summary").textContent = attendance ? `${attendance.length} registro(s) LMS` : "Datos LMS insuficientes";
+  disableDemoCourseMutations();
 }
 
 function renderCourseDashboardSummary(courseId) {
@@ -949,7 +1046,7 @@ function renderCourseDetail() {
   if (!teacherRouteGuard.allowed) return;
   const course = getCourseById(selectedCourseId());
   if (!course) {
-    $("#teacher-course-detail").replaceChildren(createSummaryElement("p", "empty-state", "No encontramos el curso solicitado."));
+    void renderLmsCourseDetail(selectedCourseId());
     return;
   }
   if (course.professorId !== teacherRouteGuard.identity?.id) {
@@ -980,4 +1077,5 @@ function renderCourseDetail() {
   setupAnnouncementManagement(course.id);
 }
 
+applyThemePreference(getThemePreference());
 renderCourseDetail();

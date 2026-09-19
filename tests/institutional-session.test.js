@@ -25,12 +25,15 @@ for (const role of ["STUDENT", "TEACHER", "ADMIN"]) {
   const saved = setInstitutionalSession(user, { storage });
 
   assert.deepEqual(saved, {
+    userId: user.id,
+    id: user.id,
     username: user.username,
     nombre: user.displayName || user.nombre,
     name: user.displayName || user.nombre,
     role: user.role,
     profile: user.profile,
-    email: user.displayEmail || user.email
+    email: user.displayEmail || user.email,
+    source: "demo"
   });
   assert.equal(Object.hasOwn(saved, "password"), false, "La sesión nunca debe guardar contraseñas.");
 
@@ -54,15 +57,19 @@ const studentHtml = readFileSync(new URL("../index.html", import.meta.url), "utf
 const teacherHtml = readFileSync(new URL("../modules/professor/teacher-dashboard.html", import.meta.url), "utf8");
 const adminHtml = readFileSync(new URL("../modules/admin/admin-dashboard.html", import.meta.url), "utf8");
 
-assert.match(appSource, /setInstitutionalSession\(user\)/);
+assert.match(appSource, /setInstitutionalSession\(\{\.\.\.user,id:result\.user\.id/);
 assert.match(appSource, /clearInstitutionalSession\(\)/);
 assert.match(appSource, /profileUsername\.textContent/);
 assert.match(teacherSource, /clearInstitutionalSession\(\)/);
 assert.match(teacherSource, /renderTeacherAccountProfile/);
+assert.match(teacherHtml, /<button id="teacher-change-user" class="teacher-selector-link" type="button">Cambiar usuario/);
+assert.match(teacherSource, /teacher-change-user"\)\?\.addEventListener\("click", endTeacherDemoSession\)/);
 assert.match(adminSource, /clearInstitutionalSession\(\)/);
 assert.match(adminSource, /renderAccountProfile/);
+assert.match(adminHtml, /<button id="admin-change-user" class="admin-selector-link" type="button">Cambiar usuario/);
+assert.match(adminSource, /admin-change-user"\)\?\.addEventListener\("click", endAdminDemoSession\)/);
 assert.match(studentHtml, /id="profile-session-title">Mi perfil/);
-assert.match(studentHtml, /id="logout-btn" class="logout" type="button">Cerrar sesión/);
+assert.match(studentHtml, /id="logout-btn" class="logout" type="button">[\s\S]*Cerrar sesión[\s\S]*Finalizar acceso/);
 assert.match(teacherHtml, /id="teacher-account-title">Mi perfil/);
 assert.match(adminHtml, /id="admin-account-title">Mi perfil/);
 

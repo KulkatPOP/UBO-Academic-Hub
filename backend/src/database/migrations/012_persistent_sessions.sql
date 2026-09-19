@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS auth_sessions (id UUID PRIMARY KEY, session_token_hash CHAR(64) NOT NULL UNIQUE, user_reference UUID NOT NULL REFERENCES users_reference(id), created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), expires_at TIMESTAMPTZ NOT NULL, revoked_at TIMESTAMPTZ NULL, last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS auth_sessions_active_lookup ON auth_sessions(session_token_hash, expires_at) WHERE revoked_at IS NULL;
