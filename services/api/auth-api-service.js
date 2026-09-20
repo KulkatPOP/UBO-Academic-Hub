@@ -1,4 +1,5 @@
 import { findInstitutionalDemoUser } from "../../data/users.js";
+import { getLocalApiBaseUrl } from "./api-environment.js";
 
 export const ACADEMIC_SESSION_STORAGE_KEY = "uboAcademicSession";
 const ALLOWED_ROLES = new Set(["STUDENT", "TEACHER", "ADMIN"]);
@@ -30,7 +31,7 @@ export function getCurrentSession({ storage } = {}) {
 /** Clientes API usan exclusivamente la identidad backend; una sesión demo no llama APIs privadas. */
 export function getAcademicSession(options = {}) {
   const session = getCurrentSession(options);
-  return session?.source === "backend" ? session : null;
+  return session?.source === "backend" && getLocalApiBaseUrl(options) ? session : null;
 }
 
 export function getCurrentUserId(options = {}) {
@@ -54,11 +55,12 @@ export function clearAcademicSession({ storage } = {}) {
 }
 
 /** Consulta el backend y conserva el login demo sólo ante una indisponibilidad de red/API. */
-export async function login(username, password, { fetchImpl = globalThis.fetch, baseUrl = "http://localhost:3001" } = {}) {
+export async function login(username, password, { fetchImpl = globalThis.fetch, baseUrl = getLocalApiBaseUrl() } = {}) {
   const normalizedUsername = typeof username === "string" ? username.trim().toLocaleLowerCase("es-CL") : "";
   const normalizedPassword = typeof password === "string" ? password : "";
   if (!normalizedUsername || !normalizedPassword) return { success: false, source: null, message: "Credenciales inválidas" };
   try {
+    if (!baseUrl) throw new TypeError("API local no disponible en este host");
     if (typeof fetchImpl !== "function") throw new TypeError("Fetch no disponible");
     const response = await fetchImpl(`${baseUrl}/api/auth/login`, {
       method: "POST",
@@ -79,8 +81,9 @@ export async function login(username, password, { fetchImpl = globalThis.fetch, 
 }
 
 /** Revoca la cookie HttpOnly en el backend; nunca lee ni persiste su valor. */
-export async function logout({ fetchImpl = globalThis.fetch, baseUrl = "http://localhost:3001" } = {}) {
+export async function logout({ fetchImpl = globalThis.fetch, baseUrl = getLocalApiBaseUrl() } = {}) {
   try {
+    if (!baseUrl) return { success: false, status: null };
     if (typeof fetchImpl !== "function") throw new TypeError("Fetch no disponible");
     const response = await fetchImpl(`${baseUrl}/api/auth/logout`, {
       method: "POST",

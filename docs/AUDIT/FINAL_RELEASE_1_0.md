@@ -34,13 +34,13 @@ El paquete excluye `.git/`, dependencias instaladas, `.env` reales, logs, caché
 
 ## 6. PWA
 
-El Service Worker real usa `ubo-academic-hub-v200` y la hoja de estilos se carga como `styles.css?v=131`. La colección de precache se deduplica con `Set` y no incluye rutas privadas `/api/*`. La validación PWA/ESM forma parte de la suite frontend aprobada. La Fase 2.54 ajustó únicamente el espacio útil del shell Student respecto de la navegación inferior y el asistente flotante; conserva Light Mode y no afecta los shells Teacher/Admin.
+El Service Worker real usa `ubo-academic-hub-v203`, el asset principal se carga como `app.js?v=153` y la hoja de estilos como `styles.css?v=131`. La colección de precache se deduplica con `Set` y no incluye rutas privadas `/api/*`. El favicon raíz existe y reutiliza un recurso de identidad PWA. La validación PWA/ESM forma parte de la suite frontend aprobada. La Fase 2.54 ajustó únicamente el espacio útil del shell Student respecto de la navegación inferior y el asistente flotante; conserva Light Mode y no afecta los shells Teacher/Admin.
 
 ## 7. Pruebas realizadas
 
 | Validación | Resultado |
 | --- | --- |
-| `node --test tests/*.test.js` | 113 aprobadas, 0 fallidas |
+| `node --test tests/*.test.js` | 122 aprobadas, 0 fallidas |
 | `backend/npm test` | 51 aprobadas, 0 fallidas |
 | `node --check` para JavaScript fuera de `node_modules` | Sin errores |
 | `UniEcosystemCore/npm test` | Aprobado |
@@ -89,3 +89,7 @@ Los metadatos verificables del contenedor final —tamaño, entradas, SHA-256, a
 - `INSTITUTIONAL_BOUNDARY_CLEAR`
 - `CORE_UNMODIFIED`
 - `NO_FUNCTIONAL_REGRESSION`
+
+## Actualización v203
+
+Course Detail conserva el flujo LMS para Bases de Datos y aplica fallback DEMO controlado para English, IoT y Cyber cuando Course Identity responde `404 COURSE_IDENTITY_NOT_FOUND`. No se inventaron identidades LMS, UUIDs ni datos académicos. Las respuestas HTTP 404 reales siguen siendo observables en Network y su revisión específica de consola queda pendiente; no constituyen una regresión funcional ni se silencian mediante un cambio de servidor artificial.

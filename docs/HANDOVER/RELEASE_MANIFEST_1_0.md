@@ -35,7 +35,8 @@ El paquete no contiene SSO, fuentes institucionales, datos reales de UBO ni cone
 
 ## PWA
 
-- Service Worker: `ubo-academic-hub-v200`.
+- Service Worker: `ubo-academic-hub-v203`.
+- Asset principal: `app.js?v=153`.
 - Hoja de estilos principal: `styles.css?v=131`.
 - El precache contiene shells y módulos estáticos necesarios.
 - No se precachean rutas privadas `/api/*`.
@@ -48,7 +49,7 @@ inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 
 | Área | Resultado real |
 | --- | --- |
-| Frontend | `node --test tests/*.test.js`: 113 aprobadas, 0 fallidas |
+| Frontend | `node --test tests/*.test.js`: 122 aprobadas, 0 fallidas |
 | Backend | `npm test`: 51 aprobadas, 0 fallidas |
 | Sintaxis JavaScript | `node --check` sobre JavaScript fuera de `node_modules`: sin errores |
 | UniEcosystemCore | `npm test` y `npm run check`: aprobados |
@@ -76,3 +77,10 @@ inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 ## Estado Git
 
 El repositorio fuente tenía modificaciones y archivos no rastreados legítimos de fases previas al preparar este manifiesto. No se descartaron, alteraron ni confirmaron mediante commit. No hubo push ni deploy.
+
+## Evolución v203
+
+- El favicon raíz se entrega como recurso real reutilizando la identidad visual PWA.
+- `appendLmsCourseIntelligence` está presente antes de su uso en Course Detail LMS.
+- Course Identity usa fallback DEMO selectivo para `404 COURSE_IDENTITY_NOT_FOUND`; Bases de Datos conserva el flujo LMS confirmado.
+- Los HTTP 404 de cursos DEMO sin identidad LMS no se transforman en respuestas artificiales. La revisión de observabilidad/consola de esas respuestas queda pendiente de forma explícita.

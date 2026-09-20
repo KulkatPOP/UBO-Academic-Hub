@@ -1,5 +1,5 @@
 import { getCourse } from "./course-api-service.js";
-import { resolveCourseByLegacyId } from "./course-identity-api-service.js";
+import { resolveCourseByLegacyIdResult } from "./course-identity-api-service.js";
 import { getEvaluations } from "./evaluation-api-service.js";
 import { getCourseMaterials } from "./material-api-service.js";
 import { getMessages } from "./message-api-service.js";
@@ -17,7 +17,7 @@ const byCourse = (items, courseId) => list(items).filter(item => item?.courseId 
  * No crea una métrica overall ni transforma ausencia de evidencia en cero.
  */
 export async function getStudentCourseDetail(legacyCourseId, {
-  resolveLegacyCourse = resolveCourseByLegacyId,
+  resolveLegacyCourse = resolveCourseByLegacyIdResult,
   getCourseImpl = getCourse,
   getCourseMaterialsImpl = getCourseMaterials,
   getEvaluationsImpl = getEvaluations,
@@ -34,8 +34,19 @@ export async function getStudentCourseDetail(legacyCourseId, {
   const legacyId = typeof legacyCourseId === "string" ? legacyCourseId.trim() : "";
   if (!legacyId) return { available: false, source: "demo-fallback", reason: "IDENTIFIER_REQUIRED", partial: false };
 
-  const identity = await resolveLegacyCourse(legacyId, options.identityOptions);
-  if (!identity?.lmsCourseId) return { available: false, source: "demo-fallback", reason: "IDENTITY_UNRESOLVED", partial: false };
+  const identityResult = await resolveLegacyCourse(legacyId, options.identityOptions);
+  // Los adaptadores de prueba y consumidores históricos pueden devolver la
+  // identidad directamente; la aplicación usa el resultado enriquecido.
+  const identity = identityResult?.identity || identityResult;
+  if (!identity?.lmsCourseId) {
+    return {
+      available: false,
+      source: identityResult?.source || "demo-fallback",
+      status: identityResult?.status ?? null,
+      reason: identityResult?.reason || "IDENTITY_UNRESOLVED",
+      partial: false
+    };
+  }
 
   const courseResult = await getCourseImpl(identity.lmsCourseId, options.courseOptions);
   if (!courseResult.available || !courseResult.course?.id) {

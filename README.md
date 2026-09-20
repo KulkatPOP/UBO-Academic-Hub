@@ -95,11 +95,14 @@ Estas credenciales son únicamente DEMO: no son institucionales ni deben reutili
 
 ## PWA y caché
 
-- Caché vigente: `ubo-academic-hub-v200`.
+- Caché vigente: `ubo-academic-hub-v203`.
 - Hoja de estilos vigente: `styles.css?v=131`.
-- Asset principal vigente: `app.js?v=150`.
+- Asset principal vigente: `app.js?v=153`.
 - Las rutas privadas `/api/*` no forman parte del precache.
 - Antes de cambiar el Service Worker, revisar el grafo ESM y los assets incluidos en precache.
+- El favicon raíz existe y reutiliza la identidad visual PWA.
+
+Course Detail resuelve la identidad LMS de forma selectiva: Bases de Datos usa LMS cuando la API confirma su identidad; English, IoT y Cyber conservan la vista DEMO cuando la API devuelve `404 COURSE_IDENTITY_NOT_FOUND`. Ese 404 de red es esperado para cursos DEMO sin identidad LMS y queda pendiente de una revisión posterior de observabilidad/consola; no se altera a una respuesta ficticia `200`.
 
 ## Seguridad y límites
 

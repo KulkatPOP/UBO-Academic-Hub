@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ubo-academic-hub-v200';
-const APP_ASSETS = ['./', './index.html', './styles.css?v=131', './app.js?v=150', './config/institution.js', './data/users.js', './data/users.js?v=2', './services/institutional-session-service.js', './services/api/auth-api-service.js?v=2', './services/api/user-preferences-api-service.js', './services/api/notification-api-service.js', './services/api/progress-api-service.js', './services/api/academic-intelligence-api-service.js', './services/api/course-detail-api-service.js', './services/api/teacher-dashboard-api-service.js', './services/api/user-api-service.js', './services/api/course-api-service.js', './services/api/material-api-service.js', './services/api/tutor-api-service.js', './services/api/course-identity-api-service.js', './services/api/recommendation-api-service.js', './services/api/evaluation-api-service.js', './services/api/message-api-service.js', './services/api/qr-attendance-api-service.js', './services/api/analytics-api-service.js', './services/theme-preference-service.js', './services/qr-attendance-service.js', './services/message-service.js', './services/evaluation-service.js', './services/evaluation/question-bank-service.js', './services/analytics/academic-risk-service.js', './services/ai/academic-tutor-service.js', './services/ai/knowledge-base-service.js', './services/recommendation/academic-recommendation-service.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'ubo-academic-hub-v203';
+const APP_ASSETS = ['./', './index.html', './styles.css?v=131', './app.js?v=153', './config/institution.js', './data/users.js', './data/users.js?v=2', './services/institutional-session-service.js', './services/api/auth-api-service.js?v=2', './services/api/api-environment.js', './services/api/user-preferences-api-service.js', './services/api/notification-api-service.js', './services/api/progress-api-service.js', './services/api/academic-intelligence-api-service.js', './services/api/course-detail-api-service.js', './services/api/teacher-dashboard-api-service.js', './services/api/user-api-service.js', './services/api/course-api-service.js', './services/api/material-api-service.js', './services/api/tutor-api-service.js', './services/api/course-identity-api-service.js', './services/api/recommendation-api-service.js', './services/api/evaluation-api-service.js', './services/api/message-api-service.js', './services/api/qr-attendance-api-service.js', './services/api/analytics-api-service.js', './services/theme-preference-service.js', './services/qr-attendance-service.js', './services/message-service.js', './services/evaluation-service.js', './services/evaluation/question-bank-service.js', './services/analytics/academic-risk-service.js', './services/ai/academic-tutor-service.js', './services/ai/knowledge-base-service.js', './services/recommendation/academic-recommendation-service.js', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 const DEMO_SHELL_ASSETS = [
   './modules/demo/demo-selector.html',
   './modules/demo/demo-selector.css',
@@ -80,4 +80,28 @@ const OFFLINE_DOCUMENTS = {
 const PRECACHE_ASSETS = [...new Set([...APP_ASSETS, ...DEMO_SHELL_ASSETS])];
 self.addEventListener('install', event => {event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_ASSETS)));self.skipWaiting()});
 self.addEventListener('activate', event => {event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))));self.clients.claim()});
-self.addEventListener('fetch', event => {if(event.request.method !== 'GET')return;const isDocument=event.request.mode==='navigate'||event.request.destination==='document';if(isDocument){event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(response.ok&&response.type==='basic'){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy))}return response}).catch(()=>{const pathname=new URL(event.request.url).pathname;return caches.match(event.request).then(cached=>cached||caches.match(OFFLINE_DOCUMENTS[pathname]||'./index.html'))}));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)))});
+self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+  if (event.request.method !== 'GET' || requestUrl.origin !== self.location.origin || requestUrl.pathname.startsWith('/api/')) return;
+
+  const isDocument = event.request.mode === 'navigate' || event.request.destination === 'document';
+  if (isDocument) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' })
+        .then(response => {
+          if (response.ok && response.type === 'basic') {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => {
+          const pathname = requestUrl.pathname;
+          return caches.match(event.request).then(cached => cached || caches.match(OFFLINE_DOCUMENTS[pathname] || './index.html'));
+        })
+    );
+    return;
+  }
+
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).catch(() => caches.match(event.request))));
+});
