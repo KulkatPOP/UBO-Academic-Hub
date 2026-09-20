@@ -3,19 +3,20 @@
 ## Alcance
 
 - **Release:** 1.0
-- **PWA:** `ubo-academic-hub-v200`
+- **PWA:** `ubo-academic-hub-v203`
+- **App:** `app.js?v=153`
 - **CSS:** `styles.css?v=131`
-- **Fecha:** 2026-09-19
+- **Fecha:** 2026-09-20
 
-El paquete se genera desde el estado actual del proyecto, manteniendo su estructura real: `backend/src/database/` es la única ubicación de las migraciones y seeds; no se crea una carpeta `database/` artificial en la raíz.
+El paquete se genera desde el estado actual del proyecto, manteniendo su estructura real: `backend/src/database/` es la única ubicación de las migraciones y seeds; no se crea una carpeta `database/` artificial en la raíz. Course Identity conserva fallback DEMO selectivo para `404 COURSE_IDENTITY_NOT_FOUND`, sin inventar identidades LMS ni UUIDs.
 
 ## Validación previa
 
 | Comprobación | Resultado |
 | --- | --- |
-| Frontend `node --test tests/*.test.js` | 113 aprobadas, 0 fallidas |
+| Frontend `node --test tests/*.test.js` | 122 aprobadas, 0 fallidas |
 | Backend `npm test` | 51 aprobadas, 0 fallidas |
-| Sintaxis JavaScript | 300 archivos comprobados, 0 fallas |
+| Sintaxis JavaScript | 302 archivos comprobados, 0 fallas |
 | Core `npm test` y `npm run check` | Aprobados; Core no modificado |
 | `git diff --check` | Sin errores de whitespace |
 
