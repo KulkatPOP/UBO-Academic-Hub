@@ -20,7 +20,7 @@ assert.match(index, /id="pwa-install-state"/);
 assert.match(app, /beforeinstallprompt/);
 assert.match(app, /appinstalled/);
 assert.match(app, /UBO Academic Hub instalada correctamente/);
-assert.match(worker, /ubo-academic-hub-v203/);
+assert.match(worker, /ubo-academic-hub-v204/);
 assert.match(worker, /cache:\s*'no-store'/);
 assert.match(worker, /requestUrl\.origin\s*!==\s*self\.location\.origin/);
 assert.doesNotMatch(app.match(/function setupPwaInstallation\(\)[\s\S]*?function init/)?.[0] || "", /innerHTML/);

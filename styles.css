@@ -1790,6 +1790,10 @@ body:has(#home.active) .topbar{display:none}
   z-index:1;
 }
 
+/* Las etiquetas de accesos rápidos deben permanecer legibles en cuadrículas estrechas. */
+.quick-grid,.quick-card,.quick-card>*{min-width:0;max-width:100%}
+.quick-card b,.quick-card small{overflow-wrap:break-word;word-break:normal;white-space:normal;text-wrap:balance}
+
 /* Fase 2.52: overrides finales para reglas Student con especificidad de pantalla. */
 html[data-theme="dark"] #home .student-summary-card,
 html[data-theme="dark"] #home .student-summary-course,
