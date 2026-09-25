@@ -94,7 +94,7 @@ Estas medidas son adecuadas para el alcance LMS local DEMO. No sustituyen SSO, c
 
 ## PWA
 
-La caché actual es `ubo-academic-hub-v203`, el asset principal es `app.js?v=153` y la hoja de estilos vigente es `styles.css?v=131`. La corrección final de Fase 2.54 mantiene el contenido del shell Student por encima de la navegación inferior y del asistente, respetando safe-area y los viewports 390×844, 768×1024 y 1920×1080. El favicon raíz reutiliza la identidad visual existente. Si se actualizan assets precacheados, se debe revisar el grafo ESM y el Service Worker antes de cambiar versión. No incorporar API privada ni UniEcosystemCore al precache.
+La caché actual es `ubo-academic-hub-v204`, el asset principal es `app.js?v=154` y la hoja de estilos vigente es `styles.css?v=132`. Release 1.0 v204 incorpora navegación interna con `pushState`/`popstate`, soporte para el gesto Atrás de Android, historial entre vistas y tarjetas de accesos rápidos responsive. Estos flujos fueron validados en un dispositivo móvil real. La corrección final de Fase 2.54 mantiene el contenido del shell Student por encima de la navegación inferior y del asistente, respetando safe-area y los viewports 390×844, 768×1024 y 1920×1080. El favicon raíz reutiliza la identidad visual existente. Si se actualizan assets precacheados, se debe revisar el grafo ESM y el Service Worker antes de cambiar versión. No incorporar API privada ni UniEcosystemCore al precache.
 
 En Course Detail, `404 COURSE_IDENTITY_NOT_FOUND` significa que el curso DEMO no posee identidad LMS confirmada y activa el fallback DEMO controlado. No se crean UUIDs ni datos LMS ficticios. La observabilidad visual de esos HTTP 404 queda como revisión posterior; no se presenta como un fallo funcional del Course Detail.
 

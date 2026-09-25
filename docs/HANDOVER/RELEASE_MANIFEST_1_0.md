@@ -35,11 +35,13 @@ El paquete no contiene SSO, fuentes institucionales, datos reales de UBO ni cone
 
 ## PWA
 
-- Service Worker: `ubo-academic-hub-v203`.
-- Asset principal: `app.js?v=153`.
-- Hoja de estilos principal: `styles.css?v=131`.
+- Service Worker: `ubo-academic-hub-v204`.
+- Asset principal: `app.js?v=154`.
+- Hoja de estilos principal: `styles.css?v=132`.
 - El precache contiene shells y módulos estáticos necesarios.
 - No se precachean rutas privadas `/api/*`.
+
+La evolución final v204 incorpora navegación móvil con `pushState`/`popstate`, soporte del gesto Atrás Android, historial interno entre vistas y tarjetas de accesos rápidos responsive. La validación incluyó un dispositivo móvil real.
 
 La corrección visual final de Fase 2.54 usa las superficies y variables
 existentes del shell Student para mantener el contenido sobre la navegación
@@ -49,7 +51,7 @@ inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 
 | Área | Resultado real |
 | --- | --- |
-| Frontend | `node --test tests/*.test.js`: 122 aprobadas, 0 fallidas |
+| Frontend | `node --test tests/*.test.js`: 123 aprobadas, 0 fallidas |
 | Backend | `npm test`: 51 aprobadas, 0 fallidas |
 | Sintaxis JavaScript | `node --check` sobre JavaScript fuera de `node_modules`: sin errores |
 | UniEcosystemCore | `npm test` y `npm run check`: aprobados |
@@ -78,9 +80,11 @@ inferior y el asistente, sin alterar el modo claro ni los shells Teacher/Admin.
 
 El repositorio fuente tenía modificaciones y archivos no rastreados legítimos de fases previas al preparar este manifiesto. No se descartaron, alteraron ni confirmaron mediante commit. No hubo push ni deploy.
 
-## Evolución v203
+## Evolución v204
 
 - El favicon raíz se entrega como recurso real reutilizando la identidad visual PWA.
 - `appendLmsCourseIntelligence` está presente antes de su uso en Course Detail LMS.
 - Course Identity usa fallback DEMO selectivo para `404 COURSE_IDENTITY_NOT_FOUND`; Bases de Datos conserva el flujo LMS confirmado.
 - Los HTTP 404 de cursos DEMO sin identidad LMS no se transforman en respuestas artificiales. La revisión de observabilidad/consola de esas respuestas queda pendiente de forma explícita.
+- La navegación Student conserva estados internos para el botón y gesto Atrás sin abandonar la PWA mientras exista historial propio.
+- Los accesos rápidos mantienen el contenido legible en móviles y tablets sin truncarlo mediante elipsis.

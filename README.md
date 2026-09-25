@@ -85,19 +85,21 @@ Abrir [http://localhost:3000](http://localhost:3000). Se requiere HTTP para ES M
 
 ## Credenciales DEMO
 
-| Rol | Usuario | Contraseña DEMO |
-| --- | --- | --- |
-| Student | `msofia` | `123456` |
-| Teacher | `pcarlos` | `123456` |
-| Admin | `admin` | `admin123` |
+| Rol     | Usuario   | Contraseña DEMO |
+| ------- | --------- | --------------- |
+| Student | `msofia`  | `123456`        |
+| Teacher | `pcarlos` | `123456`        |
+| Admin   | `admin`   | `admin123`      |
 
 Estas credenciales son únicamente DEMO: no son institucionales ni deben reutilizarse fuera del entorno local. La sesión no guarda contraseñas en el frontend.
 
 ## PWA y caché
 
-- Caché vigente: `ubo-academic-hub-v203`.
-- Hoja de estilos vigente: `styles.css?v=131`.
-- Asset principal vigente: `app.js?v=153`.
+- Caché vigente: `ubo-academic-hub-v204`.
+- Hoja de estilos vigente: `styles.css?v=132`.
+- Asset principal vigente: `app.js?v=154`.
+- Release 1.0 v204 incorpora navegación interna con `pushState`/`popstate`, soporte para el gesto Atrás de Android y tarjetas de accesos rápidos responsive.
+- La navegación móvil y responsive fueron validadas en un dispositivo móvil real.
 - Las rutas privadas `/api/*` no forman parte del precache.
 - Antes de cambiar el Service Worker, revisar el grafo ESM y los assets incluidos en precache.
 - El favicon raíz existe y reutiliza la identidad visual PWA.
